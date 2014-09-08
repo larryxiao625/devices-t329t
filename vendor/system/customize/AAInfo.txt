@@ -1,0 +1,6 @@
+TaskID : 296094
+Project : PROTO_TD_ICS_40A
+SKU : HTCCN CHS CMCC[1403]
+ROM Ver : 1.01.1403.1
+Customization Id : 450713
+RCMS Id : 95

@@ -1,0 +1,31 @@
+
+.method public setShowCallDeclinedAnimation(Z)V
+    .locals 1
+    .parameter "bShow"
+
+    .prologue
+    .line 1340
+    monitor-enter p0
+
+    .line 1341
+    :try_start_0
+    iput-boolean p1, p0, Lcom/android/internal/policy/impl/KeyguardUpdateMonitor;->mNeedToShowAnimation:Z
+
+    .line 1342
+    monitor-exit p0
+
+    .line 1343
+    return-void
+
+    .line 1342
+    :catchall_0
+    move-exception v0
+
+    monitor-exit p0
+    :try_end_0
+    .catchall {:try_start_0 .. :try_end_0} :catchall_0
+
+    throw v0
+.end method
+
+.field private mNeedToShowAnimation:Z

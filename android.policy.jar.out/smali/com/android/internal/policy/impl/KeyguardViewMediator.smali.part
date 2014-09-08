@@ -1,0 +1,85 @@
+
+.method public setNeedToShowKeyguardAnimation(Z)V
+    .locals 1
+    .parameter "show"
+
+    .prologue
+    .line 1974
+    iget-object v0, p0, Lcom/android/internal/policy/impl/KeyguardViewMediator;->mUpdateMonitor:Lcom/android/internal/policy/impl/KeyguardUpdateMonitor;
+
+    invoke-virtual {v0, p1}, Lcom/android/internal/policy/impl/KeyguardUpdateMonitor;->setShowCallDeclinedAnimation(Z)V
+
+    .line 1976
+    if-eqz p1, :cond_1
+
+    .line 1977
+    iput-boolean p1, p0, Lcom/android/internal/policy/impl/KeyguardViewMediator;->mNeedToShowKeyguard:Z
+
+    .line 1983
+    :cond_0
+    :goto_0
+    return-void
+
+    .line 1979
+    :cond_1
+    iget-object v0, p0, Lcom/android/internal/policy/impl/KeyguardViewMediator;->mKeyguardViewProperties:Lcom/android/internal/policy/impl/KeyguardViewProperties;
+
+    invoke-interface {v0}, Lcom/android/internal/policy/impl/KeyguardViewProperties;->isSecure()Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    .line 1980
+    iput-boolean p1, p0, Lcom/android/internal/policy/impl/KeyguardViewMediator;->mNeedToShowKeyguard:Z
+
+    goto :goto_0
+.end method
+
+.method public getIdleScreenLabel()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 2088
+    iget-object v0, p0, Lcom/android/internal/policy/impl/KeyguardViewMediator;->mKeyguardViewManager:Lcom/android/internal/policy/impl/KeyguardViewManager;
+
+    invoke-virtual {v0}, Lcom/android/internal/policy/impl/KeyguardViewManager;->getIdleScreenLabel()Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.field private mNeedToShowKeyguard:Z
+
+.method public setNeedToShowKeyguard(Z)V
+    .locals 1
+    .parameter "show"
+
+    .prologue
+    .line 1953
+    if-eqz p1, :cond_1
+
+    .line 1954
+    iput-boolean p1, p0, Lcom/android/internal/policy/impl/KeyguardViewMediator;->mNeedToShowKeyguard:Z
+
+    .line 1960
+    :cond_0
+    :goto_0
+    return-void
+
+    .line 1956
+    :cond_1
+    iget-object v0, p0, Lcom/android/internal/policy/impl/KeyguardViewMediator;->mKeyguardViewProperties:Lcom/android/internal/policy/impl/KeyguardViewProperties;
+
+    invoke-interface {v0}, Lcom/android/internal/policy/impl/KeyguardViewProperties;->isSecure()Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    .line 1957
+    iput-boolean p1, p0, Lcom/android/internal/policy/impl/KeyguardViewMediator;->mNeedToShowKeyguard:Z
+
+    goto :goto_0
+.end method

@@ -1,0 +1,832 @@
+
+.method public setShowKeyguard(Z)V
+    .locals 3
+    .parameter "show"
+
+    .prologue
+    .line 5722
+    iget-object v0, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mKeyguardMediator:Lcom/android/internal/policy/impl/KeyguardViewMediator;
+
+    if-eqz v0, :cond_0
+
+    .line 5723
+    const-string v0, "WindowManager"
+
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "setShowKeyguard("
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    const-string v2, ")"
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 5724
+    iget-object v0, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mKeyguardMediator:Lcom/android/internal/policy/impl/KeyguardViewMediator;
+
+    invoke-virtual {v0, p1}, Lcom/android/internal/policy/impl/KeyguardViewMediator;->setNeedToShowKeyguard(Z)V
+
+    .line 5726
+    :cond_0
+    return-void
+.end method
+
+.method public setPenWorkingMode(I)V
+    .locals 3
+    .parameter "penWorkingMode"
+
+    .prologue
+    .line 6067
+    const-string v0, "WindowManager"
+
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "setPenWorkingMode = "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 6068
+    iput p1, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mPenWorkingMode:I
+
+    .line 6069
+    return-void
+.end method
+
+.method public addStartingWindow(Landroid/os/IBinder;Ljava/lang/String;ILandroid/content/res/CompatibilityInfo;Ljava/lang/CharSequence;IIILandroid/graphics/Bitmap;)Landroid/view/View;
+    .locals 13
+    .parameter "appToken"
+    .parameter "packageName"
+    .parameter "theme"
+    .parameter "compatInfo"
+    .parameter "nonLocalizedLabel"
+    .parameter "labelRes"
+    .parameter "icon"
+    .parameter "windowFlags"
+    .parameter "thumbnail"
+
+    .prologue
+    .line 1884
+    if-nez p2, :cond_1
+
+    .line 1885
+    const/4 v6, 0x0
+
+    .line 2018
+    :cond_0
+    :goto_0
+    return-object v6
+
+    .line 1888
+    :cond_1
+    sget-boolean v10, Lcom/htc/htcjavaflag/HtcBuildFlag;->Htc_DEBUG_flag:Z
+
+    if-eqz v10, :cond_2
+
+    .line 1889
+    const-string v10, "WindowManager"
+
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v12, "addStartingWindow, packageName="
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v11, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-static {v10, v11}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1891
+    :cond_2
+    const-string v10, "new_starting_window"
+
+    const/4 v11, 0x1
+
+    invoke-static {v10, v11}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
+
+    move-result v10
+
+    if-eqz v10, :cond_5
+
+    .line 1893
+    const-string v10, "com.htc.launcher"
+
+    invoke-virtual {v10, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v10
+
+    if-nez v10, :cond_3
+
+    const-string v10, "com.android.camera"
+
+    invoke-virtual {v10, p2}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v10
+
+    if-eqz v10, :cond_5
+
+    .line 1895
+    :cond_3
+    sget-boolean v10, Lcom/htc/htcjavaflag/HtcBuildFlag;->Htc_DEBUG_flag:Z
+
+    if-eqz v10, :cond_4
+
+    .line 1896
+    const-string v10, "WindowManager"
+
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v11, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    const-string v12, " needs no starting window"
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-static {v10, v11}, Landroid/util/Slog;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1897
+    :cond_4
+    const/4 v6, 0x0
+
+    goto :goto_0
+
+    .line 1902
+    :cond_5
+    :try_start_0
+    iget-object v2, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mContext:Landroid/content/Context;
+
+    .line 1905
+    .local v2, context:Landroid/content/Context;
+    invoke-virtual {v2}, Landroid/content/Context;->getThemeResId()I
+    :try_end_0
+    .catch Landroid/view/WindowManager$BadTokenException; {:try_start_0 .. :try_end_0} :catch_0
+    .catch Ljava/lang/RuntimeException; {:try_start_0 .. :try_end_0} :catch_1
+
+    move-result v10
+
+    move/from16 v0, p3
+
+    if-ne v0, v10, :cond_6
+
+    if-eqz p6, :cond_7
+
+    .line 1907
+    :cond_6
+    const/4 v10, 0x0
+
+    :try_start_1
+    invoke-virtual {v2, p2, v10}, Landroid/content/Context;->createPackageContext(Ljava/lang/String;I)Landroid/content/Context;
+
+    move-result-object v2
+
+    .line 1908
+    move/from16 v0, p3
+
+    invoke-virtual {v2, v0}, Landroid/content/Context;->setTheme(I)V
+    :try_end_1
+    .catch Landroid/content/pm/PackageManager$NameNotFoundException; {:try_start_1 .. :try_end_1} :catch_2
+    .catch Landroid/view/WindowManager$BadTokenException; {:try_start_1 .. :try_end_1} :catch_0
+    .catch Ljava/lang/RuntimeException; {:try_start_1 .. :try_end_1} :catch_1
+
+    .line 1914
+    :cond_7
+    :goto_1
+    :try_start_2
+    invoke-static {v2}, Lcom/android/internal/policy/PolicyManager;->makeNewWindow(Landroid/content/Context;)Landroid/view/Window;
+
+    move-result-object v7
+
+    .line 1915
+    .local v7, win:Landroid/view/Window;
+    invoke-virtual {v7}, Landroid/view/Window;->getWindowStyle()Landroid/content/res/TypedArray;
+
+    move-result-object v10
+
+    const/16 v11, 0xc
+
+    const/4 v12, 0x0
+
+    invoke-virtual {v10, v11, v12}, Landroid/content/res/TypedArray;->getBoolean(IZ)Z
+
+    move-result v10
+
+    if-eqz v10, :cond_9
+
+    .line 1918
+    sget-boolean v10, Lcom/htc/htcjavaflag/HtcBuildFlag;->Htc_DEBUG_flag:Z
+
+    if-eqz v10, :cond_8
+
+    .line 1919
+    const-string v10, "WindowManager"
+
+    const-string v11, "No starting window because it has set windowDisablePreview"
+
+    invoke-static {v10, v11}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1921
+    :cond_8
+    const/4 v6, 0x0
+
+    goto/16 :goto_0
+
+    .line 1924
+    :cond_9
+    invoke-virtual {v2}, Landroid/content/Context;->getResources()Landroid/content/res/Resources;
+
+    move-result-object v5
+
+    .line 1925
+    .local v5, r:Landroid/content/res/Resources;
+    move/from16 v0, p6
+
+    move-object/from16 v1, p5
+
+    invoke-virtual {v5, v0, v1}, Landroid/content/res/Resources;->getText(ILjava/lang/CharSequence;)Ljava/lang/CharSequence;
+
+    move-result-object v10
+
+    invoke-virtual {v7, v10}, Landroid/view/Window;->setTitle(Ljava/lang/CharSequence;)V
+
+    .line 1927
+    const/4 v10, 0x3
+
+    invoke-virtual {v7, v10}, Landroid/view/Window;->setType(I)V
+
+    .line 1933
+    or-int/lit8 v10, p8, 0x10
+
+    or-int/lit8 v10, v10, 0x8
+
+    const/high16 v11, 0x2
+
+    or-int/2addr v10, v11
+
+    or-int/lit8 v11, p8, 0x10
+
+    or-int/lit8 v11, v11, 0x8
+
+    const/high16 v12, 0x2
+
+    or-int/2addr v11, v12
+
+    invoke-virtual {v7, v10, v11}, Landroid/view/Window;->setFlags(II)V
+
+    .line 1943
+    invoke-virtual/range {p4 .. p4}, Landroid/content/res/CompatibilityInfo;->supportsScreen()Z
+
+    move-result v10
+
+    if-nez v10, :cond_a
+
+    .line 1944
+    const/high16 v10, 0x2000
+
+    invoke-virtual {v7, v10}, Landroid/view/Window;->addFlags(I)V
+
+    .line 1947
+    :cond_a
+    const/4 v10, -0x1
+
+    const/4 v11, -0x1
+
+    invoke-virtual {v7, v10, v11}, Landroid/view/Window;->setLayout(II)V
+
+    .line 1950
+    invoke-virtual {v7}, Landroid/view/Window;->getAttributes()Landroid/view/WindowManager$LayoutParams;
+
+    move-result-object v4
+
+    .line 1951
+    .local v4, params:Landroid/view/WindowManager$LayoutParams;
+    iput-object p1, v4, Landroid/view/WindowManager$LayoutParams;->token:Landroid/os/IBinder;
+
+    .line 1952
+    iput-object p2, v4, Landroid/view/WindowManager$LayoutParams;->packageName:Ljava/lang/String;
+
+    .line 1953
+    invoke-virtual {v7}, Landroid/view/Window;->getWindowStyle()Landroid/content/res/TypedArray;
+
+    move-result-object v10
+
+    const/16 v11, 0x8
+
+    const/4 v12, 0x0
+
+    invoke-virtual {v10, v11, v12}, Landroid/content/res/TypedArray;->getResourceId(II)I
+
+    move-result v10
+
+    iput v10, v4, Landroid/view/WindowManager$LayoutParams;->windowAnimations:I
+
+    .line 1955
+    iget v10, v4, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
+
+    or-int/lit8 v10, v10, 0x1
+
+    iput v10, v4, Landroid/view/WindowManager$LayoutParams;->privateFlags:I
+
+    .line 1957
+    new-instance v10, Ljava/lang/StringBuilder;
+
+    invoke-direct {v10}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v11, "Starting "
+
+    invoke-virtual {v10, v11}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10, p2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v10
+
+    invoke-virtual {v10}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v10
+
+    invoke-virtual {v4, v10}, Landroid/view/WindowManager$LayoutParams;->setTitle(Ljava/lang/CharSequence;)V
+
+    .line 1959
+    const-string v10, "window"
+
+    invoke-virtual {v2, v10}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
+
+    move-result-object v9
+
+    check-cast v9, Landroid/view/WindowManager;
+
+    .line 1962
+    .local v9, wm:Landroid/view/WindowManager;
+    const-string v10, "new_starting_window"
+
+    const/4 v11, 0x1
+
+    invoke-static {v10, v11}, Landroid/os/SystemProperties;->getBoolean(Ljava/lang/String;Z)Z
+
+    move-result v10
+
+    if-eqz v10, :cond_d
+
+    .line 1963
+    if-eqz v7, :cond_d
+
+    instance-of v10, v7, Lcom/android/internal/policy/impl/PhoneWindow;
+
+    if-eqz v10, :cond_d
+
+    invoke-virtual {v2}, Landroid/content/Context;->getApplicationInfo()Landroid/content/pm/ApplicationInfo;
+
+    move-result-object v10
+
+    iget-boolean v10, v10, Landroid/content/pm/ApplicationInfo;->allowSkinChange:Z
+
+    if-eqz v10, :cond_d
+
+    .line 1965
+    move-object v0, v7
+
+    check-cast v0, Lcom/android/internal/policy/impl/PhoneWindow;
+
+    move-object v10, v0
+
+    const/4 v11, 0x1
+
+    move-object/from16 v0, p9
+
+    invoke-virtual {v10, v11, v0}, Lcom/android/internal/policy/impl/PhoneWindow;->setSimpleDecorView(ZLandroid/graphics/Bitmap;)V
+
+    .line 1968
+    sget-boolean v10, Lcom/htc/htcjavaflag/HtcBuildFlag;->Htc_DEBUG_flag:Z
+
+    if-eqz v10, :cond_b
+
+    .line 1969
+    const-string v10, "WindowManager"
+
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v12, "windowAnimations(before)="
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    iget v12, v4, Landroid/view/WindowManager$LayoutParams;->windowAnimations:I
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-static {v10, v11}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1971
+    :cond_b
+    iget v10, v4, Landroid/view/WindowManager$LayoutParams;->windowAnimations:I
+
+    if-nez v10, :cond_c
+
+    .line 1972
+    iget-object v10, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mContext:Landroid/content/Context;
+
+    invoke-static {v10}, Lcom/android/internal/policy/PolicyManager;->makeNewWindow(Landroid/content/Context;)Landroid/view/Window;
+
+    move-result-object v8
+
+    .line 1973
+    .local v8, win2:Landroid/view/Window;
+    invoke-virtual {v8}, Landroid/view/Window;->getWindowStyle()Landroid/content/res/TypedArray;
+
+    move-result-object v10
+
+    const/16 v11, 0x8
+
+    const/4 v12, 0x0
+
+    invoke-virtual {v10, v11, v12}, Landroid/content/res/TypedArray;->getResourceId(II)I
+
+    move-result v10
+
+    iput v10, v4, Landroid/view/WindowManager$LayoutParams;->windowAnimations:I
+
+    .line 1977
+    .end local v8           #win2:Landroid/view/Window;
+    :cond_c
+    sget-boolean v10, Lcom/htc/htcjavaflag/HtcBuildFlag;->Htc_DEBUG_flag:Z
+
+    if-eqz v10, :cond_d
+
+    .line 1978
+    const-string v10, "WindowManager"
+
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v12, "windowAnimations(after)="
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    iget v12, v4, Landroid/view/WindowManager$LayoutParams;->windowAnimations:I
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-static {v10, v11}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1982
+    :cond_d
+    invoke-virtual {v7}, Landroid/view/Window;->getDecorView()Landroid/view/View;
+
+    move-result-object v6
+
+    .line 1984
+    .local v6, view:Landroid/view/View;
+    invoke-virtual {v7}, Landroid/view/Window;->isFloating()Z
+
+    move-result v10
+
+    if-eqz v10, :cond_f
+
+    .line 1992
+    sget-boolean v10, Lcom/htc/htcjavaflag/HtcBuildFlag;->Htc_DEBUG_flag:Z
+
+    if-eqz v10, :cond_e
+
+    .line 1993
+    const-string v10, "WindowManager"
+
+    const-string v11, "No starting window because the window is floating."
+
+    invoke-static {v10, v11}, Landroid/util/Slog;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 1995
+    :cond_e
+    const/4 v6, 0x0
+
+    goto/16 :goto_0
+
+    .line 2003
+    :cond_f
+    invoke-interface {v9, v6, v4}, Landroid/view/WindowManager;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+
+    .line 2007
+    invoke-virtual {v6}, Landroid/view/View;->getParent()Landroid/view/ViewParent;
+    :try_end_2
+    .catch Landroid/view/WindowManager$BadTokenException; {:try_start_2 .. :try_end_2} :catch_0
+    .catch Ljava/lang/RuntimeException; {:try_start_2 .. :try_end_2} :catch_1
+
+    move-result-object v10
+
+    if-nez v10, :cond_0
+
+    const/4 v6, 0x0
+
+    goto/16 :goto_0
+
+    .line 2008
+    .end local v2           #context:Landroid/content/Context;
+    .end local v4           #params:Landroid/view/WindowManager$LayoutParams;
+    .end local v5           #r:Landroid/content/res/Resources;
+    .end local v6           #view:Landroid/view/View;
+    .end local v7           #win:Landroid/view/Window;
+    .end local v9           #wm:Landroid/view/WindowManager;
+    :catch_0
+    move-exception v3
+
+    .line 2010
+    .local v3, e:Landroid/view/WindowManager$BadTokenException;
+    const-string v10, "WindowManager"
+
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v11, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    const-string v12, " already running, starting window not displayed"
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-static {v10, v11}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 2018
+    .end local v3           #e:Landroid/view/WindowManager$BadTokenException;
+    :goto_2
+    const/4 v6, 0x0
+
+    goto/16 :goto_0
+
+    .line 2011
+    :catch_1
+    move-exception v3
+
+    .line 2015
+    .local v3, e:Ljava/lang/RuntimeException;
+    const-string v10, "WindowManager"
+
+    new-instance v11, Ljava/lang/StringBuilder;
+
+    invoke-direct {v11}, Ljava/lang/StringBuilder;-><init>()V
+
+    invoke-virtual {v11, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    const-string v12, " failed creating starting window"
+
+    invoke-virtual {v11, v12}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v11
+
+    invoke-virtual {v11}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v11
+
+    invoke-static {v10, v11, v3}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
+
+    goto :goto_2
+
+    .line 1909
+    .end local v3           #e:Ljava/lang/RuntimeException;
+    .restart local v2       #context:Landroid/content/Context;
+    :catch_2
+    move-exception v10
+
+    goto/16 :goto_1
+.end method
+
+.field mKeyEventsBlocked:Z
+
+.field mPenWorkingMode:I
+
+.method public keyguardIsShowing()Z
+    .locals 1
+
+    .prologue
+    .line 5062
+    iget-object v0, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mKeyguardMediator:Lcom/android/internal/policy/impl/KeyguardViewMediator;
+
+    invoke-virtual {v0}, Lcom/android/internal/policy/impl/KeyguardViewMediator;->isShowingAndNotHidden()Z
+
+    move-result v0
+
+    return v0
+.end method
+
+.method public setKeyEventsBlocked(Z)V
+    .locals 0
+    .parameter "blocked"
+
+    .prologue
+    .line 5382
+    iput-boolean p1, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mKeyEventsBlocked:Z
+
+    .line 5383
+    return-void
+.end method
+
+.method public showKeyguardWithAnimation(Z)V
+    .locals 3
+    .parameter "showLockScreen"
+
+    .prologue
+    .line 5733
+    iget-object v0, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mKeyguardMediator:Lcom/android/internal/policy/impl/KeyguardViewMediator;
+
+    if-eqz v0, :cond_0
+
+    .line 5734
+    const-string v0, "WindowManager"
+
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "showKeyguardWithAnimation("
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Z)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    const-string v2, ")"
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 5735
+    iget-object v0, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mKeyguardMediator:Lcom/android/internal/policy/impl/KeyguardViewMediator;
+
+    invoke-virtual {v0, p1}, Lcom/android/internal/policy/impl/KeyguardViewMediator;->setNeedToShowKeyguardAnimation(Z)V
+
+    .line 5738
+    :cond_0
+    return-void
+.end method
+
+.method public getNavigationBarHeight()I
+    .locals 1
+
+    .prologue
+    .line 6124
+    invoke-direct {p0}, Lcom/android/internal/policy/impl/PhoneWindowManager;->getNavigationBarVisibleHeight()I
+
+    move-result v0
+
+    return v0
+.end method
+
+.method public getIdleScreenLabel()Ljava/lang/String;
+    .locals 1
+
+    .prologue
+    .line 6049
+    iget-object v0, p0, Lcom/android/internal/policy/impl/PhoneWindowManager;->mKeyguardMediator:Lcom/android/internal/policy/impl/KeyguardViewMediator;
+
+    invoke-virtual {v0}, Lcom/android/internal/policy/impl/KeyguardViewMediator;->getIdleScreenLabel()Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+.end method
+
+.method public getNavigationBarWidth()I
+    .locals 1
+
+    .prologue
+    .line 6120
+    invoke-direct {p0}, Lcom/android/internal/policy/impl/PhoneWindowManager;->getNavigationBarVisibleWidth()I
+
+    move-result v0
+
+    return v0
+.end method
+
+.method private getNavigationBarVisibleHeight()I
+# 
+# Auto Add by baidu, it's blank 
+# It should return an int, return 0 instead 
+# 
+# You better modify here by yourself, if you found it is wrong for just return 0 
+# Warning: Can not just copy this method from vendor, it musted used some unexist field or class 
+# 
+    .locals 1 
+
+    .prologue 
+    const/4 v0, 0x0 
+
+    return v0 
+.end method 
+
+.method private getNavigationBarVisibleWidth()I
+# 
+# Auto Add by baidu, it's blank 
+# It should return an int, return 0 instead 
+# 
+# You better modify here by yourself, if you found it is wrong for just return 0 
+# Warning: Can not just copy this method from vendor, it musted used some unexist field or class 
+# 
+    .locals 1 
+
+    .prologue 
+    const/4 v0, 0x0 
+
+    return v0 
+.end method 
+
+.method public setNavigationBarVisibility(Z)V
+# 
+# Auto Add by baidu, it's blank 
+# return-void 
+# 
+# You better modify here by yourself, if you found it is wrong for doing nothing 
+# Warning: Can not just copy this method from vendor, it musted used some unexist field or class 
+# 
+    .locals 0 
+
+    .prologue 
+    return-void 
+.end method 
+

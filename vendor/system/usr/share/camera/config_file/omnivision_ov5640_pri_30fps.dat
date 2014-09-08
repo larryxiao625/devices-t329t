@@ -1,0 +1,7065 @@
+//=========================================================
+//Revision history
+//=========================================================
+
+// 0.1 Based on U33x camdriver //
+// 0.2 Modifing setting for Omnivsion //
+
+//=========================================================
+//Information section
+//=========================================================
+// --- OMNIVISION
+
+info_name =  OV5640_2DL;
+info_vendor = OmniVision; 
+info_major_ver = 2;
+info_minor_ver = 02;
+
+//=========================================================
+// Camera characteristics section
+//=========================================================
+
+cam_i2c_address = 78;  // "If the SADDR signal is driven LOW": 78 (write address) 79 (read address)
+
+//  cam_interface - 16bit number
+//  [Bit 0] = 0: Primary interface, 1: Secondry interface
+//  [Bit 1] = 0: CCP2 output, 1: CSI2 output
+//  [Bit 2:3] = Number of lanes (1= 1DL, 2 = 2DL, 3 = 3DL, 0 = 4DL)
+//  [Bit 4] = 0:v.81b DPHY spec, 1: v.90 DPHY spec
+//  [Bit 5] = 0:EOT_bypass disable , 1:EOT_bypass enable
+//  [Rest] = Unused
+cam_interface = 1a;
+
+//CSI bit rate - Default value
+cam_csi_bitrate = FC; //252
+
+// Datatype 0 for preview and still config
+//    1 byte: [byte 0] datatype 0
+cam_csi_datatype0 = 1E;
+
+// Datatype 1 for non-image data
+//    1 byte: [byte 0] datatype 1
+cam_csi_datatype1 = 30;
+
+// Datatype 2 not used
+//    1 byte: [byte 0] datatype 2
+cam_csi_datatype2 = 10;
+
+// Pixwidth for datatype 0
+//    1 byte: [byte 0] pix width for datatype 0
+cam_csi_datatype0_pix_wd = 08;
+
+// Pixwidth for datatype 1
+//    1 byte: [byte 0] pix width for datatype 1
+cam_csi_datatype1_pix_wd = 08;
+
+// Pixwidth for datatype 2
+//    1 byte: [byte 0] pix width for datatype 2
+cam_csi_datatype2_pix_wd = 08;
+
+// Watchdog timeout in ms
+cam_watchdog_timeout = 1F4; //500 ms
+
+// Pipe configuration
+cam_pipe_number = 1;
+
+// Snap shot Frame skip value
+cam_ss_frame_skip= 0;
+
+// Viewfinder Frame skip value
+cam_vf_frame_skip= 5;
+
+//Lens HORIZONTAL ANGLE OF VIEW  only put integer for Panorama
+cam_horizontal_angle = 4500;
+//Lens VERTICAL ANGLE OF VIEW  only put integer
+cam_vertical_angle = 5700;
+//focal length in 100s i.e if focal length is 3.33 then it is represented as 333
+cam_focal_length = 333;
+
+//=========================================================
+// Exif default settings section (for extradata only)
+//=========================================================
+exif_maker_note = MakerNote;
+exif_x_resolution = 48;  //72
+exif_y_resolution = 48;  //72
+exif_max_num_pixels_x = 0;
+exif_analog_gain = 0;
+exif_digital_gain = 0;
+
+//=========================================================
+// Supported resolutions
+//=========================================================
+sup_sizes =
+  /* VIEWFINDER CONFIGURATIONS */
+  0 [280, 1E0, BB8],    //  640x480 - VF  VGA, 30 fps
+  1 [500, 2D0, BB8],    //  1280x720 - VF  720P, 30 fps
+  2 [140, F0,  BB8],	//  320x240 - VF  QVGA, 30 fps
+  3 [500, 2D0, 1770],   //  1280x720 - VF  720P, 60 fps
+  4 [160, 120, BB8],	//  352x288 - VF CIF, 30 fps
+  5 [B0,  90,  BB8],	//  176x144 - VF QCIF, 30 fps 
+  6 [320, 1E0, BB8],	//  800x480 - VF WVGA, 30 fps
+  7 [2D0, 1E0, BB8],	//  720x480 - VF SDTV(NTSC), 30 fps
+  8 [2D0, 240, BB8],	//  720x576 - VF SDTV(PAL), 30 fps
+  9 [A20, 798, 5DC],	//  2592x1944 - VF 5MP, 15 fps
+  /* SNAPSHOT CONFIGURATIONS */
+  a [A20, 798, 0],	//  2592x1944 - SS  5M, 15 fps
+  b [500, 300, 0],	//  1280x768  - SS  1.4M, 15 fps
+  c [640, 4B0, 0],	//  1600x1200 - SS  2M, 15 fps
+  d [800, 600, 0],	//  2048x1536 - SS  3.2M, 15 fps
+  e [400, 300, 0],	//  1024x768  - SS  1M, 15 fps
+  f [280, 1E0, 0],	//  640x480   - SS  VGA, 15 fps
+  10 [140, F0, 0],	//  320x240   - SS  QVGA, 15 fps
+  /* SOME MORE VIEWFINDER CONFIGURATIONS */
+  11 [780, 438, BB8 ],  //  1920x1080 - VF 1080P, 30 fps
+  12 [500, 3C0, BB8 ],  //  1280x960 - VF SXGA, 30 fps
+ ;
+
+//=========================================================
+// Suported properties
+//=========================================================
+sup_properties =
+  0[0,2,0],    	// Exposure control.
+  1[0,7,0],     // AWB on
+  6[0,3,2],    // Focus mode (2=Auto)
+  7[0,1,0],    // Focus macro (0=Off, 1=On)
+  a[0,9,0],  	// Image Effects (0= none, others, see below)
+  c[0,4,4],    // contrast
+  e[0,4,4],    // Brightness
+  13[0,4,4],   // saturation
+  17[0,6,0],   //iso
+  19[0,5,0],   //focus range
+;
+
+//=========================================================
+// Property descriptions:
+//=========================================================
+prop_description_0 = "Exposure Control";
+prop_description_0_0 = "ExposureControlOff";
+prop_description_0_1 = "ExposureControlAuto";
+prop_description_0_2 = "ExposureControlNight";
+
+prop_description_1 = "White Balance";
+prop_description_1_1 = "WhiteBalControlAuto";
+prop_description_1_2 = "WhiteBalControlSunLight";
+prop_description_1_3 = "WhiteBalControlCloudy";
+prop_description_1_6 = "WhiteBalControlFluorescent";
+prop_description_1_7 = "WhiteBalControlIncandescent";
+
+prop_description_6 = "Focus Mode";
+prop_description_6_0 = "FocusModeOff";
+prop_description_6_1 = "FocusModeManual";
+prop_description_6_2 = "FocusModeAuto";
+prop_description_6_3 = "FocusModeAutoLock";
+
+prop_description_7 = "Focus Macro";
+prop_description_7_0 = "FocusMacroOff";
+prop_description_7_1 = "FocusMacroOn";
+
+prop_description_a = "Image Effects";
+prop_description_a_0 = "None";
+prop_description_a_1 = "mono";
+prop_description_a_2 = "Negative";
+prop_description_a_3 = "Solarize";
+prop_description_a_4 = "Sepia";
+prop_description_a_5 = "Posterize";
+prop_description_a_6 = "Whiteboard";
+prop_description_a_7 = "Blackboard";
+prop_description_a_8 = "Aqua watercolor";
+
+prop_description_c = "Contrast test";
+prop_description_c_0 = "Min contrast";
+prop_description_c_3 = "50 contrast";
+prop_description_c_6 = "Mid contrast";
+prop_description_c_9 = "150 contrast";
+prop_description_c_c = "Max contrast";
+
+prop_description_e = "Brightness test";
+prop_description_e_0 = "Min brightness";
+prop_description_e_2 = "Mid brightness";
+prop_description_e_4 = "Max brightness";
+
+prop_description_13 = "Saturation test";
+prop_description_13_0 = "Min Saturation";
+prop_description_13_2 = "Mid Saturation";
+prop_description_13_4 = "Max Saturation";
+
+prop_description_17 = "Iso";
+prop_description_17_0 = "Auto";
+prop_description_17_1 = "100";
+prop_description_17_2 = "200";
+prop_description_17_3 = "400";
+prop_description_17_4 = "800";
+prop_description_17_5 = "1600";
+
+prop_description_19 = "Focus Range";
+prop_description_19_0 = "FocusRangeAuto";
+prop_description_19_1 = "FocusRangeHyperfocal";
+prop_description_19_2 = "FocusRangeNormal";
+prop_description_19_3 = "FocusRangeSupermacro";
+prop_description_19_4 = "FocusMacro";
+prop_description_19_5 = "FocusInfinity";
+
+
+//=========================================================
+// Driver registers (for reference/housekeeping)
+//=========================================================
+// 0 - temporary and return value (GET_REG)
+// 1 - temporary and return value (GET_REG)
+// 2 - temporary and return value
+// 3 - temporary and return value
+// 4 - temporary loop register
+// 9 - camera module active state (size id)
+
+//=========================================================
+// Macro definition section
+//=========================================================
+///////////////////////////////////////////////////OMNIVISION/////////////////////////////////////////
+
+////////////////////////////
+GET_ID=
+  300A $r1 0 $f
+  300B $r1 1 $f
+;//GET_REG_OV5640_END
+
+////////////////////////////
+GET_REG=
+//  $"CAMDRIVER::GET_REG"
+  $f !0 $r2 1 0    // read 2 byte from cam reg !0 into internal 0 and 1
+;//GET_REG_OV5640_END
+
+////////////////////////////
+MODIFY_REG=
+//  $"CAMDRIVER::MODIFY_REG"
+  $f !0 $r2 1 0 $f           // Read from CamReg !0 (2 Bytes) to Internal Reg 1, 0
+  !1                         // Do !1 sequence
+  $f !0 $w1 $w0 $f           // Write to CamReg !0 (2 Bytes) from Internal Reg 1, 0
+;//MODIFY_REG_OV5640_END
+
+////////////////////////////
+PLL_CONTROL_OV5640 =
+  $">> CAMDRIVER::PLL control seq for OV5640 camera module"
+	3103 11 $f	//PLL
+	3008 82 $f
+	$d000a
+	3008 42 $f
+	$d000a
+	3103 03 $f
+	3017 00 $f
+	3018 00 $f
+	3034 18 $f
+	3035 12 $f
+	3036 3f $f
+	3037 13 $f
+	303b 19 $f
+//	303c 11 $f default value is already 11
+	303d 30 $f
+	3108 01 $f
+  $"<< CAMDRIVER::PLL control seq for OV5640 camera module"
+
+; // PLL_CONTROL_OV5640_END
+
+////////////////////////////
+MANUFACTURER_SETTING_OV5640 =
+  $">> CAMDRIVER::Manufacturer setting seq for OV5640 camera module"
+	3630 36 $f	//Manufacture settings
+	3631 0e $f
+	3632 e2 $f
+	3633 12 $f
+	3621 e0 $f
+	3704 a0 $f
+	3703 5a $f
+	3715 78 $f
+	3717 01 $f
+	370b 60 $f
+	3705 1a $f
+	3905 02 $f
+	3906 10 $f
+	3901 0a $f
+	3731 12 $f
+  $"<< CAMDRIVER::Manufacturer setting seq for OV5640 camera module"
+
+; // MANUFACTURER_SETTING_OV5640_END
+
+////////////////////////////
+VCM_CONTROL_OV5640 =
+  $">> CAMDRIVER::VCM driver control seq for OV5640 camera module"
+	3600 08 $f	//VCM Control
+	3601 33 $f
+  $"<< CAMDRIVER::VCM driver control seq for OV5640 camera module"
+
+; // VCM_CONTROL_OV5640_END
+
+////////////////////////////
+SYSTEM_CONTROL_OV5640 =
+  $">> CAMDRIVER::SYSTEM control seq for OV5640 camera module"
+  302d 60 $f
+  $"<< CAMDRIVER::SYSTEM control seq for OV5640 camera module"
+
+; // SYSTEM_CONTROL_OV5640_END
+
+////////////////////////////
+AEC_CONTROL_OV5640 =
+  $">> CAMDRIVER::Auto exposure control seq for OV5640 camera module"
+	3a13 43	$f	//AEC/AGC
+	3a18 00 $f
+	3a19 f8 $f
+  $"<< CAMDRIVER::Auto exposure control seq for OV5640 camera module"
+
+; // AEC_CONTROL_OV5640_END
+
+////////////////////////////
+HZ5060_DETECTOR_CONTROL_REGISTERS_OV5640 =
+  $">> CAMDRIVER::Detector control register seq for OV5640 camera module"
+	3c01 34	$f	// 5060 Hz detector registers
+	3c04 28 $f
+	3c05 98 $f
+	3c06 00 $f
+	3c07 08 $f
+	3c08 00 $f
+	3c09 1c $f
+	3c0a 9c $f
+	3c0b 40 $f
+  $"<< CAMDRIVER::Detector control register seq for OV5640 camera module"
+
+; // HZ5060_DETECTOR_CONTROL_REGISTERS_OV5640_END
+
+/////////////////focus init//////////////////////
+
+focus_hw1 =
+ $">>==focus hw1== "
+ 3000 20 $f
+ 8000 02 $f
+ 8001 0f $f
+ 8002 53 $f
+ 8003 02 $f
+ 8004 09 $f
+ 8005 b5 $f
+ 8006 c2 $f
+ 8007 01 $f
+ 8008 22 $f
+ 8009 22 $f
+ 800a 00 $f
+ 800b 02 $f
+ 800c 0f $f
+ 800d 3d $f
+ 800e e5 $f
+ 800f 5a $f
+ 8010 60 $f
+ 8011 03 $f
+ 8012 02 $f
+ 8013 00 $f
+ 8014 9d $f
+ 8015 f5 $f
+ 8016 59 $f
+ 8017 d2 $f
+ 8018 34 $f
+ 8019 75 $f
+ 801a 0a $f
+ 801b ff $f
+ 801c 75 $f
+ 801d 0b $f
+ 801e 0e $f
+ 801f 75 $f
+ 8020 0c $f
+ 8021 55 $f
+ 8022 75 $f
+ 8023 0d $f
+ 8024 01 $f
+ 8025 12 $f
+ 8026 0d $f
+ 8027 8d $f
+ 8028 75 $f
+ 8029 0a $f
+ 802a 03 $f
+ 802b 12 $f
+ 802c 0e $f
+ 802d cb $f
+ 802e e4 $f
+ 802f ff $f
+ 8030 ef $f
+ 8031 25 $f
+ 8032 e0 $f
+ 8033 24 $f
+ 8034 5c $f
+ 8035 f8 $f
+ 8036 e4 $f
+ 8037 f6 $f
+ 8038 08 $f
+ 8039 f6 $f
+ 803a 0f $f
+ 803b bf $f
+ 803c 34 $f
+ 803d f2 $f
+ 803e 90 $f
+ 803f 0e $f
+ 8040 89 $f
+ 8041 e4 $f
+ 8042 93 $f
+ 8043 ff $f
+ 8044 e5 $f
+ 8045 58 $f
+ 8046 c3 $f
+ 8047 9f $f
+ 8048 50 $f
+ 8049 04 $f
+ 804a 7f $f
+ 804b 05 $f
+ 804c 80 $f
+ 804d 02 $f
+ 804e 7f $f
+ 804f fb $f
+ 8050 78 $f
+ 8051 cb $f
+ 8052 a6 $f
+ 8053 07 $f
+ 8054 12 $f
+ 8055 0e $f
+ 8056 b9 $f
+ 8057 40 $f
+ 8058 04 $f
+ 8059 7f $f
+ 805a 03 $f
+ 805b 80 $f
+ 805c 02 $f
+ 805d 7f $f
+ 805e 30 $f
+ 805f 78 $f
+ 8060 ca $f
+ 8061 a6 $f
+ 8062 07 $f
+ 8063 e6 $f
+ 8064 18 $f
+ 8065 f6 $f
+ 8066 08 $f
+ 8067 e6 $f
+ 8068 78 $f
+ 8069 c7 $f
+ 806a f6 $f
+ 806b 78 $f
+ 806c ca $f
+ 806d e6 $f
+ 806e 78 $f
+ 806f c8 $f
+ 8070 f6 $f
+ 8071 78 $f
+ 8072 cd $f
+ 8073 76 $f
+ 8074 33 $f
+ 8075 e4 $f
+ 8076 08 $f
+ 8077 f6 $f
+ 8078 78 $f
+ 8079 c6 $f
+ 807a 76 $f
+ 807b 01 $f
+ 807c 75 $f
+ 807d 57 $f
+ 807e 02 $f
+ 807f 78 $f
+ 8080 c4 $f
+ 8081 f6 $f
+ 8082 08 $f
+ 8083 f6 $f
+ 8084 74 $f
+ 8085 ff $f
+ 8086 78 $f
+ 8087 cf $f
+ 8088 f6 $f
+ 8089 08 $f
+ 808a f6 $f
+ 808b 75 $f
+ 808c 5a $f
+ 808d 01 $f
+ 808e 78 $f
+ 808f ca $f
+ 8090 e6 $f
+ 8091 75 $f
+ 8092 f0 $f
+ 8093 05 $f
+ 8094 a4 $f
+ 8095 f5 $f
+ 8096 58 $f
+ 8097 12 $f
+ 8098 0a $f
+ 8099 90 $f
+ 809a c2 $f
+ 809b 36 $f
+ 809c 22 $f
+ 809d 78 $f
+ 809e c6 $f
+ 809f e6 $f
+ 80a0 d3 $f
+ 80a1 94 $f
+ 80a2 00 $f
+ 80a3 40 $f
+ 80a4 02 $f
+ 80a5 16 $f
+ 80a6 22 $f
+ 80a7 e5 $f
+ 80a8 5a $f
+ 80a9 b4 $f
+ 80aa 05 $f
+ 80ab 1f $f
+ 80ac e4 $f
+ 80ad f5 $f
+ 80ae 5a $f
+ 80af c2 $f
+ 80b0 01 $f
+ 80b1 78 $f
+ 80b2 c7 $f
+ 80b3 e6 $f
+ 80b4 25 $f
+ 80b5 e0 $f
+ 80b6 24 $f
+ 80b7 5c $f
+ 80b8 f8 $f
+ 80b9 e6 $f
+ 80ba fe $f
+ 80bb 08 $f
+ 80bc e6 $f
+ 80bd ff $f
+ 80be 78 $f
+ 80bf 5c $f
+ 80c0 a6 $f
+ 80c1 06 $f
+ 80c2 08 $f
+ 80c3 a6 $f
+ 80c4 07 $f
+ 80c5 75 $f
+ 80c6 59 $f
+ 80c7 10 $f
+ 80c8 d2 $f
+ 80c9 34 $f
+ 80ca 22 $f
+ 80cb e5 $f
+ 80cc 58 $f
+ 80cd 75 $f
+ 80ce f0 $f
+ 80cf 05 $f
+ 80d0 84 $f
+ 80d1 78 $f
+ 80d2 ca $f
+ 80d3 f6 $f
+ 80d4 90 $f
+ 80d5 0e $f
+ 80d6 85 $f
+ 80d7 e4 $f
+ 80d8 93 $f
+ 80d9 ff $f
+ 80da 25 $f
+ 80db e0 $f
+ 80dc 24 $f
+ 80dd 3a $f
+ 80de f8 $f
+ 80df e6 $f
+ 80e0 fc $f
+ 80e1 08 $f
+ 80e2 e6 $f
+ 80e3 fd $f
+ 80e4 78 $f
+ 80e5 ca $f
+ 80e6 e6 $f
+ 80e7 25 $f
+ 80e8 e0 $f
+ 80e9 24 $f
+ 80ea 5c $f
+ 80eb f8 $f
+ 80ec a6 $f
+ 80ed 04 $f
+ 80ee 08 $f
+ 80ef a6 $f
+ 80f0 05 $f
+ 80f1 ef $f
+ 80f2 12 $f
+ 80f3 0e $f
+ 80f4 c0 $f
+ 80f5 d3 $f
+ 80f6 78 $f
+ 80f7 c5 $f
+ 80f8 96 $f
+ 80f9 ee $f
+ 80fa 18 $f
+ 80fb 96 $f
+ 80fc 40 $f
+ 80fd 0d $f
+ 80fe 78 $f
+ 80ff ca $f
+ 8100 e6 $f
+ 8101 78 $f
+ 8102 c7 $f
+ 8103 f6 $f
+ 8104 78 $f
+ 8105 c4 $f
+ 8106 a6 $f
+ 8107 06 $f
+ 8108 08 $f
+ 8109 a6 $f
+ 810a 07 $f
+ 810b 90 $f
+ 810c 0e $f
+ 810d 85 $f
+ 810e e4 $f
+ 810f 93 $f
+ 8110 12 $f
+ 8111 0e $f
+ 8112 c0 $f
+ 8113 c3 $f
+ 8114 78 $f
+ 8115 d0 $f
+ 8116 96 $f
+ 8117 ee $f
+ 8118 18 $f
+ 8119 96 $f
+ 811a 50 $f
+ 811b 0d $f
+ 811c 78 $f
+ 811d ca $f
+ 811e e6 $f
+ 811f 78 $f
+ 8120 c8 $f
+ 8121 f6 $f
+ 8122 78 $f
+ 8123 cf $f
+ 8124 a6 $f
+ 8125 06 $f
+ 8126 08 $f
+ 8127 a6 $f
+ 8128 07 $f
+ 8129 78 $f
+ 812a c4 $f
+ 812b e6 $f
+ 812c fe $f
+ 812d 08 $f
+ 812e e6 $f
+ 812f c3 $f
+ 8130 78 $f
+ 8131 d0 $f
+ 8132 96 $f
+ 8133 ff $f
+ 8134 ee $f
+ 8135 18 $f
+ 8136 96 $f
+ 8137 78 $f
+ 8138 d1 $f
+ 8139 f6 $f
+ 813a 08 $f
+ 813b a6 $f
+ 813c 07 $f
+ 813d 90 $f
+ 813e 0e $f
+ 813f 8b $f
+ 8140 e4 $f
+ 8141 18 $f
+ 8142 12 $f
+ 8143 0e $f
+ 8144 9e $f
+ 8145 40 $f
+ 8146 02 $f
+ 8147 d2 $f
+ 8148 36 $f
+ 8149 78 $f
+ 814a ca $f
+ 814b e6 $f
+ 814c 08 $f
+ 814d 26 $f
+ 814e 08 $f
+ 814f f6 $f
+ 8150 e5 $f
+ 8151 5a $f
+ 8152 64 $f
+ 8153 01 $f
+ 8154 70 $f
+ 8155 55 $f
+ 8156 e6 $f
+ 8157 c3 $f
+ 8158 78 $f
+ 8159 ce $f
+ 815a 12 $f
+ 815b 0e $f
+ 815c 94 $f
+ 815d 40 $f
+ 815e 10 $f
+ 815f 12 $f
+ 8160 0e $f
+ 8161 8f $f
+ 8162 50 $f
+ 8163 0b $f
+ 8164 30 $f
+ 8165 36 $f
+ 8166 41 $f
+ 8167 78 $f
+ 8168 ca $f
+ 8169 e6 $f
+ 816a 78 $f
+ 816b c7 $f
+ 816c 66 $f
+ 816d 60 $f
+ 816e 39 $f
+ 816f 12 $f
+ 8170 0e $f
+ 8171 b7 $f
+ 8172 40 $f
+ 8173 04 $f
+ 8174 7f $f
+ 8175 fe $f
+ 8176 80 $f
+ 8177 02 $f
+ 8178 7f $f
+ 8179 02 $f
+ 817a 78 $f
+ 817b cb $f
+ 817c a6 $f
+ 817d 07 $f
+ 817e 78 $f
+ 817f c7 $f
+ 8180 e6 $f
+ 8181 24 $f
+ 8182 03 $f
+ 8183 78 $f
+ 8184 cd $f
+ 8185 f6 $f
+ 8186 78 $f
+ 8187 c7 $f
+ 8188 e6 $f
+ 8189 24 $f
+ 818a fd $f
+ 818b 78 $f
+ 818c ce $f
+ 818d f6 $f
+ 818e 12 $f
+ $"<<==focus hw1== "
+;
+
+focus_hw2 =
+ $">>==focus hw2== "
+ 818f 0e $f
+ 8190 b7 $f
+ 8191 40 $f
+ 8192 06 $f
+ 8193 78 $f
+ 8194 ce $f
+ 8195 e6 $f
+ 8196 ff $f
+ 8197 80 $f
+ 8198 04 $f
+ 8199 78 $f
+ 819a cd $f
+ 819b e6 $f
+ 819c ff $f
+ 819d 78 $f
+ 819e cc $f
+ 819f a6 $f
+ 81a0 07 $f
+ 81a1 75 $f
+ 81a2 5a $f
+ 81a3 02 $f
+ 81a4 78 $f
+ 81a5 c6 $f
+ 81a6 76 $f
+ 81a7 01 $f
+ 81a8 02 $f
+ 81a9 02 $f
+ 81aa 6a $f
+ 81ab e5 $f
+ 81ac 5a $f
+ 81ad 64 $f
+ 81ae 02 $f
+ 81af 60 $f
+ 81b0 03 $f
+ 81b1 02 $f
+ 81b2 02 $f
+ 81b3 4a $f
+ 81b4 78 $f
+ 81b5 cc $f
+ 81b6 e6 $f
+ 81b7 ff $f
+ 81b8 c3 $f
+ 81b9 78 $f
+ 81ba ce $f
+ 81bb 12 $f
+ 81bc 0e $f
+ 81bd 95 $f
+ 81be 40 $f
+ 81bf 08 $f
+ 81c0 12 $f
+ 81c1 0e $f
+ 81c2 8f $f
+ 81c3 50 $f
+ 81c4 03 $f
+ 81c5 02 $f
+ 81c6 02 $f
+ 81c7 48 $f
+ 81c8 12 $f
+ 81c9 0e $f
+ 81ca b7 $f
+ 81cb 40 $f
+ 81cc 04 $f
+ 81cd 7f $f
+ 81ce ff $f
+ 81cf 80 $f
+ 81d0 02 $f
+ 81d1 7f $f
+ 81d2 01 $f
+ 81d3 78 $f
+ 81d4 cb $f
+ 81d5 a6 $f
+ 81d6 07 $f
+ 81d7 78 $f
+ 81d8 c7 $f
+ 81d9 e6 $f
+ 81da 04 $f
+ 81db 78 $f
+ 81dc cd $f
+ 81dd f6 $f
+ 81de 78 $f
+ 81df c7 $f
+ 81e0 e6 $f
+ 81e1 14 $f
+ 81e2 78 $f
+ 81e3 ce $f
+ 81e4 f6 $f
+ 81e5 18 $f
+ 81e6 12 $f
+ 81e7 0e $f
+ 81e8 b9 $f
+ 81e9 40 $f
+ 81ea 04 $f
+ 81eb e6 $f
+ 81ec ff $f
+ 81ed 80 $f
+ 81ee 02 $f
+ 81ef 7f $f
+ 81f0 00 $f
+ 81f1 78 $f
+ 81f2 cd $f
+ 81f3 a6 $f
+ 81f4 07 $f
+ 81f5 d3 $f
+ 81f6 08 $f
+ 81f7 e6 $f
+ 81f8 64 $f
+ 81f9 80 $f
+ 81fa 94 $f
+ 81fb 80 $f
+ 81fc 40 $f
+ 81fd 04 $f
+ 81fe e6 $f
+ 81ff ff $f
+ 8200 80 $f
+ 8201 02 $f
+ 8202 7f $f
+ 8203 00 $f
+ 8204 78 $f
+ 8205 ce $f
+ 8206 a6 $f
+ 8207 07 $f
+ 8208 c3 $f
+ 8209 18 $f
+ 820a e6 $f
+ 820b 64 $f
+ 820c 80 $f
+ 820d 94 $f
+ 820e b3 $f
+ 820f 50 $f
+ 8210 04 $f
+ 8211 e6 $f
+ 8212 ff $f
+ 8213 80 $f
+ 8214 02 $f
+ 8215 7f $f
+ 8216 33 $f
+ 8217 78 $f
+ 8218 cd $f
+ 8219 a6 $f
+ 821a 07 $f
+ 821b c3 $f
+ 821c 08 $f
+ 821d e6 $f
+ 821e 64 $f
+ 821f 80 $f
+ 8220 94 $f
+ 8221 b3 $f
+ 8222 50 $f
+ 8223 04 $f
+ 8224 e6 $f
+ 8225 ff $f
+ 8226 80 $f
+ 8227 02 $f
+ 8228 7f $f
+ 8229 33 $f
+ 822a 78 $f
+ 822b ce $f
+ 822c a6 $f
+ 822d 07 $f
+ 822e 12 $f
+ 822f 0e $f
+ 8230 b7 $f
+ 8231 40 $f
+ 8232 06 $f
+ 8233 78 $f
+ 8234 ce $f
+ 8235 e6 $f
+ 8236 ff $f
+ 8237 80 $f
+ 8238 04 $f
+ 8239 78 $f
+ 823a cd $f
+ 823b e6 $f
+ 823c ff $f
+ 823d 78 $f
+ 823e cc $f
+ 823f a6 $f
+ 8240 07 $f
+ 8241 75 $f
+ 8242 5a $f
+ 8243 03 $f
+ 8244 78 $f
+ 8245 c6 $f
+ 8246 76 $f
+ 8247 01 $f
+ 8248 80 $f
+ 8249 20 $f
+ 824a e5 $f
+ 824b 5a $f
+ 824c 64 $f
+ 824d 03 $f
+ 824e 70 $f
+ 824f 26 $f
+ 8250 78 $f
+ 8251 cc $f
+ 8252 e6 $f
+ 8253 ff $f
+ 8254 c3 $f
+ 8255 78 $f
+ 8256 ce $f
+ 8257 12 $f
+ 8258 0e $f
+ 8259 95 $f
+ 825a 40 $f
+ 825b 05 $f
+ 825c 12 $f
+ 825d 0e $f
+ 825e 8f $f
+ 825f 40 $f
+ 8260 09 $f
+ 8261 78 $f
+ 8262 c7 $f
+ 8263 e6 $f
+ 8264 78 $f
+ 8265 cc $f
+ 8266 f6 $f
+ 8267 75 $f
+ 8268 5a $f
+ 8269 04 $f
+ 826a 78 $f
+ 826b cc $f
+ 826c e6 $f
+ 826d 75 $f
+ 826e f0 $f
+ 826f 05 $f
+ 8270 a4 $f
+ 8271 f5 $f
+ 8272 58 $f
+ 8273 02 $f
+ 8274 0a $f
+ 8275 90 $f
+ 8276 e5 $f
+ 8277 5a $f
+ 8278 64 $f
+ 8279 04 $f
+ 827a 70 $f
+ 827b 2c $f
+ 827c 90 $f
+ 827d 0e $f
+ 827e 8a $f
+ 827f 78 $f
+ 8280 d1 $f
+ 8281 12 $f
+ 8282 0e $f
+ 8283 9e $f
+ 8284 40 $f
+ 8285 02 $f
+ 8286 d2 $f
+ 8287 36 $f
+ 8288 30 $f
+ 8289 36 $f
+ 828a 05 $f
+ 828b 75 $f
+ 828c 0a $f
+ 828d 02 $f
+ 828e 80 $f
+ 828f 03 $f
+ 8290 75 $f
+ 8291 0a $f
+ 8292 01 $f
+ 8293 12 $f
+ 8294 0e $f
+ 8295 cb $f
+ 8296 75 $f
+ 8297 5a $f
+ 8298 05 $f
+ 8299 75 $f
+ 829a 0a $f
+ 829b ff $f
+ 829c 75 $f
+ 829d 0b $f
+ 829e 0e $f
+ 829f 75 $f
+ 82a0 0c $f
+ 82a1 59 $f
+ 82a2 75 $f
+ 82a3 0d $f
+ 82a4 01 $f
+ 82a5 12 $f
+ 82a6 0d $f
+ 82a7 8d $f
+ 82a8 22 $f
+ 82a9 ef $f
+ 82aa 8d $f
+ 82ab f0 $f
+ 82ac a4 $f
+ 82ad a8 $f
+ 82ae f0 $f
+ 82af cf $f
+ 82b0 8c $f
+ 82b1 f0 $f
+ 82b2 a4 $f
+ 82b3 28 $f
+ 82b4 ce $f
+ 82b5 8d $f
+ 82b6 f0 $f
+ 82b7 a4 $f
+ 82b8 2e $f
+ 82b9 fe $f
+ 82ba 22 $f
+ 82bb bc $f
+ 82bc 00 $f
+ 82bd 0b $f
+ 82be be $f
+ 82bf 00 $f
+ 82c0 29 $f
+ 82c1 ef $f
+ 82c2 8d $f
+ 82c3 f0 $f
+ 82c4 84 $f
+ 82c5 ff $f
+ 82c6 ad $f
+ 82c7 f0 $f
+ 82c8 22 $f
+ 82c9 e4 $f
+ 82ca cc $f
+ 82cb f8 $f
+ 82cc 75 $f
+ 82cd f0 $f
+ 82ce 08 $f
+ 82cf ef $f
+ 82d0 2f $f
+ 82d1 ff $f
+ 82d2 ee $f
+ 82d3 33 $f
+ 82d4 fe $f
+ 82d5 ec $f
+ 82d6 33 $f
+ 82d7 fc $f
+ 82d8 ee $f
+ 82d9 9d $f
+ 82da ec $f
+ 82db 98 $f
+ 82dc 40 $f
+ 82dd 05 $f
+ 82de fc $f
+ 82df ee $f
+ 82e0 9d $f
+ 82e1 fe $f
+ 82e2 0f $f
+ 82e3 d5 $f
+ 82e4 f0 $f
+ 82e5 e9 $f
+ 82e6 e4 $f
+ 82e7 ce $f
+ 82e8 fd $f
+ 82e9 22 $f
+ 82ea ed $f
+ 82eb f8 $f
+ 82ec f5 $f
+ 82ed f0 $f
+ 82ee ee $f
+ 82ef 84 $f
+ 82f0 20 $f
+ 82f1 d2 $f
+ 82f2 1c $f
+ 82f3 fe $f
+ 82f4 ad $f
+ 82f5 f0 $f
+ 82f6 75 $f
+ 82f7 f0 $f
+ 82f8 08 $f
+ 82f9 ef $f
+ 82fa 2f $f
+ 82fb ff $f
+ 82fc ed $f
+ 82fd 33 $f
+ 82fe fd $f
+ 82ff 40 $f
+ 8300 07 $f
+ 8301 98 $f
+ 8302 50 $f
+ 8303 06 $f
+ 8304 d5 $f
+ 8305 f0 $f
+ 8306 f2 $f
+ 8307 22 $f
+ 8308 c3 $f
+ 8309 98 $f
+ 830a fd $f
+ 830b 0f $f
+ 830c d5 $f
+ 830d f0 $f
+ 830e ea $f
+ 830f 22 $f
+ 8310 c2 $f
+ 8311 d5 $f
+ 8312 ec $f
+ 8313 30 $f
+ 8314 e7 $f
+ 8315 09 $f
+ 8316 b2 $f
+ 8317 d5 $f
+ 8318 e4 $f
+ 8319 c3 $f
+ 831a 9d $f
+ 831b fd $f
+ 831c e4 $f
+ 831d 9c $f
+ 831e fc $f
+ $"<<==focus hw2== "
+;
+focus_hw3 =
+ $">>==focus hw3== "
+ 831f ee $f
+ 8320 30 $f
+ 8321 e7 $f
+ 8322 15 $f
+ 8323 b2 $f
+ 8324 d5 $f
+ 8325 e4 $f
+ 8326 c3 $f
+ 8327 9f $f
+ 8328 ff $f
+ 8329 e4 $f
+ 832a 9e $f
+ 832b fe $f
+ 832c 12 $f
+ 832d 02 $f
+ 832e bb $f
+ 832f c3 $f
+ 8330 e4 $f
+ 8331 9d $f
+ 8332 fd $f
+ 8333 e4 $f
+ 8334 9c $f
+ 8335 fc $f
+ 8336 80 $f
+ 8337 03 $f
+ 8338 12 $f
+ 8339 02 $f
+ 833a bb $f
+ 833b 30 $f
+ 833c d5 $f
+ 833d 07 $f
+ 833e c3 $f
+ 833f e4 $f
+ 8340 9f $f
+ 8341 ff $f
+ 8342 e4 $f
+ 8343 9e $f
+ 8344 fe $f
+ 8345 22 $f
+ 8346 e8 $f
+ 8347 8f $f
+ 8348 f0 $f
+ 8349 a4 $f
+ 834a cc $f
+ 834b 8b $f
+ 834c f0 $f
+ 834d a4 $f
+ 834e 2c $f
+ 834f fc $f
+ 8350 e9 $f
+ 8351 8e $f
+ 8352 f0 $f
+ 8353 a4 $f
+ 8354 2c $f
+ 8355 fc $f
+ 8356 8a $f
+ 8357 f0 $f
+ 8358 ed $f
+ 8359 a4 $f
+ 835a 2c $f
+ 835b fc $f
+ 835c ea $f
+ 835d 8e $f
+ 835e f0 $f
+ 835f a4 $f
+ 8360 cd $f
+ 8361 a8 $f
+ 8362 f0 $f
+ 8363 8b $f
+ 8364 f0 $f
+ 8365 a4 $f
+ 8366 2d $f
+ 8367 cc $f
+ 8368 38 $f
+ 8369 25 $f
+ 836a f0 $f
+ 836b fd $f
+ 836c e9 $f
+ 836d 8f $f
+ 836e f0 $f
+ 836f a4 $f
+ 8370 2c $f
+ 8371 cd $f
+ 8372 35 $f
+ 8373 f0 $f
+ 8374 fc $f
+ 8375 eb $f
+ 8376 8e $f
+ 8377 f0 $f
+ 8378 a4 $f
+ 8379 fe $f
+ 837a a9 $f
+ 837b f0 $f
+ 837c eb $f
+ 837d 8f $f
+ 837e f0 $f
+ 837f a4 $f
+ 8380 cf $f
+ 8381 c5 $f
+ 8382 f0 $f
+ 8383 2e $f
+ 8384 cd $f
+ 8385 39 $f
+ 8386 fe $f
+ 8387 e4 $f
+ 8388 3c $f
+ 8389 fc $f
+ 838a ea $f
+ 838b a4 $f
+ 838c 2d $f
+ 838d ce $f
+ 838e 35 $f
+ 838f f0 $f
+ 8390 fd $f
+ 8391 e4 $f
+ 8392 3c $f
+ 8393 fc $f
+ 8394 22 $f
+ 8395 75 $f
+ 8396 f0 $f
+ 8397 08 $f
+ 8398 75 $f
+ 8399 82 $f
+ 839a 00 $f
+ 839b ef $f
+ 839c 2f $f
+ 839d ff $f
+ 839e ee $f
+ 839f 33 $f
+ 83a0 fe $f
+ 83a1 cd $f
+ 83a2 33 $f
+ 83a3 cd $f
+ 83a4 cc $f
+ 83a5 33 $f
+ 83a6 cc $f
+ 83a7 c5 $f
+ 83a8 82 $f
+ 83a9 33 $f
+ 83aa c5 $f
+ 83ab 82 $f
+ 83ac 9b $f
+ 83ad ed $f
+ 83ae 9a $f
+ 83af ec $f
+ 83b0 99 $f
+ 83b1 e5 $f
+ 83b2 82 $f
+ 83b3 98 $f
+ 83b4 40 $f
+ 83b5 0c $f
+ 83b6 f5 $f
+ 83b7 82 $f
+ 83b8 ee $f
+ 83b9 9b $f
+ 83ba fe $f
+ 83bb ed $f
+ 83bc 9a $f
+ 83bd fd $f
+ 83be ec $f
+ 83bf 99 $f
+ 83c0 fc $f
+ 83c1 0f $f
+ 83c2 d5 $f
+ 83c3 f0 $f
+ 83c4 d6 $f
+ 83c5 e4 $f
+ 83c6 ce $f
+ 83c7 fb $f
+ 83c8 e4 $f
+ 83c9 cd $f
+ 83ca fa $f
+ 83cb e4 $f
+ 83cc cc $f
+ 83cd f9 $f
+ 83ce a8 $f
+ 83cf 82 $f
+ 83d0 22 $f
+ 83d1 b8 $f
+ 83d2 00 $f
+ 83d3 c1 $f
+ 83d4 b9 $f
+ 83d5 00 $f
+ 83d6 59 $f
+ 83d7 ba $f
+ 83d8 00 $f
+ 83d9 2d $f
+ 83da ec $f
+ 83db 8b $f
+ 83dc f0 $f
+ 83dd 84 $f
+ 83de cf $f
+ 83df ce $f
+ 83e0 cd $f
+ 83e1 fc $f
+ 83e2 e5 $f
+ 83e3 f0 $f
+ 83e4 cb $f
+ 83e5 f9 $f
+ 83e6 78 $f
+ 83e7 18 $f
+ 83e8 ef $f
+ 83e9 2f $f
+ 83ea ff $f
+ 83eb ee $f
+ 83ec 33 $f
+ 83ed fe $f
+ 83ee ed $f
+ 83ef 33 $f
+ 83f0 fd $f
+ 83f1 ec $f
+ 83f2 33 $f
+ 83f3 fc $f
+ 83f4 eb $f
+ 83f5 33 $f
+ 83f6 fb $f
+ 83f7 10 $f
+ 83f8 d7 $f
+ 83f9 03 $f
+ 83fa 99 $f
+ 83fb 40 $f
+ 83fc 04 $f
+ 83fd eb $f
+ 83fe 99 $f
+ 83ff fb $f
+ 8400 0f $f
+ 8401 d8 $f
+ 8402 e5 $f
+ 8403 e4 $f
+ 8404 f9 $f
+ 8405 fa $f
+ 8406 22 $f
+ 8407 78 $f
+ 8408 18 $f
+ 8409 ef $f
+ 840a 2f $f
+ 840b ff $f
+ 840c ee $f
+ 840d 33 $f
+ 840e fe $f
+ 840f ed $f
+ 8410 33 $f
+ 8411 fd $f
+ 8412 ec $f
+ 8413 33 $f
+ 8414 fc $f
+ 8415 c9 $f
+ 8416 33 $f
+ 8417 c9 $f
+ 8418 10 $f
+ 8419 d7 $f
+ 841a 05 $f
+ 841b 9b $f
+ 841c e9 $f
+ 841d 9a $f
+ 841e 40 $f
+ 841f 07 $f
+ 8420 ec $f
+ 8421 9b $f
+ 8422 fc $f
+ 8423 e9 $f
+ 8424 9a $f
+ 8425 f9 $f
+ 8426 0f $f
+ 8427 d8 $f
+ 8428 e0 $f
+ 8429 e4 $f
+ 842a c9 $f
+ 842b fa $f
+ 842c e4 $f
+ 842d cc $f
+ 842e fb $f
+ 842f 22 $f
+ 8430 75 $f
+ 8431 f0 $f
+ 8432 10 $f
+ 8433 ef $f
+ 8434 2f $f
+ 8435 ff $f
+ 8436 ee $f
+ 8437 33 $f
+ 8438 fe $f
+ 8439 ed $f
+ 843a 33 $f
+ 843b fd $f
+ 843c cc $f
+ 843d 33 $f
+ 843e cc $f
+ 843f c8 $f
+ 8440 33 $f
+ 8441 c8 $f
+ 8442 10 $f
+ 8443 d7 $f
+ 8444 07 $f
+ 8445 9b $f
+ 8446 ec $f
+ 8447 9a $f
+ 8448 e8 $f
+ 8449 99 $f
+ 844a 40 $f
+ 844b 0a $f
+ 844c ed $f
+ 844d 9b $f
+ 844e fd $f
+ 844f ec $f
+ 8450 9a $f
+ 8451 fc $f
+ 8452 e8 $f
+ 8453 99 $f
+ 8454 f8 $f
+ 8455 0f $f
+ 8456 d5 $f
+ 8457 f0 $f
+ 8458 da $f
+ 8459 e4 $f
+ 845a cd $f
+ 845b fb $f
+ 845c e4 $f
+ 845d cc $f
+ 845e fa $f
+ 845f e4 $f
+ 8460 c8 $f
+ 8461 f9 $f
+ 8462 22 $f
+ 8463 eb $f
+ 8464 9f $f
+ 8465 f5 $f
+ 8466 f0 $f
+ 8467 ea $f
+ 8468 9e $f
+ 8469 42 $f
+ 846a f0 $f
+ 846b e9 $f
+ 846c 9d $f
+ 846d 42 $f
+ 846e f0 $f
+ 846f e8 $f
+ 8470 9c $f
+ 8471 45 $f
+ 8472 f0 $f
+ 8473 22 $f
+ 8474 e8 $f
+ 8475 60 $f
+ 8476 0f $f
+ 8477 ef $f
+ 8478 c3 $f
+ 8479 33 $f
+ 847a ff $f
+ 847b ee $f
+ 847c 33 $f
+ 847d fe $f
+ 847e ed $f
+ 847f 33 $f
+ 8480 fd $f
+ 8481 ec $f
+ 8482 33 $f
+ 8483 fc $f
+ 8484 d8 $f
+ 8485 f1 $f
+ 8486 22 $f
+ 8487 e4 $f
+ 8488 93 $f
+ 8489 fc $f
+ 848a 74 $f
+ 848b 01 $f
+ 848c 93 $f
+ 848d fd $f
+ 848e 74 $f
+ 848f 02 $f
+ 8490 93 $f
+ 8491 fe $f
+ 8492 74 $f
+ 8493 03 $f
+ 8494 93 $f
+ 8495 ff $f
+ 8496 22 $f
+ 8497 e6 $f
+ 8498 fb $f
+ 8499 08 $f
+ 849a e6 $f
+ 849b f9 $f
+ 849c 08 $f
+ 849d e6 $f
+ 849e fa $f
+ 849f 08 $f
+ 84a0 e6 $f
+ 84a1 cb $f
+ 84a2 f8 $f
+ 84a3 22 $f
+ 84a4 ec $f
+ 84a5 f6 $f
+ 84a6 08 $f
+ 84a7 ed $f
+ 84a8 f6 $f
+ 84a9 08 $f
+ 84aa ee $f
+ 84ab f6 $f
+ 84ac 08 $f
+ 84ad ef $f
+ 84ae f6 $f
+ $"<<==focus hw3== "
+;
+focus_hw4 =
+ $">>==focus hw4== "
+ 84af 22 $f
+ 84b0 d0 $f
+ 84b1 83 $f
+ 84b2 d0 $f
+ 84b3 82 $f
+ 84b4 e4 $f
+ 84b5 93 $f
+ 84b6 f6 $f
+ 84b7 08 $f
+ 84b8 74 $f
+ 84b9 01 $f
+ 84ba 93 $f
+ 84bb f6 $f
+ 84bc 08 $f
+ 84bd 74 $f
+ 84be 02 $f
+ 84bf 93 $f
+ 84c0 f6 $f
+ 84c1 08 $f
+ 84c2 74 $f
+ 84c3 03 $f
+ 84c4 93 $f
+ 84c5 f6 $f
+ 84c6 74 $f
+ 84c7 04 $f
+ 84c8 73 $f
+ 84c9 a4 $f
+ 84ca 25 $f
+ 84cb 82 $f
+ 84cc f5 $f
+ 84cd 82 $f
+ 84ce e5 $f
+ 84cf f0 $f
+ 84d0 35 $f
+ 84d1 83 $f
+ 84d2 f5 $f
+ 84d3 83 $f
+ 84d4 22 $f
+ 84d5 d0 $f
+ 84d6 83 $f
+ 84d7 d0 $f
+ 84d8 82 $f
+ 84d9 f8 $f
+ 84da e4 $f
+ 84db 93 $f
+ 84dc 70 $f
+ 84dd 12 $f
+ 84de 74 $f
+ 84df 01 $f
+ 84e0 93 $f
+ 84e1 70 $f
+ 84e2 0d $f
+ 84e3 a3 $f
+ 84e4 a3 $f
+ 84e5 93 $f
+ 84e6 f8 $f
+ 84e7 74 $f
+ 84e8 01 $f
+ 84e9 93 $f
+ 84ea f5 $f
+ 84eb 82 $f
+ 84ec 88 $f
+ 84ed 83 $f
+ 84ee e4 $f
+ 84ef 73 $f
+ 84f0 74 $f
+ 84f1 02 $f
+ 84f2 93 $f
+ 84f3 68 $f
+ 84f4 60 $f
+ 84f5 ef $f
+ 84f6 a3 $f
+ 84f7 a3 $f
+ 84f8 a3 $f
+ 84f9 80 $f
+ 84fa df $f
+ 84fb 85 $f
+ 84fc 1f $f
+ 84fd 0d $f
+ 84fe 85 $f
+ 84ff 1e $f
+ 8500 0c $f
+ 8501 85 $f
+ 8502 1d $f
+ 8503 0b $f
+ 8504 85 $f
+ 8505 1c $f
+ 8506 0a $f
+ 8507 90 $f
+ 8508 38 $f
+ 8509 08 $f
+ 850a e0 $f
+ 850b fe $f
+ 850c a3 $f
+ 850d e0 $f
+ 850e fd $f
+ 850f ee $f
+ 8510 f5 $f
+ 8511 12 $f
+ 8512 ed $f
+ 8513 f5 $f
+ 8514 13 $f
+ 8515 a3 $f
+ 8516 e0 $f
+ 8517 fe $f
+ 8518 a3 $f
+ 8519 e0 $f
+ 851a fd $f
+ 851b ee $f
+ 851c f5 $f
+ 851d 14 $f
+ 851e ed $f
+ 851f f5 $f
+ 8520 15 $f
+ 8521 12 $f
+ 8522 0d $f
+ 8523 1c $f
+ 8524 af $f
+ 8525 0a $f
+ 8526 12 $f
+ 8527 0c $f
+ 8528 e6 $f
+ 8529 c0 $f
+ 852a 07 $f
+ 852b 12 $f
+ 852c 0d $f
+ 852d 11 $f
+ 852e d0 $f
+ 852f 07 $f
+ 8530 12 $f
+ 8531 03 $f
+ 8532 d1 $f
+ 8533 12 $f
+ 8534 0c $f
+ 8535 f4 $f
+ 8536 8e $f
+ 8537 16 $f
+ 8538 8f $f
+ 8539 17 $f
+ 853a 12 $f
+ 853b 0d $f
+ 853c 1c $f
+ 853d af $f
+ 853e 0c $f
+ 853f 12 $f
+ 8540 0c $f
+ 8541 e6 $f
+ 8542 c0 $f
+ 8543 07 $f
+ 8544 12 $f
+ 8545 0d $f
+ 8546 11 $f
+ 8547 d0 $f
+ 8548 07 $f
+ 8549 12 $f
+ 854a 03 $f
+ 854b d1 $f
+ 854c 12 $f
+ 854d 0c $f
+ 854e f4 $f
+ 854f 8e $f
+ 8550 18 $f
+ 8551 8f $f
+ 8552 19 $f
+ 8553 ae $f
+ 8554 18 $f
+ 8555 af $f
+ 8556 19 $f
+ 8557 12 $f
+ 8558 0d $f
+ 8559 28 $f
+ 855a 8e $f
+ 855b 18 $f
+ 855c 8f $f
+ 855d 19 $f
+ 855e 12 $f
+ 855f 0c $f
+ 8560 fd $f
+ 8561 af $f
+ 8562 0b $f
+ 8563 12 $f
+ 8564 0c $f
+ 8565 ee $f
+ 8566 c0 $f
+ 8567 07 $f
+ 8568 90 $f
+ 8569 0e $f
+ 856a 80 $f
+ 856b 12 $f
+ 856c 0d $f
+ 856d 14 $f
+ 856e d0 $f
+ 856f 07 $f
+ 8570 12 $f
+ 8571 03 $f
+ 8572 d1 $f
+ 8573 12 $f
+ 8574 0c $f
+ 8575 f4 $f
+ 8576 8e $f
+ 8577 1a $f
+ 8578 8f $f
+ 8579 1b $f
+ 857a 12 $f
+ 857b 0c $f
+ 857c fd $f
+ 857d af $f
+ 857e 0d $f
+ 857f 12 $f
+ 8580 0c $f
+ 8581 ee $f
+ 8582 c0 $f
+ 8583 07 $f
+ 8584 90 $f
+ 8585 0e $f
+ 8586 80 $f
+ 8587 12 $f
+ 8588 0d $f
+ 8589 14 $f
+ 858a d0 $f
+ 858b 07 $f
+ 858c 12 $f
+ 858d 03 $f
+ 858e d1 $f
+ 858f 12 $f
+ 8590 0c $f
+ 8591 f4 $f
+ 8592 12 $f
+ 8593 0d $f
+ 8594 28 $f
+ 8595 aa $f
+ 8596 06 $f
+ 8597 ab $f
+ 8598 07 $f
+ 8599 e5 $f
+ 859a 17 $f
+ 859b 25 $f
+ 859c 19 $f
+ 859d ff $f
+ 859e e5 $f
+ 859f 16 $f
+ 85a0 35 $f
+ 85a1 18 $f
+ 85a2 fe $f
+ 85a3 d3 $f
+ 85a4 e5 $f
+ 85a5 17 $f
+ 85a6 95 $f
+ 85a7 19 $f
+ 85a8 e5 $f
+ 85a9 18 $f
+ 85aa 64 $f
+ 85ab 80 $f
+ 85ac f8 $f
+ 85ad e5 $f
+ 85ae 16 $f
+ 85af 64 $f
+ 85b0 80 $f
+ 85b1 98 $f
+ 85b2 40 $f
+ 85b3 0c $f
+ 85b4 e5 $f
+ 85b5 17 $f
+ 85b6 95 $f
+ 85b7 19 $f
+ 85b8 fd $f
+ 85b9 e5 $f
+ 85ba 16 $f
+ 85bb 95 $f
+ 85bc 18 $f
+ 85bd fc $f
+ 85be 80 $f
+ 85bf 04 $f
+ 85c0 7c $f
+ 85c1 00 $f
+ 85c2 7d $f
+ 85c3 02 $f
+ 85c4 8c $f
+ 85c5 16 $f
+ 85c6 8d $f
+ 85c7 17 $f
+ 85c8 c3 $f
+ 85c9 ef $f
+ 85ca 95 $f
+ 85cb 13 $f
+ 85cc ee $f
+ 85cd 95 $f
+ 85ce 12 $f
+ 85cf 50 $f
+ 85d0 06 $f
+ 85d1 ac $f
+ 85d2 06 $f
+ 85d3 ad $f
+ 85d4 07 $f
+ 85d5 80 $f
+ 85d6 0a $f
+ 85d7 e5 $f
+ 85d8 13 $f
+ 85d9 24 $f
+ 85da fe $f
+ 85db fd $f
+ 85dc e5 $f
+ 85dd 12 $f
+ 85de 34 $f
+ 85df ff $f
+ 85e0 fc $f
+ 85e1 8c $f
+ 85e2 18 $f
+ 85e3 8d $f
+ 85e4 19 $f
+ 85e5 e5 $f
+ 85e6 1b $f
+ 85e7 2b $f
+ 85e8 ff $f
+ 85e9 e5 $f
+ 85ea 1a $f
+ 85eb 3a $f
+ 85ec fe $f
+ 85ed d3 $f
+ 85ee e5 $f
+ 85ef 1b $f
+ 85f0 9b $f
+ 85f1 ea $f
+ 85f2 64 $f
+ 85f3 80 $f
+ 85f4 f8 $f
+ 85f5 e5 $f
+ 85f6 1a $f
+ 85f7 64 $f
+ 85f8 80 $f
+ 85f9 98 $f
+ 85fa 40 $f
+ 85fb 0a $f
+ 85fc e5 $f
+ 85fd 1b $f
+ 85fe 9b $f
+ 85ff fd $f
+ 8600 e5 $f
+ 8601 1a $f
+ 8602 9a $f
+ 8603 fc $f
+ 8604 80 $f
+ 8605 04 $f
+ 8606 7c $f
+ 8607 00 $f
+ 8608 7d $f
+ 8609 02 $f
+ 860a 8c $f
+ 860b 1a $f
+ 860c 8d $f
+ 860d 1b $f
+ 860e c3 $f
+ 860f ef $f
+ 8610 95 $f
+ 8611 15 $f
+ 8612 ee $f
+ 8613 95 $f
+ 8614 14 $f
+ 8615 50 $f
+ 8616 02 $f
+ 8617 80 $f
+ 8618 0a $f
+ 8619 e5 $f
+ 861a 15 $f
+ 861b 24 $f
+ 861c fe $f
+ 861d ff $f
+ 861e e5 $f
+ 861f 14 $f
+ 8620 34 $f
+ 8621 ff $f
+ 8622 fe $f
+ 8623 aa $f
+ 8624 06 $f
+ 8625 ab $f
+ 8626 07 $f
+ 8627 e5 $f
+ 8628 16 $f
+ 8629 ff $f
+ 862a ef $f
+ 862b 54 $f
+ 862c 0f $f
+ 862d f5 $f
+ 862e 27 $f
+ 862f e5 $f
+ 8630 17 $f
+ 8631 f5 $f
+ 8632 28 $f
+ 8633 e5 $f
+ 8634 18 $f
+ 8635 ff $f
+ 8636 ef $f
+ 8637 54 $f
+ 8638 0f $f
+ 8639 f5 $f
+ 863a 29 $f
+ 863b e5 $f
+ 863c 19 $f
+ 863d f5 $f
+ 863e 2a $f
+ $"<<==focus hw4== "
+;
+focus_hw5 =
+ $">>==focus hw5== "
+ 863f e5 $f
+ 8640 1a $f
+ 8641 ff $f
+ 8642 ef $f
+ 8643 54 $f
+ 8644 0f $f
+ 8645 f5 $f
+ 8646 2b $f
+ 8647 e5 $f
+ 8648 1b $f
+ 8649 f5 $f
+ 864a 2c $f
+ 864b ea $f
+ 864c ff $f
+ 864d ef $f
+ 864e 54 $f
+ 864f 0f $f
+ 8650 f5 $f
+ 8651 2d $f
+ 8652 eb $f
+ 8653 f5 $f
+ 8654 2e $f
+ 8655 c3 $f
+ 8656 e5 $f
+ 8657 19 $f
+ 8658 95 $f
+ 8659 17 $f
+ 865a f5 $f
+ 865b 17 $f
+ 865c e5 $f
+ 865d 18 $f
+ 865e 95 $f
+ 865f 16 $f
+ 8660 f5 $f
+ 8661 16 $f
+ 8662 c3 $f
+ 8663 eb $f
+ 8664 95 $f
+ 8665 1b $f
+ 8666 f5 $f
+ 8667 1b $f
+ 8668 ea $f
+ 8669 95 $f
+ 866a 1a $f
+ 866b f5 $f
+ 866c 1a $f
+ 866d d3 $f
+ 866e e5 $f
+ 866f 17 $f
+ 8670 95 $f
+ 8671 1b $f
+ 8672 e5 $f
+ 8673 1a $f
+ 8674 64 $f
+ 8675 80 $f
+ 8676 f8 $f
+ 8677 e5 $f
+ 8678 16 $f
+ 8679 64 $f
+ 867a 80 $f
+ 867b 98 $f
+ 867c 40 $f
+ 867d 06 $f
+ 867e ae $f
+ 867f 1a $f
+ 8680 af $f
+ 8681 1b $f
+ 8682 80 $f
+ 8683 04 $f
+ 8684 ae $f
+ 8685 16 $f
+ 8686 af $f
+ 8687 17 $f
+ 8688 8e $f
+ 8689 16 $f
+ 868a 8f $f
+ 868b 17 $f
+ 868c 12 $f
+ 868d 0d $f
+ 868e 28 $f
+ 868f ef $f
+ 8690 25 $f
+ 8691 17 $f
+ 8692 f5 $f
+ 8693 17 $f
+ 8694 ee $f
+ 8695 35 $f
+ 8696 16 $f
+ 8697 f5 $f
+ 8698 16 $f
+ 8699 90 $f
+ 869a 0e $f
+ 869b 86 $f
+ 869c 12 $f
+ 869d 0d $f
+ 869e 2f $f
+ 869f 80 $f
+ 86a0 06 $f
+ 86a1 ce $f
+ 86a2 a2 $f
+ 86a3 e7 $f
+ 86a4 13 $f
+ 86a5 ce $f
+ 86a6 13 $f
+ 86a7 d8 $f
+ 86a8 f8 $f
+ 86a9 f5 $f
+ 86aa 19 $f
+ 86ab 8e $f
+ 86ac 18 $f
+ 86ad 90 $f
+ 86ae 0e $f
+ 86af 87 $f
+ 86b0 12 $f
+ 86b1 0d $f
+ 86b2 2f $f
+ 86b3 80 $f
+ 86b4 06 $f
+ 86b5 ce $f
+ 86b6 a2 $f
+ 86b7 e7 $f
+ 86b8 13 $f
+ 86b9 ce $f
+ 86ba 13 $f
+ 86bb d8 $f
+ 86bc f8 $f
+ 86bd fb $f
+ 86be aa $f
+ 86bf 06 $f
+ 86c0 e5 $f
+ 86c1 18 $f
+ 86c2 ff $f
+ 86c3 ef $f
+ 86c4 54 $f
+ 86c5 0f $f
+ 86c6 f5 $f
+ 86c7 2f $f
+ 86c8 e5 $f
+ 86c9 19 $f
+ 86ca f5 $f
+ 86cb 30 $f
+ 86cc ea $f
+ 86cd ff $f
+ 86ce ef $f
+ 86cf 54 $f
+ 86d0 0f $f
+ 86d1 f5 $f
+ 86d2 31 $f
+ 86d3 eb $f
+ 86d4 f5 $f
+ 86d5 32 $f
+ 86d6 22 $f
+ 86d7 90 $f
+ 86d8 38 $f
+ 86d9 04 $f
+ 86da 78 $f
+ 86db 60 $f
+ 86dc 12 $f
+ 86dd 0b $f
+ 86de 92 $f
+ 86df 90 $f
+ 86e0 38 $f
+ 86e1 00 $f
+ 86e2 e0 $f
+ 86e3 fe $f
+ 86e4 a3 $f
+ 86e5 e0 $f
+ 86e6 fd $f
+ 86e7 ed $f
+ 86e8 ff $f
+ 86e9 c3 $f
+ 86ea 12 $f
+ 86eb 0b $f
+ 86ec 3e $f
+ 86ed 90 $f
+ 86ee 38 $f
+ 86ef 10 $f
+ 86f0 12 $f
+ 86f1 0b $f
+ 86f2 32 $f
+ 86f3 90 $f
+ 86f4 38 $f
+ 86f5 06 $f
+ 86f6 78 $f
+ 86f7 62 $f
+ 86f8 12 $f
+ 86f9 0b $f
+ 86fa 92 $f
+ 86fb 90 $f
+ 86fc 38 $f
+ 86fd 02 $f
+ 86fe e0 $f
+ 86ff fe $f
+ 8700 a3 $f
+ 8701 e0 $f
+ 8702 fd $f
+ 8703 ed $f
+ 8704 ff $f
+ 8705 c3 $f
+ 8706 12 $f
+ 8707 0b $f
+ 8708 3e $f
+ 8709 90 $f
+ 870a 38 $f
+ 870b 12 $f
+ 870c 12 $f
+ 870d 0b $f
+ 870e 32 $f
+ 870f a3 $f
+ 8710 e0 $f
+ 8711 b4 $f
+ 8712 31 $f
+ 8713 07 $f
+ 8714 78 $f
+ 8715 60 $f
+ 8716 79 $f
+ 8717 60 $f
+ 8718 12 $f
+ 8719 0b $f
+ 871a 9d $f
+ 871b 90 $f
+ 871c 38 $f
+ 871d 14 $f
+ 871e e0 $f
+ 871f b4 $f
+ 8720 71 $f
+ 8721 15 $f
+ 8722 78 $f
+ 8723 60 $f
+ 8724 e6 $f
+ 8725 fe $f
+ 8726 08 $f
+ 8727 e6 $f
+ 8728 78 $f
+ 8729 02 $f
+ 872a ce $f
+ 872b c3 $f
+ 872c 13 $f
+ 872d ce $f
+ 872e 13 $f
+ 872f d8 $f
+ 8730 f9 $f
+ 8731 79 $f
+ 8732 61 $f
+ 8733 f7 $f
+ 8734 ee $f
+ 8735 19 $f
+ 8736 f7 $f
+ 8737 90 $f
+ 8738 38 $f
+ 8739 15 $f
+ 873a e0 $f
+ 873b b4 $f
+ 873c 31 $f
+ 873d 07 $f
+ 873e 78 $f
+ 873f 62 $f
+ 8740 79 $f
+ 8741 62 $f
+ 8742 12 $f
+ 8743 0b $f
+ 8744 9d $f
+ 8745 90 $f
+ 8746 38 $f
+ 8747 15 $f
+ 8748 e0 $f
+ 8749 b4 $f
+ 874a 71 $f
+ 874b 15 $f
+ 874c 78 $f
+ 874d 62 $f
+ 874e e6 $f
+ 874f fe $f
+ 8750 08 $f
+ 8751 e6 $f
+ 8752 78 $f
+ 8753 02 $f
+ 8754 ce $f
+ 8755 c3 $f
+ 8756 13 $f
+ 8757 ce $f
+ 8758 13 $f
+ 8759 d8 $f
+ 875a f9 $f
+ 875b 79 $f
+ 875c 63 $f
+ 875d f7 $f
+ 875e ee $f
+ 875f 19 $f
+ 8760 f7 $f
+ 8761 79 $f
+ 8762 60 $f
+ 8763 12 $f
+ 8764 0b $f
+ 8765 6e $f
+ 8766 09 $f
+ 8767 12 $f
+ 8768 0b $f
+ 8769 6e $f
+ 876a af $f
+ 876b 1e $f
+ 876c 12 $f
+ 876d 0b $f
+ 876e 23 $f
+ 876f 7d $f
+ 8770 50 $f
+ 8771 12 $f
+ 8772 02 $f
+ 8773 bb $f
+ 8774 78 $f
+ 8775 68 $f
+ 8776 a6 $f
+ 8777 06 $f
+ 8778 08 $f
+ 8779 a6 $f
+ 877a 07 $f
+ 877b af $f
+ 877c 1c $f
+ 877d 12 $f
+ 877e 0b $f
+ 877f 23 $f
+ 8780 7d $f
+ 8781 50 $f
+ 8782 12 $f
+ 8783 02 $f
+ 8784 bb $f
+ 8785 78 $f
+ 8786 64 $f
+ 8787 a6 $f
+ 8788 06 $f
+ 8789 08 $f
+ 878a a6 $f
+ 878b 07 $f
+ 878c af $f
+ 878d 1f $f
+ 878e 78 $f
+ 878f 62 $f
+ 8790 12 $f
+ 8791 0b $f
+ 8792 25 $f
+ 8793 7d $f
+ 8794 3c $f
+ 8795 12 $f
+ 8796 02 $f
+ 8797 bb $f
+ 8798 78 $f
+ 8799 6a $f
+ 879a a6 $f
+ 879b 06 $f
+ 879c 08 $f
+ 879d a6 $f
+ 879e 07 $f
+ 879f af $f
+ 87a0 1d $f
+ 87a1 7e $f
+ 87a2 00 $f
+ 87a3 78 $f
+ 87a4 62 $f
+ 87a5 12 $f
+ 87a6 0b $f
+ 87a7 27 $f
+ 87a8 7d $f
+ 87a9 3c $f
+ 87aa 12 $f
+ 87ab 02 $f
+ 87ac bb $f
+ 87ad 78 $f
+ 87ae 66 $f
+ 87af a6 $f
+ 87b0 06 $f
+ 87b1 08 $f
+ 87b2 a6 $f
+ 87b3 07 $f
+ 87b4 c3 $f
+ 87b5 78 $f
+ 87b6 69 $f
+ 87b7 e6 $f
+ 87b8 94 $f
+ 87b9 08 $f
+ 87ba 18 $f
+ 87bb e6 $f
+ 87bc 94 $f
+ 87bd 00 $f
+ 87be 50 $f
+ 87bf 05 $f
+ 87c0 76 $f
+ 87c1 00 $f
+ 87c2 08 $f
+ 87c3 76 $f
+ 87c4 08 $f
+ 87c5 c3 $f
+ 87c6 78 $f
+ 87c7 6b $f
+ 87c8 e6 $f
+ 87c9 94 $f
+ 87ca 08 $f
+ 87cb 18 $f
+ 87cc e6 $f
+ 87cd 94 $f
+ 87ce 00 $f
+ $"<<==focus hw5== "
+;
+focus_hw6 =
+ $">>==focus hw6== "
+ 87cf 50 $f
+ 87d0 05 $f
+ 87d1 76 $f
+ 87d2 00 $f
+ 87d3 08 $f
+ 87d4 76 $f
+ 87d5 08 $f
+ 87d6 78 $f
+ 87d7 68 $f
+ 87d8 12 $f
+ 87d9 0b $f
+ 87da 5b $f
+ 87db ff $f
+ 87dc c3 $f
+ 87dd 78 $f
+ 87de 65 $f
+ 87df e6 $f
+ 87e0 9f $f
+ 87e1 ff $f
+ 87e2 18 $f
+ 87e3 e6 $f
+ 87e4 9e $f
+ 87e5 78 $f
+ 87e6 6c $f
+ 87e7 12 $f
+ 87e8 0b $f
+ 87e9 52 $f
+ 87ea ff $f
+ 87eb c3 $f
+ 87ec 78 $f
+ 87ed 67 $f
+ 87ee e6 $f
+ 87ef 9f $f
+ 87f0 ff $f
+ 87f1 18 $f
+ 87f2 e6 $f
+ 87f3 9e $f
+ 87f4 fe $f
+ 87f5 e4 $f
+ 87f6 fc $f
+ 87f7 fd $f
+ 87f8 78 $f
+ 87f9 70 $f
+ 87fa 12 $f
+ 87fb 04 $f
+ 87fc a4 $f
+ 87fd 78 $f
+ 87fe 68 $f
+ 87ff 12 $f
+ 8800 0b $f
+ 8801 5b $f
+ 8802 78 $f
+ 8803 65 $f
+ 8804 26 $f
+ 8805 ff $f
+ 8806 ee $f
+ 8807 18 $f
+ 8808 36 $f
+ 8809 78 $f
+ 880a 74 $f
+ 880b 12 $f
+ 880c 0b $f
+ 880d 52 $f
+ 880e 78 $f
+ 880f 67 $f
+ 8810 26 $f
+ 8811 ff $f
+ 8812 ee $f
+ 8813 18 $f
+ 8814 36 $f
+ 8815 fe $f
+ 8816 e4 $f
+ 8817 fc $f
+ 8818 fd $f
+ 8819 78 $f
+ 881a 78 $f
+ 881b 12 $f
+ 881c 04 $f
+ 881d a4 $f
+ 881e 78 $f
+ 881f 6c $f
+ 8820 12 $f
+ 8821 0b $f
+ 8822 86 $f
+ 8823 50 $f
+ 8824 09 $f
+ 8825 78 $f
+ 8826 6c $f
+ 8827 12 $f
+ 8828 04 $f
+ 8829 b0 $f
+ 882a 00 $f
+ 882b 00 $f
+ 882c 00 $f
+ 882d 00 $f
+ 882e 78 $f
+ 882f 70 $f
+ 8830 12 $f
+ 8831 0b $f
+ 8832 86 $f
+ 8833 50 $f
+ 8834 09 $f
+ 8835 78 $f
+ 8836 70 $f
+ 8837 12 $f
+ 8838 04 $f
+ 8839 b0 $f
+ 883a 00 $f
+ 883b 00 $f
+ 883c 00 $f
+ 883d 00 $f
+ 883e 12 $f
+ 883f 0b $f
+ 8840 63 $f
+ 8841 78 $f
+ 8842 74 $f
+ 8843 12 $f
+ 8844 04 $f
+ 8845 97 $f
+ 8846 d3 $f
+ 8847 12 $f
+ 8848 04 $f
+ 8849 63 $f
+ 884a 40 $f
+ 884b 08 $f
+ 884c 12 $f
+ 884d 0b $f
+ 884e 63 $f
+ 884f 78 $f
+ 8850 74 $f
+ 8851 12 $f
+ 8852 04 $f
+ 8853 a4 $f
+ 8854 78 $f
+ 8855 62 $f
+ 8856 12 $f
+ 8857 0b $f
+ 8858 65 $f
+ 8859 78 $f
+ 885a 78 $f
+ 885b 12 $f
+ 885c 04 $f
+ 885d 97 $f
+ 885e d3 $f
+ 885f 12 $f
+ 8860 04 $f
+ 8861 63 $f
+ 8862 40 $f
+ 8863 0a $f
+ 8864 78 $f
+ 8865 62 $f
+ 8866 12 $f
+ 8867 0b $f
+ 8868 65 $f
+ 8869 78 $f
+ 886a 78 $f
+ 886b 12 $f
+ 886c 04 $f
+ 886d a4 $f
+ 886e e4 $f
+ 886f fd $f
+ 8870 78 $f
+ 8871 6f $f
+ 8872 12 $f
+ 8873 0b $f
+ 8874 7e $f
+ 8875 24 $f
+ 8876 01 $f
+ 8877 12 $f
+ 8878 0b $f
+ 8879 46 $f
+ 887a 78 $f
+ 887b 73 $f
+ 887c 12 $f
+ 887d 0b $f
+ 887e 7e $f
+ 887f 24 $f
+ 8880 02 $f
+ 8881 12 $f
+ 8882 0b $f
+ 8883 46 $f
+ 8884 78 $f
+ 8885 77 $f
+ 8886 12 $f
+ 8887 0b $f
+ 8888 7e $f
+ 8889 24 $f
+ 888a 03 $f
+ 888b 12 $f
+ 888c 0b $f
+ 888d 46 $f
+ 888e 78 $f
+ 888f 7b $f
+ 8890 12 $f
+ 8891 0b $f
+ 8892 7e $f
+ 8893 24 $f
+ 8894 04 $f
+ 8895 12 $f
+ 8896 0b $f
+ 8897 46 $f
+ 8898 0d $f
+ 8899 bd $f
+ 889a 05 $f
+ 889b d4 $f
+ 889c c2 $f
+ 889d 0e $f
+ 889e c2 $f
+ 889f 06 $f
+ 88a0 22 $f
+ 88a1 85 $f
+ 88a2 38 $f
+ 88a3 54 $f
+ 88a4 90 $f
+ 88a5 30 $f
+ 88a6 24 $f
+ 88a7 e0 $f
+ 88a8 f5 $f
+ 88a9 50 $f
+ 88aa a3 $f
+ 88ab e0 $f
+ 88ac f5 $f
+ 88ad 51 $f
+ 88ae a3 $f
+ 88af e0 $f
+ 88b0 f5 $f
+ 88b1 52 $f
+ 88b2 a3 $f
+ 88b3 e0 $f
+ 88b4 f5 $f
+ 88b5 53 $f
+ 88b6 a3 $f
+ 88b7 e0 $f
+ 88b8 f5 $f
+ 88b9 4f $f
+ 88ba d2 $f
+ 88bb 33 $f
+ 88bc e5 $f
+ 88bd 54 $f
+ 88be 12 $f
+ 88bf 04 $f
+ 88c0 d5 $f
+ 88c1 08 $f
+ 88c2 fe $f
+ 88c3 03 $f
+ 88c4 09 $f
+ 88c5 02 $f
+ 88c6 04 $f
+ 88c7 09 $f
+ 88c8 08 $f
+ 88c9 06 $f
+ 88ca 09 $f
+ 88cb 0e $f
+ 88cc 07 $f
+ 88cd 09 $f
+ 88ce 17 $f
+ 88cf 08 $f
+ 88d0 09 $f
+ 88d1 40 $f
+ 88d2 18 $f
+ 88d3 09 $f
+ 88d4 56 $f
+ 88d5 19 $f
+ 88d6 09 $f
+ 88d7 2d $f
+ 88d8 1a $f
+ 88d9 09 $f
+ 88da 38 $f
+ 88db 1b $f
+ 88dc 09 $f
+ 88dd 7a $f
+ 88de 80 $f
+ 88df 09 $f
+ 88e0 7d $f
+ 88e1 81 $f
+ 88e2 09 $f
+ 88e3 99 $f
+ 88e4 8f $f
+ 88e5 09 $f
+ 88e6 88 $f
+ 88e7 90 $f
+ 88e8 09 $f
+ 88e9 99 $f
+ 88ea 91 $f
+ 88eb 09 $f
+ 88ec 99 $f
+ 88ed 92 $f
+ 88ee 09 $f
+ 88ef 99 $f
+ 88f0 93 $f
+ 88f1 09 $f
+ 88f2 99 $f
+ 88f3 94 $f
+ 88f4 09 $f
+ 88f5 99 $f
+ 88f6 98 $f
+ 88f7 09 $f
+ 88f8 96 $f
+ 88f9 9f $f
+ 88fa 00 $f
+ 88fb 00 $f
+ 88fc 09 $f
+ 88fd b4 $f
+ 88fe 12 $f
+ 88ff 0e $f
+ 8900 ec $f
+ 8901 22 $f
+ 8902 12 $f
+ 8903 0e $f
+ 8904 ec $f
+ 8905 d2 $f
+ 8906 03 $f
+ 8907 22 $f
+ 8908 e4 $f
+ 8909 f5 $f
+ 890a 0a $f
+ 890b 02 $f
+ 890c 0e $f
+ 890d cb $f
+ 890e a2 $f
+ 890f 36 $f
+ 8910 e4 $f
+ 8911 33 $f
+ 8912 f5 $f
+ 8913 4f $f
+ 8914 02 $f
+ 8915 09 $f
+ 8916 99 $f
+ 8917 c2 $f
+ 8918 01 $f
+ 8919 c2 $f
+ 891a 02 $f
+ 891b c2 $f
+ 891c 03 $f
+ 891d 12 $f
+ 891e 0c $f
+ 891f 19 $f
+ 8920 e4 $f
+ 8921 f5 $f
+ 8922 0a $f
+ 8923 12 $f
+ 8924 0e $f
+ 8925 cb $f
+ 8926 75 $f
+ 8927 59 $f
+ 8928 70 $f
+ 8929 d2 $f
+ 892a 34 $f
+ 892b 80 $f
+ 892c 6c $f
+ 892d 85 $f
+ 892e 53 $f
+ 892f 57 $f
+ 8930 85 $f
+ 8931 4f $f
+ 8932 58 $f
+ 8933 12 $f
+ 8934 0a $f
+ 8935 90 $f
+ 8936 80 $f
+ 8937 61 $f
+ 8938 85 $f
+ 8939 57 $f
+ 893a 53 $f
+ 893b 85 $f
+ 893c 58 $f
+ 893d 4f $f
+ 893e 80 $f
+ 893f 59 $f
+ 8940 e4 $f
+ 8941 f5 $f
+ 8942 22 $f
+ 8943 f5 $f
+ 8944 23 $f
+ 8945 85 $f
+ 8946 53 $f
+ 8947 4e $f
+ 8948 85 $f
+ 8949 52 $f
+ 894a 4d $f
+ 894b 85 $f
+ 894c 51 $f
+ 894d 4c $f
+ 894e 85 $f
+ 894f 50 $f
+ 8950 4b $f
+ 8951 12 $f
+ 8952 0d $f
+ 8953 cd $f
+ 8954 80 $f
+ 8955 1f $f
+ 8956 75 $f
+ 8957 22 $f
+ 8958 00 $f
+ 8959 75 $f
+ 895a 23 $f
+ 895b 01 $f
+ 895c 74 $f
+ 895d ff $f
+ 895e f5 $f
+ $"<<==focus hw6== "
+;
+focus_hw7 =
+ $">>==focus hw7== "
+ 895f 4a $f
+ 8960 f5 $f
+ 8961 49 $f
+ 8962 f5 $f
+ 8963 48 $f
+ 8964 f5 $f
+ 8965 47 $f
+ 8966 12 $f
+ 8967 0d $f
+ 8968 cd $f
+ 8969 85 $f
+ 896a 4a $f
+ 896b 53 $f
+ 896c 85 $f
+ 896d 49 $f
+ 896e 52 $f
+ 896f 85 $f
+ 8970 48 $f
+ 8971 51 $f
+ 8972 85 $f
+ 8973 47 $f
+ 8974 50 $f
+ 8975 e4 $f
+ 8976 f5 $f
+ 8977 4f $f
+ 8978 80 $f
+ 8979 1f $f
+ 897a 02 $f
+ 897b 0f $f
+ 897c 23 $f
+ 897d 85 $f
+ 897e 50 $f
+ 897f 1c $f
+ 8980 85 $f
+ 8981 51 $f
+ 8982 1d $f
+ 8983 12 $f
+ 8984 06 $f
+ 8985 d7 $f
+ 8986 80 $f
+ 8987 11 $f
+ 8988 85 $f
+ 8989 53 $f
+ 898a 1f $f
+ 898b 85 $f
+ 898c 52 $f
+ 898d 1e $f
+ 898e 85 $f
+ 898f 51 $f
+ 8990 1d $f
+ 8991 85 $f
+ 8992 50 $f
+ 8993 1c $f
+ 8994 80 $f
+ 8995 03 $f
+ 8996 02 $f
+ 8997 06 $f
+ 8998 d7 $f
+ 8999 90 $f
+ 899a 30 $f
+ 899b 24 $f
+ 899c e5 $f
+ 899d 50 $f
+ 899e f0 $f
+ 899f a3 $f
+ 89a0 e5 $f
+ 89a1 51 $f
+ 89a2 f0 $f
+ 89a3 a3 $f
+ 89a4 e5 $f
+ 89a5 52 $f
+ 89a6 f0 $f
+ 89a7 a3 $f
+ 89a8 e5 $f
+ 89a9 53 $f
+ 89aa f0 $f
+ 89ab a3 $f
+ 89ac e5 $f
+ 89ad 4f $f
+ 89ae f0 $f
+ 89af 90 $f
+ 89b0 30 $f
+ 89b1 23 $f
+ 89b2 e4 $f
+ 89b3 f0 $f
+ 89b4 22 $f
+ 89b5 c0 $f
+ 89b6 e0 $f
+ 89b7 c0 $f
+ 89b8 f0 $f
+ 89b9 c0 $f
+ 89ba 83 $f
+ 89bb c0 $f
+ 89bc 82 $f
+ 89bd c0 $f
+ 89be d0 $f
+ 89bf 75 $f
+ 89c0 d0 $f
+ 89c1 00 $f
+ 89c2 c0 $f
+ 89c3 00 $f
+ 89c4 c0 $f
+ 89c5 01 $f
+ 89c6 c0 $f
+ 89c7 02 $f
+ 89c8 c0 $f
+ 89c9 03 $f
+ 89ca c0 $f
+ 89cb 04 $f
+ 89cc c0 $f
+ 89cd 05 $f
+ 89ce c0 $f
+ 89cf 06 $f
+ 89d0 c0 $f
+ 89d1 07 $f
+ 89d2 90 $f
+ 89d3 3f $f
+ 89d4 0c $f
+ 89d5 e0 $f
+ 89d6 f5 $f
+ 89d7 08 $f
+ 89d8 e5 $f
+ 89d9 08 $f
+ 89da 30 $f
+ 89db e3 $f
+ 89dc 5f $f
+ 89dd 30 $f
+ 89de 35 $f
+ 89df 5c $f
+ 89e0 90 $f
+ 89e1 60 $f
+ 89e2 19 $f
+ 89e3 e0 $f
+ 89e4 f5 $f
+ 89e5 3a $f
+ 89e6 a3 $f
+ 89e7 e0 $f
+ 89e8 f5 $f
+ 89e9 3b $f
+ 89ea 90 $f
+ 89eb 60 $f
+ 89ec 21 $f
+ 89ed e0 $f
+ 89ee f5 $f
+ 89ef 3c $f
+ 89f0 a3 $f
+ 89f1 e0 $f
+ 89f2 f5 $f
+ 89f3 3d $f
+ 89f4 90 $f
+ 89f5 60 $f
+ 89f6 29 $f
+ 89f7 e0 $f
+ 89f8 f5 $f
+ 89f9 3e $f
+ 89fa a3 $f
+ 89fb e0 $f
+ 89fc f5 $f
+ 89fd 3f $f
+ 89fe 90 $f
+ 89ff 60 $f
+ 8a00 31 $f
+ 8a01 e0 $f
+ 8a02 f5 $f
+ 8a03 40 $f
+ 8a04 a3 $f
+ 8a05 e0 $f
+ 8a06 f5 $f
+ 8a07 41 $f
+ 8a08 90 $f
+ 8a09 60 $f
+ 8a0a 39 $f
+ 8a0b e0 $f
+ 8a0c f5 $f
+ 8a0d 42 $f
+ 8a0e a3 $f
+ 8a0f e0 $f
+ 8a10 f5 $f
+ 8a11 43 $f
+ 8a12 30 $f
+ 8a13 01 $f
+ 8a14 06 $f
+ 8a15 30 $f
+ 8a16 32 $f
+ 8a17 03 $f
+ 8a18 d3 $f
+ 8a19 80 $f
+ 8a1a 01 $f
+ 8a1b c3 $f
+ 8a1c 92 $f
+ 8a1d 09 $f
+ 8a1e 30 $f
+ 8a1f 02 $f
+ 8a20 06 $f
+ 8a21 30 $f
+ 8a22 32 $f
+ 8a23 03 $f
+ 8a24 d3 $f
+ 8a25 80 $f
+ 8a26 01 $f
+ 8a27 c3 $f
+ 8a28 92 $f
+ 8a29 0a $f
+ 8a2a 30 $f
+ 8a2b 32 $f
+ 8a2c 0c $f
+ 8a2d 30 $f
+ 8a2e 03 $f
+ 8a2f 09 $f
+ 8a30 20 $f
+ 8a31 02 $f
+ 8a32 06 $f
+ 8a33 20 $f
+ 8a34 01 $f
+ 8a35 03 $f
+ 8a36 d3 $f
+ 8a37 80 $f
+ 8a38 01 $f
+ 8a39 c3 $f
+ 8a3a 92 $f
+ 8a3b 0b $f
+ 8a3c e5 $f
+ 8a3d 08 $f
+ 8a3e 30 $f
+ 8a3f e1 $f
+ 8a40 14 $f
+ 8a41 30 $f
+ 8a42 33 $f
+ 8a43 11 $f
+ 8a44 90 $f
+ 8a45 30 $f
+ 8a46 22 $f
+ 8a47 e0 $f
+ 8a48 f5 $f
+ 8a49 38 $f
+ 8a4a e4 $f
+ 8a4b f0 $f
+ 8a4c 30 $f
+ 8a4d 00 $f
+ 8a4e 03 $f
+ 8a4f d3 $f
+ 8a50 80 $f
+ 8a51 01 $f
+ 8a52 c3 $f
+ 8a53 92 $f
+ 8a54 08 $f
+ 8a55 e5 $f
+ 8a56 08 $f
+ 8a57 30 $f
+ 8a58 e5 $f
+ 8a59 15 $f
+ 8a5a 90 $f
+ 8a5b 56 $f
+ 8a5c 90 $f
+ 8a5d e0 $f
+ 8a5e f5 $f
+ 8a5f 39 $f
+ 8a60 30 $f
+ 8a61 30 $f
+ 8a62 0c $f
+ 8a63 12 $f
+ 8a64 0c $f
+ 8a65 8a $f
+ 8a66 30 $f
+ 8a67 05 $f
+ 8a68 03 $f
+ 8a69 d3 $f
+ 8a6a 80 $f
+ 8a6b 01 $f
+ 8a6c c3 $f
+ 8a6d 92 $f
+ 8a6e 0d $f
+ 8a6f 90 $f
+ 8a70 3f $f
+ 8a71 0c $f
+ 8a72 e5 $f
+ 8a73 08 $f
+ 8a74 f0 $f
+ 8a75 d0 $f
+ 8a76 07 $f
+ 8a77 d0 $f
+ 8a78 06 $f
+ 8a79 d0 $f
+ 8a7a 05 $f
+ 8a7b d0 $f
+ 8a7c 04 $f
+ 8a7d d0 $f
+ 8a7e 03 $f
+ 8a7f d0 $f
+ 8a80 02 $f
+ 8a81 d0 $f
+ 8a82 01 $f
+ 8a83 d0 $f
+ 8a84 00 $f
+ 8a85 d0 $f
+ 8a86 d0 $f
+ 8a87 d0 $f
+ 8a88 82 $f
+ 8a89 d0 $f
+ 8a8a 83 $f
+ 8a8b d0 $f
+ 8a8c f0 $f
+ 8a8d d0 $f
+ 8a8e e0 $f
+ 8a8f 32 $f
+ 8a90 90 $f
+ 8a91 0e $f
+ 8a92 7d $f
+ 8a93 e4 $f
+ 8a94 93 $f
+ 8a95 fe $f
+ 8a96 74 $f
+ 8a97 01 $f
+ 8a98 93 $f
+ 8a99 ff $f
+ 8a9a c3 $f
+ 8a9b 90 $f
+ 8a9c 0e $f
+ 8a9d 7b $f
+ 8a9e 74 $f
+ 8a9f 01 $f
+ 8aa0 93 $f
+ 8aa1 9f $f
+ 8aa2 ff $f
+ 8aa3 e4 $f
+ 8aa4 93 $f
+ 8aa5 9e $f
+ 8aa6 fe $f
+ 8aa7 e4 $f
+ 8aa8 8f $f
+ 8aa9 11 $f
+ 8aaa 8e $f
+ 8aab 10 $f
+ 8aac f5 $f
+ 8aad 0f $f
+ 8aae f5 $f
+ 8aaf 0e $f
+ 8ab0 ab $f
+ 8ab1 11 $f
+ 8ab2 aa $f
+ 8ab3 10 $f
+ 8ab4 a9 $f
+ 8ab5 0f $f
+ 8ab6 a8 $f
+ 8ab7 0e $f
+ 8ab8 af $f
+ 8ab9 58 $f
+ 8aba fc $f
+ 8abb fd $f
+ 8abc fe $f
+ 8abd 12 $f
+ 8abe 03 $f
+ 8abf 46 $f
+ 8ac0 12 $f
+ 8ac1 0f $f
+ 8ac2 08 $f
+ 8ac3 e4 $f
+ 8ac4 7b $f
+ 8ac5 ff $f
+ 8ac6 fa $f
+ 8ac7 f9 $f
+ 8ac8 f8 $f
+ 8ac9 12 $f
+ 8aca 03 $f
+ 8acb d1 $f
+ 8acc 12 $f
+ 8acd 0f $f
+ 8ace 08 $f
+ 8acf 90 $f
+ 8ad0 0e $f
+ 8ad1 69 $f
+ 8ad2 e4 $f
+ 8ad3 12 $f
+ 8ad4 0f $f
+ 8ad5 1d $f
+ 8ad6 12 $f
+ 8ad7 0f $f
+ 8ad8 08 $f
+ 8ad9 e4 $f
+ 8ada 85 $f
+ 8adb 57 $f
+ 8adc 0d $f
+ 8add f5 $f
+ 8ade 0c $f
+ 8adf f5 $f
+ 8ae0 0b $f
+ 8ae1 f5 $f
+ 8ae2 0a $f
+ 8ae3 af $f
+ 8ae4 0d $f
+ 8ae5 ae $f
+ 8ae6 0c $f
+ 8ae7 ad $f
+ 8ae8 0b $f
+ 8ae9 ac $f
+ 8aea 0a $f
+ 8aeb a3 $f
+ 8aec 12 $f
+ 8aed 0f $f
+ 8aee 1d $f
+ $"<<==focus hw7== "
+;
+focus_hw8 =
+ $">>==focus hw8== "
+ 8aef 8f $f
+ 8af0 0d $f
+ 8af1 8e $f
+ 8af2 0c $f
+ 8af3 8d $f
+ 8af4 0b $f
+ 8af5 8c $f
+ 8af6 0a $f
+ 8af7 e5 $f
+ 8af8 11 $f
+ 8af9 45 $f
+ 8afa 0d $f
+ 8afb f5 $f
+ 8afc 11 $f
+ 8afd e5 $f
+ 8afe 10 $f
+ 8aff 45 $f
+ 8b00 0c $f
+ 8b01 f5 $f
+ 8b02 10 $f
+ 8b03 e5 $f
+ 8b04 0f $f
+ 8b05 45 $f
+ 8b06 0b $f
+ 8b07 f5 $f
+ 8b08 0f $f
+ 8b09 e5 $f
+ 8b0a 0e $f
+ 8b0b 45 $f
+ 8b0c 0a $f
+ 8b0d f5 $f
+ 8b0e 0e $f
+ 8b0f e4 $f
+ 8b10 f5 $f
+ 8b11 22 $f
+ 8b12 f5 $f
+ 8b13 23 $f
+ 8b14 85 $f
+ 8b15 11 $f
+ 8b16 4e $f
+ 8b17 85 $f
+ 8b18 10 $f
+ 8b19 4d $f
+ 8b1a 85 $f
+ 8b1b 0f $f
+ 8b1c 4c $f
+ 8b1d 85 $f
+ 8b1e 0e $f
+ 8b1f 4b $f
+ 8b20 02 $f
+ 8b21 0d $f
+ 8b22 cd $f
+ 8b23 78 $f
+ 8b24 60 $f
+ 8b25 7e $f
+ 8b26 00 $f
+ 8b27 e6 $f
+ 8b28 fc $f
+ 8b29 08 $f
+ 8b2a e6 $f
+ 8b2b fd $f
+ 8b2c 12 $f
+ 8b2d 02 $f
+ 8b2e a9 $f
+ 8b2f 7c $f
+ 8b30 00 $f
+ 8b31 22 $f
+ 8b32 e0 $f
+ 8b33 a3 $f
+ 8b34 e0 $f
+ 8b35 75 $f
+ 8b36 f0 $f
+ 8b37 02 $f
+ 8b38 a4 $f
+ 8b39 ff $f
+ 8b3a ae $f
+ 8b3b f0 $f
+ 8b3c c3 $f
+ 8b3d 08 $f
+ 8b3e e6 $f
+ 8b3f 9f $f
+ 8b40 f6 $f
+ 8b41 18 $f
+ 8b42 e6 $f
+ 8b43 9e $f
+ 8b44 f6 $f
+ 8b45 22 $f
+ 8b46 ff $f
+ 8b47 e5 $f
+ 8b48 f0 $f
+ 8b49 34 $f
+ 8b4a 60 $f
+ 8b4b 8f $f
+ 8b4c 82 $f
+ 8b4d f5 $f
+ 8b4e 83 $f
+ 8b4f ec $f
+ 8b50 f0 $f
+ 8b51 22 $f
+ 8b52 fe $f
+ 8b53 e4 $f
+ 8b54 fc $f
+ 8b55 fd $f
+ 8b56 12 $f
+ 8b57 04 $f
+ 8b58 a4 $f
+ 8b59 78 $f
+ 8b5a 6a $f
+ 8b5b e6 $f
+ 8b5c c3 $f
+ 8b5d 13 $f
+ 8b5e fe $f
+ 8b5f 08 $f
+ 8b60 e6 $f
+ 8b61 13 $f
+ 8b62 22 $f
+ 8b63 78 $f
+ 8b64 60 $f
+ 8b65 e6 $f
+ 8b66 fe $f
+ 8b67 08 $f
+ 8b68 e6 $f
+ 8b69 ff $f
+ 8b6a e4 $f
+ 8b6b fc $f
+ 8b6c fd $f
+ 8b6d 22 $f
+ 8b6e e7 $f
+ 8b6f c4 $f
+ 8b70 f8 $f
+ 8b71 54 $f
+ 8b72 f0 $f
+ 8b73 c8 $f
+ 8b74 68 $f
+ 8b75 f7 $f
+ 8b76 09 $f
+ 8b77 e7 $f
+ 8b78 c4 $f
+ 8b79 54 $f
+ 8b7a 0f $f
+ 8b7b 48 $f
+ 8b7c f7 $f
+ 8b7d 22 $f
+ 8b7e e6 $f
+ 8b7f fc $f
+ 8b80 ed $f
+ 8b81 75 $f
+ 8b82 f0 $f
+ 8b83 04 $f
+ 8b84 a4 $f
+ 8b85 22 $f
+ 8b86 e4 $f
+ 8b87 ff $f
+ 8b88 fe $f
+ 8b89 fd $f
+ 8b8a fc $f
+ 8b8b 12 $f
+ 8b8c 04 $f
+ 8b8d 97 $f
+ 8b8e c3 $f
+ 8b8f 02 $f
+ 8b90 04 $f
+ 8b91 63 $f
+ 8b92 e0 $f
+ 8b93 fe $f
+ 8b94 a3 $f
+ 8b95 e0 $f
+ 8b96 fd $f
+ 8b97 ee $f
+ 8b98 f6 $f
+ 8b99 ed $f
+ 8b9a 08 $f
+ 8b9b f6 $f
+ 8b9c 22 $f
+ 8b9d e6 $f
+ 8b9e c3 $f
+ 8b9f 13 $f
+ 8ba0 f7 $f
+ 8ba1 08 $f
+ 8ba2 e6 $f
+ 8ba3 13 $f
+ 8ba4 09 $f
+ 8ba5 f7 $f
+ 8ba6 22 $f
+ 8ba7 75 $f
+ 8ba8 89 $f
+ 8ba9 03 $f
+ 8baa 75 $f
+ 8bab a8 $f
+ 8bac 01 $f
+ 8bad 75 $f
+ 8bae b8 $f
+ 8baf 04 $f
+ 8bb0 75 $f
+ 8bb1 0a $f
+ 8bb2 ff $f
+ 8bb3 75 $f
+ 8bb4 0b $f
+ 8bb5 0e $f
+ 8bb6 75 $f
+ 8bb7 0c $f
+ 8bb8 15 $f
+ 8bb9 75 $f
+ 8bba 0d $f
+ 8bbb 0d $f
+ 8bbc 12 $f
+ 8bbd 0d $f
+ 8bbe 8d $f
+ 8bbf 12 $f
+ 8bc0 00 $f
+ 8bc1 09 $f
+ 8bc2 12 $f
+ 8bc3 0f $f
+ 8bc4 23 $f
+ 8bc5 12 $f
+ 8bc6 0f $f
+ 8bc7 75 $f
+ 8bc8 12 $f
+ 8bc9 00 $f
+ 8bca 06 $f
+ 8bcb d2 $f
+ 8bcc 00 $f
+ 8bcd d2 $f
+ 8bce 33 $f
+ 8bcf d2 $f
+ 8bd0 af $f
+ 8bd1 75 $f
+ 8bd2 0a $f
+ 8bd3 ff $f
+ 8bd4 75 $f
+ 8bd5 0b $f
+ 8bd6 0e $f
+ 8bd7 75 $f
+ 8bd8 0c $f
+ 8bd9 49 $f
+ 8bda 75 $f
+ 8bdb 0d $f
+ 8bdc 03 $f
+ 8bdd 12 $f
+ 8bde 0d $f
+ 8bdf 8d $f
+ 8be0 30 $f
+ 8be1 08 $f
+ 8be2 09 $f
+ 8be3 c2 $f
+ 8be4 33 $f
+ 8be5 12 $f
+ 8be6 08 $f
+ 8be7 a1 $f
+ 8be8 c2 $f
+ 8be9 08 $f
+ 8bea d2 $f
+ 8beb 33 $f
+ 8bec 30 $f
+ 8bed 09 $f
+ 8bee 09 $f
+ 8bef c2 $f
+ 8bf0 35 $f
+ 8bf1 12 $f
+ 8bf2 00 $f
+ 8bf3 0e $f
+ 8bf4 c2 $f
+ 8bf5 09 $f
+ 8bf6 d2 $f
+ 8bf7 35 $f
+ 8bf8 30 $f
+ 8bf9 0e $f
+ 8bfa 03 $f
+ 8bfb 12 $f
+ 8bfc 06 $f
+ 8bfd d7 $f
+ 8bfe 30 $f
+ 8bff 0f $f
+ 8c00 03 $f
+ 8c01 12 $f
+ 8c02 0d $f
+ 8c03 3a $f
+ 8c04 30 $f
+ 8c05 34 $f
+ 8c06 d9 $f
+ 8c07 90 $f
+ 8c08 30 $f
+ 8c09 29 $f
+ 8c0a e5 $f
+ 8c0b 59 $f
+ 8c0c f0 $f
+ 8c0d b4 $f
+ 8c0e 10 $f
+ 8c0f 05 $f
+ 8c10 90 $f
+ 8c11 30 $f
+ 8c12 23 $f
+ 8c13 e4 $f
+ 8c14 f0 $f
+ 8c15 c2 $f
+ 8c16 34 $f
+ 8c17 80 $f
+ 8c18 c7 $f
+ 8c19 e4 $f
+ 8c1a f5 $f
+ 8c1b 58 $f
+ 8c1c 90 $f
+ 8c1d 0e $f
+ 8c1e 77 $f
+ 8c1f 93 $f
+ 8c20 ff $f
+ 8c21 e4 $f
+ 8c22 8f $f
+ 8c23 0d $f
+ 8c24 f5 $f
+ 8c25 0c $f
+ 8c26 f5 $f
+ 8c27 0b $f
+ 8c28 f5 $f
+ 8c29 0a $f
+ 8c2a af $f
+ 8c2b 0d $f
+ 8c2c ae $f
+ 8c2d 0c $f
+ 8c2e ad $f
+ 8c2f 0b $f
+ 8c30 ac $f
+ 8c31 0a $f
+ 8c32 90 $f
+ 8c33 0e $f
+ 8c34 6a $f
+ 8c35 12 $f
+ 8c36 0f $f
+ 8c37 1d $f
+ 8c38 8f $f
+ 8c39 0d $f
+ 8c3a 8e $f
+ 8c3b 0c $f
+ 8c3c 8d $f
+ 8c3d 0b $f
+ 8c3e 8c $f
+ 8c3f 0a $f
+ 8c40 90 $f
+ 8c41 0e $f
+ 8c42 72 $f
+ 8c43 12 $f
+ 8c44 04 $f
+ 8c45 87 $f
+ 8c46 ef $f
+ 8c47 45 $f
+ 8c48 0d $f
+ 8c49 f5 $f
+ 8c4a 0d $f
+ 8c4b ee $f
+ 8c4c 45 $f
+ 8c4d 0c $f
+ 8c4e f5 $f
+ 8c4f 0c $f
+ 8c50 ed $f
+ 8c51 45 $f
+ 8c52 0b $f
+ 8c53 f5 $f
+ 8c54 0b $f
+ 8c55 ec $f
+ 8c56 45 $f
+ 8c57 0a $f
+ 8c58 f5 $f
+ 8c59 0a $f
+ 8c5a e4 $f
+ 8c5b f5 $f
+ 8c5c 22 $f
+ 8c5d f5 $f
+ 8c5e 23 $f
+ 8c5f 85 $f
+ 8c60 0d $f
+ 8c61 4e $f
+ 8c62 85 $f
+ 8c63 0c $f
+ 8c64 4d $f
+ 8c65 85 $f
+ 8c66 0b $f
+ 8c67 4c $f
+ 8c68 85 $f
+ 8c69 0a $f
+ 8c6a 4b $f
+ 8c6b 12 $f
+ 8c6c 0d $f
+ 8c6d cd $f
+ 8c6e e4 $f
+ 8c6f f5 $f
+ 8c70 22 $f
+ 8c71 f5 $f
+ 8c72 23 $f
+ 8c73 90 $f
+ 8c74 0e $f
+ 8c75 72 $f
+ 8c76 12 $f
+ 8c77 0f $f
+ 8c78 11 $f
+ 8c79 12 $f
+ 8c7a 0d $f
+ 8c7b cd $f
+ 8c7c e4 $f
+ 8c7d f5 $f
+ 8c7e 22 $f
+ $"<<==focus hw8== "
+;
+focus_hw9 =
+ $">>==focus hw9== "
+ 8c7f f5 $f
+ 8c80 23 $f
+ 8c81 90 $f
+ 8c82 0e $f
+ 8c83 6e $f
+ 8c84 12 $f
+ 8c85 0f $f
+ 8c86 11 $f
+ 8c87 02 $f
+ 8c88 0d $f
+ 8c89 cd $f
+ 8c8a 30 $f
+ 8c8b 37 $f
+ 8c8c 32 $f
+ 8c8d 90 $f
+ 8c8e 50 $f
+ 8c8f 28 $f
+ 8c90 e5 $f
+ 8c91 27 $f
+ 8c92 f0 $f
+ 8c93 a3 $f
+ 8c94 e5 $f
+ 8c95 28 $f
+ 8c96 f0 $f
+ 8c97 a3 $f
+ 8c98 e5 $f
+ 8c99 29 $f
+ 8c9a f0 $f
+ 8c9b a3 $f
+ 8c9c e5 $f
+ 8c9d 2a $f
+ 8c9e f0 $f
+ 8c9f a3 $f
+ 8ca0 e5 $f
+ 8ca1 2b $f
+ 8ca2 f0 $f
+ 8ca3 a3 $f
+ 8ca4 e5 $f
+ 8ca5 2c $f
+ 8ca6 f0 $f
+ 8ca7 a3 $f
+ 8ca8 e5 $f
+ 8ca9 2d $f
+ 8caa f0 $f
+ 8cab a3 $f
+ 8cac e5 $f
+ 8cad 2e $f
+ 8cae f0 $f
+ 8caf a3 $f
+ 8cb0 e5 $f
+ 8cb1 2f $f
+ 8cb2 f0 $f
+ 8cb3 a3 $f
+ 8cb4 e5 $f
+ 8cb5 30 $f
+ 8cb6 f0 $f
+ 8cb7 a3 $f
+ 8cb8 e5 $f
+ 8cb9 31 $f
+ 8cba f0 $f
+ 8cbb a3 $f
+ 8cbc e5 $f
+ 8cbd 32 $f
+ 8cbe f0 $f
+ 8cbf e5 $f
+ 8cc0 37 $f
+ 8cc1 70 $f
+ 8cc2 09 $f
+ 8cc3 90 $f
+ 8cc4 50 $f
+ 8cc5 03 $f
+ 8cc6 e0 $f
+ 8cc7 54 $f
+ 8cc8 fd $f
+ 8cc9 f0 $f
+ 8cca 80 $f
+ 8ccb 15 $f
+ 8ccc 90 $f
+ 8ccd 50 $f
+ 8cce 34 $f
+ 8ccf e5 $f
+ 8cd0 33 $f
+ 8cd1 f0 $f
+ 8cd2 a3 $f
+ 8cd3 e5 $f
+ 8cd4 34 $f
+ 8cd5 f0 $f
+ 8cd6 a3 $f
+ 8cd7 e5 $f
+ 8cd8 35 $f
+ 8cd9 f0 $f
+ 8cda 90 $f
+ 8cdb 50 $f
+ 8cdc 03 $f
+ 8cdd e0 $f
+ 8cde 44 $f
+ 8cdf 02 $f
+ 8ce0 f0 $f
+ 8ce1 05 $f
+ 8ce2 36 $f
+ 8ce3 c2 $f
+ 8ce4 30 $f
+ 8ce5 22 $f
+ 8ce6 ab $f
+ 8ce7 11 $f
+ 8ce8 aa $f
+ 8ce9 10 $f
+ 8cea a9 $f
+ 8ceb 0f $f
+ 8cec a8 $f
+ 8ced 0e $f
+ 8cee fc $f
+ 8cef fd $f
+ 8cf0 fe $f
+ 8cf1 12 $f
+ 8cf2 03 $f
+ 8cf3 46 $f
+ 8cf4 8f $f
+ 8cf5 11 $f
+ 8cf6 8e $f
+ 8cf7 10 $f
+ 8cf8 8d $f
+ 8cf9 0f $f
+ 8cfa 8c $f
+ 8cfb 0e $f
+ 8cfc 22 $f
+ 8cfd e4 $f
+ 8cfe 85 $f
+ 8cff 15 $f
+ 8d00 11 $f
+ 8d01 85 $f
+ 8d02 14 $f
+ 8d03 10 $f
+ 8d04 f5 $f
+ 8d05 0f $f
+ 8d06 f5 $f
+ 8d07 0e $f
+ 8d08 ab $f
+ 8d09 11 $f
+ 8d0a aa $f
+ 8d0b 10 $f
+ 8d0c a9 $f
+ 8d0d 0f $f
+ 8d0e a8 $f
+ 8d0f 0e $f
+ 8d10 22 $f
+ 8d11 90 $f
+ 8d12 0e $f
+ 8d13 7f $f
+ 8d14 e4 $f
+ 8d15 93 $f
+ 8d16 fb $f
+ 8d17 e4 $f
+ 8d18 fa $f
+ 8d19 f9 $f
+ 8d1a f8 $f
+ 8d1b 22 $f
+ 8d1c e4 $f
+ 8d1d 85 $f
+ 8d1e 13 $f
+ 8d1f 11 $f
+ 8d20 85 $f
+ 8d21 12 $f
+ 8d22 10 $f
+ 8d23 f5 $f
+ 8d24 0f $f
+ 8d25 f5 $f
+ 8d26 0e $f
+ 8d27 22 $f
+ 8d28 7c $f
+ 8d29 00 $f
+ 8d2a 7d $f
+ 8d2b 02 $f
+ 8d2c 02 $f
+ 8d2d 03 $f
+ 8d2e 10 $f
+ 8d2f e4 $f
+ 8d30 93 $f
+ 8d31 ff $f
+ 8d32 e5 $f
+ 8d33 17 $f
+ 8d34 ae $f
+ 8d35 16 $f
+ 8d36 a8 $f
+ 8d37 07 $f
+ 8d38 08 $f
+ 8d39 22 $f
+ 8d3a e5 $f
+ 8d3b 36 $f
+ 8d3c 64 $f
+ 8d3d 01 $f
+ 8d3e 60 $f
+ 8d3f 4c $f
+ 8d40 e5 $f
+ 8d41 36 $f
+ 8d42 d3 $f
+ 8d43 94 $f
+ 8d44 01 $f
+ 8d45 40 $f
+ 8d46 0d $f
+ 8d47 c2 $f
+ 8d48 0f $f
+ 8d49 e5 $f
+ 8d4a 54 $f
+ 8d4b 64 $f
+ 8d4c 06 $f
+ 8d4d 70 $f
+ 8d4e 3d $f
+ 8d4f 90 $f
+ 8d50 30 $f
+ 8d51 23 $f
+ 8d52 f0 $f
+ 8d53 22 $f
+ 8d54 30 $f
+ 8d55 37 $f
+ 8d56 03 $f
+ 8d57 12 $f
+ 8d58 04 $f
+ 8d59 fb $f
+ 8d5a e5 $f
+ 8d5b 37 $f
+ 8d5c b4 $f
+ 8d5d 02 $f
+ 8d5e 0b $f
+ 8d5f 75 $f
+ 8d60 33 $f
+ 8d61 80 $f
+ 8d62 75 $f
+ 8d63 34 $f
+ 8d64 2a $f
+ 8d65 75 $f
+ 8d66 35 $f
+ 8d67 14 $f
+ 8d68 80 $f
+ 8d69 1e $f
+ 8d6a e5 $f
+ 8d6b 37 $f
+ 8d6c b4 $f
+ 8d6d 01 $f
+ 8d6e 0b $f
+ 8d6f 75 $f
+ 8d70 33 $f
+ 8d71 80 $f
+ 8d72 e4 $f
+ 8d73 f5 $f
+ 8d74 34 $f
+ 8d75 75 $f
+ 8d76 35 $f
+ 8d77 ff $f
+ 8d78 80 $f
+ 8d79 0e $f
+ 8d7a e5 $f
+ 8d7b 37 $f
+ 8d7c b4 $f
+ 8d7d 03 $f
+ 8d7e 09 $f
+ 8d7f 75 $f
+ 8d80 33 $f
+ 8d81 ff $f
+ 8d82 75 $f
+ 8d83 34 $f
+ 8d84 80 $f
+ 8d85 75 $f
+ 8d86 35 $f
+ 8d87 80 $f
+ 8d88 05 $f
+ 8d89 36 $f
+ 8d8a d2 $f
+ 8d8b 30 $f
+ 8d8c 22 $f
+ 8d8d ae $f
+ 8d8e 0b $f
+ 8d8f af $f
+ 8d90 0c $f
+ 8d91 e4 $f
+ 8d92 fd $f
+ 8d93 ed $f
+ 8d94 c3 $f
+ 8d95 95 $f
+ 8d96 0d $f
+ 8d97 50 $f
+ 8d98 33 $f
+ 8d99 12 $f
+ 8d9a 0f $f
+ 8d9b 6a $f
+ 8d9c e4 $f
+ 8d9d 93 $f
+ 8d9e f5 $f
+ 8d9f 0e $f
+ 8da0 74 $f
+ 8da1 01 $f
+ 8da2 93 $f
+ 8da3 f5 $f
+ 8da4 0f $f
+ 8da5 45 $f
+ 8da6 0e $f
+ 8da7 60 $f
+ 8da8 23 $f
+ 8da9 85 $f
+ 8daa 0f $f
+ 8dab 82 $f
+ 8dac 85 $f
+ 8dad 0e $f
+ 8dae 83 $f
+ 8daf e0 $f
+ 8db0 fc $f
+ 8db1 12 $f
+ 8db2 0f $f
+ 8db3 6a $f
+ 8db4 74 $f
+ 8db5 03 $f
+ 8db6 93 $f
+ 8db7 52 $f
+ 8db8 04 $f
+ 8db9 12 $f
+ 8dba 0f $f
+ 8dbb 6a $f
+ 8dbc 74 $f
+ 8dbd 02 $f
+ 8dbe 93 $f
+ 8dbf 42 $f
+ 8dc0 04 $f
+ 8dc1 85 $f
+ 8dc2 0f $f
+ 8dc3 82 $f
+ 8dc4 85 $f
+ 8dc5 0e $f
+ 8dc6 83 $f
+ 8dc7 ec $f
+ 8dc8 f0 $f
+ 8dc9 0d $f
+ 8dca 80 $f
+ 8dcb c7 $f
+ 8dcc 22 $f
+ 8dcd a2 $f
+ 8dce af $f
+ 8dcf 92 $f
+ 8dd0 31 $f
+ 8dd1 c2 $f
+ 8dd2 af $f
+ 8dd3 e5 $f
+ 8dd4 23 $f
+ 8dd5 45 $f
+ 8dd6 22 $f
+ 8dd7 90 $f
+ 8dd8 0e $f
+ 8dd9 5d $f
+ 8dda 60 $f
+ 8ddb 0b $f
+ 8ddc 12 $f
+ 8ddd 0f $f
+ 8dde 5f $f
+ 8ddf e0 $f
+ 8de0 f5 $f
+ 8de1 49 $f
+ 8de2 e0 $f
+ 8de3 f5 $f
+ 8de4 4a $f
+ 8de5 80 $f
+ 8de6 0f $f
+ 8de7 12 $f
+ 8de8 0f $f
+ 8de9 5f $f
+ 8dea e5 $f
+ 8deb 4d $f
+ 8dec f0 $f
+ 8ded 90 $f
+ 8dee 0e $f
+ 8def 5f $f
+ 8df0 12 $f
+ 8df1 0f $f
+ 8df2 5f $f
+ 8df3 e5 $f
+ 8df4 4e $f
+ 8df5 f0 $f
+ 8df6 a2 $f
+ 8df7 31 $f
+ 8df8 92 $f
+ 8df9 af $f
+ 8dfa 22 $f
+ 8dfb 00 $f
+ 8dfc 00 $f
+ 8dfd 00 $f
+ 8dfe 00 $f
+ 8dff 00 $f
+ 8e00 11 $f
+ 8e01 01 $f
+ 8e02 27 $f
+ 8e03 09 $f
+ 8e04 58 $f
+ 8e05 11 $f
+ 8e06 4f $f
+ 8e07 56 $f
+ 8e08 54 $f
+ 8e09 20 $f
+ 8e0a 20 $f
+ 8e0b 20 $f
+ 8e0c 20 $f
+ 8e0d 20 $f
+ 8e0e 20 $f
+ $"<<==focus hw9== "
+;
+focus_hw10 =
+ $">>==focus hw10== "
+ 8e0f 01 $f
+ 8e10 11 $f
+ 8e11 00 $f
+ 8e12 56 $f
+ 8e13 42 $f
+ 8e14 1a $f
+ 8e15 30 $f
+ 8e16 29 $f
+ 8e17 7e $f
+ 8e18 00 $f
+ 8e19 30 $f
+ 8e1a 04 $f
+ 8e1b 20 $f
+ 8e1c df $f
+ 8e1d 30 $f
+ 8e1e 05 $f
+ 8e1f 40 $f
+ 8e20 bf $f
+ 8e21 50 $f
+ 8e22 25 $f
+ 8e23 04 $f
+ 8e24 fb $f
+ 8e25 50 $f
+ 8e26 03 $f
+ 8e27 00 $f
+ 8e28 fd $f
+ 8e29 50 $f
+ 8e2a 27 $f
+ 8e2b 01 $f
+ 8e2c fe $f
+ 8e2d 60 $f
+ 8e2e 00 $f
+ 8e2f 11 $f
+ 8e30 00 $f
+ 8e31 3f $f
+ 8e32 05 $f
+ 8e33 30 $f
+ 8e34 00 $f
+ 8e35 3f $f
+ 8e36 06 $f
+ 8e37 22 $f
+ 8e38 00 $f
+ 8e39 3f $f
+ 8e3a 01 $f
+ 8e3b 29 $f
+ 8e3c 00 $f
+ 8e3d 3f $f
+ 8e3e 02 $f
+ 8e3f 00 $f
+ 8e40 00 $f
+ 8e41 36 $f
+ 8e42 06 $f
+ 8e43 07 $f
+ 8e44 00 $f
+ 8e45 3f $f
+ 8e46 0b $f
+ 8e47 0f $f
+ 8e48 f0 $f
+ 8e49 30 $f
+ 8e4a 01 $f
+ 8e4b 40 $f
+ 8e4c bf $f
+ 8e4d 30 $f
+ 8e4e 01 $f
+ 8e4f 00 $f
+ 8e50 bf $f
+ 8e51 30 $f
+ 8e52 29 $f
+ 8e53 70 $f
+ 8e54 00 $f
+ 8e55 3a $f
+ 8e56 00 $f
+ 8e57 01 $f
+ 8e58 fe $f
+ 8e59 3a $f
+ 8e5a 00 $f
+ 8e5b 00 $f
+ 8e5c fe $f
+ 8e5d 36 $f
+ 8e5e 03 $f
+ 8e5f 36 $f
+ 8e60 02 $f
+ 8e61 41 $f
+ 8e62 44 $f
+ 8e63 58 $f
+ 8e64 20 $f
+ 8e65 18 $f
+ 8e66 10 $f
+ 8e67 0a $f
+ 8e68 04 $f
+ 8e69 04 $f
+ 8e6a 00 $f
+ 8e6b 03 $f
+ 8e6c ff $f
+ 8e6d 64 $f
+ 8e6e 00 $f
+ 8e6f 00 $f
+ 8e70 80 $f
+ 8e71 00 $f
+ 8e72 00 $f
+ 8e73 00 $f
+ 8e74 00 $f
+ 8e75 00 $f
+ 8e76 00 $f
+ 8e77 02 $f
+ 8e78 04 $f
+ 8e79 06 $f
+ 8e7a 00 $f
+ 8e7b 03 $f
+ 8e7c 98 $f
+ 8e7d 00 $f
+ 8e7e cc $f
+ 8e7f 50 $f
+ 8e80 3c $f
+ 8e81 28 $f
+ 8e82 1e $f
+ 8e83 10 $f
+ 8e84 10 $f
+ 8e85 00 $f
+ 8e86 07 $f
+ 8e87 04 $f
+ 8e88 00 $f
+ 8e89 6e $f
+ 8e8a 06 $f
+ 8e8b 05 $f
+ 8e8c 00 $f
+ 8e8d a5 $f
+ 8e8e 5a $f
+ 8e8f 78 $f
+ 8e90 cc $f
+ 8e91 e6 $f
+ 8e92 d3 $f
+ 8e93 08 $f
+ 8e94 ff $f
+ 8e95 e6 $f
+ 8e96 64 $f
+ 8e97 80 $f
+ 8e98 f8 $f
+ 8e99 ef $f
+ 8e9a 64 $f
+ 8e9b 80 $f
+ 8e9c 98 $f
+ 8e9d 22 $f
+ 8e9e 93 $f
+ 8e9f ff $f
+ 8ea0 7e $f
+ 8ea1 00 $f
+ 8ea2 e6 $f
+ 8ea3 fc $f
+ 8ea4 08 $f
+ 8ea5 e6 $f
+ 8ea6 fd $f
+ 8ea7 12 $f
+ 8ea8 02 $f
+ 8ea9 a9 $f
+ 8eaa 78 $f
+ 8eab cf $f
+ 8eac e6 $f
+ 8ead fc $f
+ 8eae 08 $f
+ 8eaf e6 $f
+ 8eb0 fd $f
+ 8eb1 d3 $f
+ 8eb2 ef $f
+ 8eb3 9d $f
+ 8eb4 ee $f
+ 8eb5 9c $f
+ 8eb6 22 $f
+ 8eb7 78 $f
+ 8eb8 cb $f
+ 8eb9 d3 $f
+ 8eba e6 $f
+ 8ebb 64 $f
+ 8ebc 80 $f
+ 8ebd 94 $f
+ 8ebe 80 $f
+ 8ebf 22 $f
+ 8ec0 25 $f
+ 8ec1 e0 $f
+ 8ec2 24 $f
+ 8ec3 3a $f
+ 8ec4 f8 $f
+ 8ec5 e6 $f
+ 8ec6 fe $f
+ 8ec7 08 $f
+ 8ec8 e6 $f
+ 8ec9 ff $f
+ 8eca 22 $f
+ 8ecb e5 $f
+ 8ecc 0a $f
+ 8ecd 54 $f
+ 8ece 7f $f
+ 8ecf f5 $f
+ 8ed0 37 $f
+ 8ed1 e5 $f
+ 8ed2 0a $f
+ 8ed3 c4 $f
+ 8ed4 13 $f
+ 8ed5 13 $f
+ 8ed6 13 $f
+ 8ed7 54 $f
+ 8ed8 01 $f
+ 8ed9 24 $f
+ 8eda ff $f
+ 8edb 92 $f
+ 8edc 37 $f
+ 8edd e4 $f
+ 8ede f5 $f
+ 8edf 36 $f
+ 8ee0 d2 $f
+ 8ee1 07 $f
+ 8ee2 30 $f
+ 8ee3 07 $f
+ 8ee4 03 $f
+ 8ee5 d3 $f
+ 8ee6 80 $f
+ 8ee7 01 $f
+ 8ee8 c3 $f
+ 8ee9 92 $f
+ 8eea 0f $f
+ 8eeb 22 $f
+ 8eec d2 $f
+ 8eed 01 $f
+ 8eee c2 $f
+ 8eef 02 $f
+ 8ef0 e4 $f
+ 8ef1 f5 $f
+ 8ef2 5a $f
+ 8ef3 f5 $f
+ 8ef4 59 $f
+ 8ef5 d2 $f
+ 8ef6 34 $f
+ 8ef7 d2 $f
+ 8ef8 32 $f
+ 8ef9 d2 $f
+ 8efa 35 $f
+ 8efb d2 $f
+ 8efc 01 $f
+ 8efd c2 $f
+ 8efe 02 $f
+ 8eff f5 $f
+ 8f00 5a $f
+ 8f01 f5 $f
+ 8f02 59 $f
+ 8f03 d2 $f
+ 8f04 34 $f
+ 8f05 d2 $f
+ 8f06 32 $f
+ 8f07 22 $f
+ 8f08 8f $f
+ 8f09 11 $f
+ 8f0a 8e $f
+ 8f0b 10 $f
+ 8f0c 8d $f
+ 8f0d 0f $f
+ 8f0e 8c $f
+ 8f0f 0e $f
+ 8f10 22 $f
+ 8f11 12 $f
+ 8f12 04 $f
+ 8f13 87 $f
+ 8f14 8f $f
+ 8f15 4e $f
+ 8f16 8e $f
+ 8f17 4d $f
+ 8f18 8d $f
+ 8f19 4c $f
+ 8f1a 8c $f
+ 8f1b 4b $f
+ 8f1c 22 $f
+ 8f1d 93 $f
+ 8f1e f9 $f
+ 8f1f f8 $f
+ 8f20 02 $f
+ 8f21 04 $f
+ 8f22 74 $f
+ 8f23 90 $f
+ 8f24 0e $f
+ 8f25 81 $f
+ 8f26 12 $f
+ 8f27 04 $f
+ 8f28 87 $f
+ 8f29 8f $f
+ 8f2a 1f $f
+ 8f2b 8e $f
+ 8f2c 1e $f
+ 8f2d 8d $f
+ 8f2e 1d $f
+ 8f2f 8c $f
+ 8f30 1c $f
+ 8f31 d2 $f
+ 8f32 06 $f
+ 8f33 30 $f
+ 8f34 06 $f
+ 8f35 03 $f
+ 8f36 d3 $f
+ 8f37 80 $f
+ 8f38 01 $f
+ 8f39 c3 $f
+ 8f3a 92 $f
+ 8f3b 0e $f
+ 8f3c 22 $f
+ 8f3d c0 $f
+ 8f3e e0 $f
+ 8f3f c0 $f
+ 8f40 83 $f
+ 8f41 c0 $f
+ 8f42 82 $f
+ 8f43 90 $f
+ 8f44 3f $f
+ 8f45 0d $f
+ 8f46 e0 $f
+ 8f47 f5 $f
+ 8f48 09 $f
+ 8f49 e5 $f
+ 8f4a 09 $f
+ 8f4b f0 $f
+ 8f4c d0 $f
+ 8f4d 82 $f
+ 8f4e d0 $f
+ 8f4f 83 $f
+ 8f50 d0 $f
+ 8f51 e0 $f
+ 8f52 32 $f
+ 8f53 78 $f
+ 8f54 7f $f
+ 8f55 e4 $f
+ 8f56 f6 $f
+ 8f57 d8 $f
+ 8f58 fd $f
+ 8f59 75 $f
+ 8f5a 81 $f
+ 8f5b db $f
+ 8f5c 02 $f
+ 8f5d 0b $f
+ 8f5e a7 $f
+ 8f5f e4 $f
+ 8f60 93 $f
+ 8f61 fe $f
+ 8f62 74 $f
+ 8f63 01 $f
+ 8f64 93 $f
+ 8f65 f5 $f
+ 8f66 82 $f
+ 8f67 8e $f
+ 8f68 83 $f
+ 8f69 22 $f
+ 8f6a 8f $f
+ 8f6b 82 $f
+ 8f6c 8e $f
+ 8f6d 83 $f
+ 8f6e 75 $f
+ 8f6f f0 $f
+ 8f70 04 $f
+ 8f71 ed $f
+ 8f72 02 $f
+ 8f73 04 $f
+ 8f74 c9 $f
+ 8f75 75 $f
+ 8f76 0a $f
+ 8f77 80 $f
+ 8f78 02 $f
+ 8f79 0e $f
+ 8f7a cb $f
+ 3022 00 $f
+ 3023 00 $f
+ 3024 00 $f
+ 3025 00 $f
+ 3026 00 $f
+ 3027 00 $f
+ 3028 00 $f
+ 3029 FF $f
+ 3000 00 $f
+ $"<<==focus hw10== "
+;
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_VGA_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+	
+	3c07 08 $f
+	
+	3820 47 $f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 02 $f	//VGA
+	3809 80 $f
+	380a 01 $f
+	380b e0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+	
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+	
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+	
+	4001 02	$f	//BLC Control
+	4004 02 $f
+	
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f	$f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+	
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+    3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for VGA OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_VGA_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_720P_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for 720 P OV5640 camera module"
+  
+	3c07 08 $f
+	
+	3820 47	$f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 fa $f
+	3804 0a $f
+	3805 3f $f
+	3806 06 $f
+	3807 a9 $f
+	3808 05 $f	//720P
+	3809 00 $f
+	380a 02 $f
+	380b d0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 04 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02	$f	//BLC Control
+	4004 02 $f
+	
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f	$f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+ $"<< CAMDRIVER::Image Windowing register control register seq for 720P OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_720P_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_720P_60FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for 720 P OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47	$f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 fa $f
+	3804 0a $f
+	3805 3f $f
+	3806 06 $f
+	3807 a9 $f
+	3808 05 $f	//720P
+	3809 00 $f
+	380a 02 $f
+	380b d0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 04 $f
+	
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02	$f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32 $f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+ $"<< CAMDRIVER::Image Windowing register control register seq for 720P OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_720P_60FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_QVGA_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+	
+	3820 47 $f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 02 $f	//QVGA
+	3809 80 $f
+	380a 01 $f
+	380b e0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+	
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+	
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+	
+	4001 02	$f	//BLC Control
+	4004 02 $f
+	
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f	$f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+	
+	3824 01 $f	//VFIFO control
+	
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+		
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for QVGA OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_QVGA_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_CIF_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+	
+	3820 47	$f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 01 $f	//CIF
+	3809 60 $f
+	380a 01 $f
+	380b 20 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+	
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+	
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+	
+	4001 02	$f	//BLC Control
+	4004 02 $f
+	
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+	
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f	$f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+	
+	3824 01 $f	//VFIFO control
+	
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+		
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+	
+  $"<< CAMDRIVER::Image Windowing register control register seq for CIF OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_CIF_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_QCIF_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+	
+	3820 47	$f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 00 $f	//QCIF
+	3809 b0 $f
+	380a 00 $f
+	380b 90 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+	
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+	
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+	
+	4001 02	$f	//BLC Control
+	4004 02 $f
+	
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+	
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30 $f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for QCIF OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_QCIF_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_WVGA_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for WVGA OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47 $f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31 $f	//Image windowing registers
+	3815 31 $f
+	3800 02 $f
+	3801 50 $f
+	3802 01 $f
+	3803 b2 $f
+	3804 08 $f
+	3805 ef $f
+	3806 05 $f
+	3807 f2 $f
+	3808 03 $f	//WVGA
+	3809 20 $f
+	380a 01 $f
+	380b e0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+
+	3618 00 $f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02 $f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32 $f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30 $f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for WVGA OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_WVGA_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_SDTV_NTSC_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for 480P OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47 $f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31 $f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 fa $f
+	3804 0a $f
+	3805 3f $f
+	3806 06 $f
+	3807 a9 $f
+	3808 02 $f	//SDTV NTSC
+	3809 d0 $f
+	380a 01 $f
+	380b e0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 04 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02 $f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f	$f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30 $f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for 480P NTSC OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_SDTV_NTSC_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_SDTV_PAL_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for PAL OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47 $f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31 $f	//Image windowing registers
+	3815 31 $f
+	3800 02 $f
+	3801 50 $f
+	3802 01 $f
+	3803 b2 $f
+	3804 08 $f
+	3805 ef $f
+	3806 05 $f
+	3807 f2 $f
+	3808 02 $f	//SDTV PAL
+	3809 d0 $f
+	380a 02 $f
+	380b 40 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02 $f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f	$f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for PAL OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_SDTV_PAL_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_5MP_15FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47	$f	//mirror and flip registers
+	3821 01 $f
+
+	3814 11	$f	//Image windowing registers
+	3815 11 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 00 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9f $f
+	3808 0a $f	//5MP
+	3809 20 $f
+	380a 07 $f
+	380b 98 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 04 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02	$f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35 $f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for 5MP OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_5MP_15FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_5MP =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47 $f	//mirror and flip registers
+	3821 21 $f
+
+	3814 11 $f	//Image windowing registers
+	3815 11 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 00 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9f $f
+	3808 0a $f	// 5MP
+	3809 20 $f
+	380a 07 $f
+	380b 98 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 04 $f
+	
+	3618 00 $f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02 $f	//BLC Control
+	4004 02 $f
+
+	3000 00 $f	//System Reset00
+	3002 00 $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 ff $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control
+	501f 00 $f  //ISP top control
+	4713 02 $f  //JPG Mode Select
+	4407 04 $f	//JPG control registers
+	440e 00 $f
+	460b 35 $f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for 5MP OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_5MP_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_1_4MP =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47	$f	//mirror and flip registers
+	3821 21 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 05 $f	// 1.4MP
+	3809 00 $f
+	380a 03 $f
+	380b 00 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02	$f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 00 $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 ff $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32	$f	//Format Control
+	501f 00 $f  //ISP top control
+	4713 02 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for 1_4 MP OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_1_4MP_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_1MP =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47	$f	//mirror and flip registers
+	3821 21 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 04 $f	// 1MP
+	3809 00 $f
+	380a 03 $f
+	380b 00 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02	$f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 00 $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 ff $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control
+	501f 00 $f  //ISP top control
+	4713 02 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30 $f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for OV5640 1 MP camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_1MP_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_2MP =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47 $f	//mirror and flip registers
+	3821 21 $f
+
+	3814 11 $f	//Image windowing registers
+	3815 11 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 00 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9f $f
+	3808 06 $f	// 2MP
+	3809 40 $f
+	380a 04 $f
+	380b b0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 04 $f
+
+	3618 00 $f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02 $f	//BLC Control
+	4004 02 $f
+
+	3000 00 $f	//System Reset00
+	3002 00 $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 ff $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control
+	501f 00 $f  //ISP top control
+	4713 02 $f  //JPG Mode Select
+	4407 04 $f	//JPG control registers
+	440e 00 $f
+	460b 35 $f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32 $f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30 $f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for OV5640 2MP camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_2MP_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_3MP =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47 $f	//mirror and flip registers
+	3821 21 $f
+
+	3814 11 $f	//Image windowing registers
+	3815 11 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 00 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9f $f
+	3808 08 $f	//3MP
+	3809 00 $f
+	380a 06 $f
+	380b 00 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 04 $f
+
+	3618 00 $f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02 $f	//BLC Control
+	4004 02 $f
+
+	3000 00 $f	//System Reset00
+	3002 00 $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 ff $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control
+	501f 00 $f  //ISP top control
+	4713 02 $f  //JPG Mode Select
+	4407 04 $f	//JPG control registers
+	440e 00 $f
+	460b 35 $f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for OV5640 3MP camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_3MP_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_VGA =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47 $f	//mirror and flip registers
+	3821 21 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 02 $f	//VGA
+	3809 80 $f
+	380a 01 $f
+	380b e0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02 $f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 00 $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 ff $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control
+	501f 00 $f  //ISP top control
+	4713 02 $f  //JPG Mode Select
+	4407 04	$f	//JPG control registers
+	440e 00 $f
+	460b 35	$f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32	$f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7	$f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30	$f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for OV5640 VGA camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_VGA_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_QVGA =
+  $">> CAMDRIVER::Image Windowing register control seq for OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47	$f	//mirror and flip registers
+	3821 21 $f
+
+	3814 31	$f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 01 $f	//QVGA
+	3809 40 $f
+	380a 00 $f
+	380b f0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02	$f	//BLC Control
+	4004 02 $f
+
+	3000 00 $f	//System Reset00
+	3002 00 $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 ff $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control
+	501f 00 $f  //ISP top control
+	4713 02 $f  //JPG Mode Select
+	4407 04 $f	//JPG control registers
+	440e 00 $f
+	460b 35 $f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32 $f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30 $f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for QVGA OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_QVGA_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_1080P_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for 1080 P OV5640 camera module"
+
+	3c07 08 $f
+
+	3820 47 $f	//mirror and flip registers
+	3821 01 $f
+
+	3814 11	$f	//Image windowing registers
+	3815 11 $f
+	3800 01 $f
+	3801 50 $f
+	3802 01 $f
+	3803 b2 $f
+	3804 08 $f
+	3805 ef $f
+	3806 05 $f
+	3807 f2 $f
+	3808 07 $f	//1080
+	3809 80 $f
+	380a 04 $f
+	380b 38 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 04 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02	$f	//BLC Control
+	4004 02 $f
+
+	3000 00	$f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32	$f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04 $f	//JPG control registers
+	440e 00 $f
+	460b 35 $f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32 $f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30 $f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+  $"<< CAMDRIVER::Image Windowing register control register seq for 1080P OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_1080P_30FPS_END
+
+////////////////////////////
+IMAGE_WINDOWING_REGISTERS_OV5640_SXGA_30FPS =
+  $">> CAMDRIVER::Image Windowing register control seq for SXGA OV5640 camera module"
+
+	3c07 08 $f
+	
+	3820 47 $f	//mirror and flip registers
+	3821 01 $f
+
+	3814 31 $f	//Image windowing registers
+	3815 31 $f
+	3800 00 $f
+	3801 00 $f
+	3802 00 $f
+	3803 04 $f
+	3804 0a $f
+	3805 3f $f
+	3806 07 $f
+	3807 9b $f
+	3808 05 $f	//SXGA
+	3809 00 $f
+	380a 03 $f
+	380b c0 $f
+	380c 08 $f
+	380d 50 $f
+	380e 03 $f
+	380f d8 $f
+	3810 00 $f
+	3811 10 $f
+	3812 00 $f
+	3813 06 $f
+
+	3618 00	$f	//Manufacture settings
+	3612 29 $f
+	3708 62 $f
+	3709 52 $f
+	370c 03 $f
+
+	3a02 03 $f	//AEC/AGC
+	3a03 d8 $f
+	3a08 01 $f
+	3a09 28 $f
+	3a0a 00 $f
+	3a0b f7 $f
+	3a0e 03 $f
+	3a0d 04 $f
+	3a14 03 $f
+	3a15 d8 $f
+
+	4001 02 $f	//BLC Control
+	4004 02 $f
+
+	3000 00 $f	//System Reset00
+	3002 1c $f  //System Reset02
+	3004 ff $f  //Clock Enable00
+	3006 c3 $f  //Clock Enable02
+	302e 08 $f
+
+	4300 32 $f	//Format Control UYVY
+	501f 00 $f  //ISP top control
+	4713 03 $f  //JPG Mode Select
+	4407 04 $f	//JPG control registers
+	440e 00 $f
+	460b 35 $f	//VFIFO control for compress data
+	460c 22 $f
+
+	4837 1f $f	//MIPI control PCLK period --need to check 
+	4827 32 $f	//Default value is put here
+
+	3824 01 $f	//VFIFO control
+
+	5000 a7 $f	//ISP top control
+	5001 a3 $f
+	5025 00 $f
+
+	3a0f 30 $f	//AEC/AGC
+	3a10 28 $f
+	3a1b 30 $f
+	3a1e 26 $f
+	3a11 60 $f
+	3a1f 14 $f
+
+ $"<< CAMDRIVER::Image Windowing register control register seq for SXGA OV5640 camera module"
+
+; // IMAGE_WINDOWING_REGISTERS_OV5640_SXGA_30FPS_END
+
+////////////////////////////
+AWB_CONTROL_OV5640 =
+  $">> CAMDRIVER::Auto white balance control seq for OV5640 camera module"
+	5180 ff	$f	//AWB control
+	5181 f2 $f
+	5182 00 $f
+	5183 14 $f
+	5184 25 $f
+	5185 24 $f
+	5186 09 $f
+	5187 09 $f
+	5188 09 $f
+	5189 75 $f
+	518a 54 $f
+	518b e0 $f
+	518c b2 $f
+	518d 42 $f
+	518e 3d $f
+	518f 56 $f
+	5190 46 $f
+	5191 f8 $f
+	5192 04 $f
+	5193 70 $f
+	5194 f0 $f
+	5195 f0 $f
+	5196 03 $f
+	5197 01 $f
+	5198 04 $f
+	5199 12 $f
+	519a 04 $f
+	519b 00 $f
+	519c 06 $f
+	519d 82 $f
+	519e 38 $f
+  $"<< CAMDRIVER::Auto white balance control seq seq for OV5640 camera module"
+
+; // AWB_CONTROL_OV5640_END
+
+////////////////////////////
+CMX_CONTROL_OV5640 =
+  $">> CAMDRIVER::color Matrix control seq for OV5640 camera module"
+	5381 1e	$f	//CMX control
+	5382 5b $f
+	5383 08 $f
+	5384 0a $f
+	5385 7e $f
+	5386 88 $f
+	5387 7c $f
+	5388 6c $f
+	5389 10 $f
+	538a 01 $f
+	538b 98 $f
+  $"<< CAMDRIVER::color Matrix control seq for OV5640 camera module"
+
+; // CMX_CONTROL_OV5640_END
+
+////////////////////////////
+CIP_CONTROL_OV5640 =
+  $">> CAMDRIVER::color interpolation control seq for OV5640 camera module"
+	5300 08	$f	//CIP control
+	5301 30 $f
+	5302 10 $f
+	5303 00 $f
+	5304 08 $f
+	5305 30 $f
+	5306 08 $f
+	5307 16 $f
+	5309 08 $f
+	530a 30 $f
+	530b 04 $f
+	530c 06 $f
+  $"<< CAMDRIVER::color interpolation seq for OV5640 camera module"
+
+; // CIP_CONTROL_OV5640
+
+////////////////////////////
+GAMMA_CONTROL_OV5640 =
+  $">> CAMDRIVER::Gamma control seq for OV5640 camera module"
+	5480 01	$f	//gamma control
+	5481 08 $f
+	5482 14 $f
+	5483 28 $f
+	5484 51 $f
+	5485 65 $f
+	5486 71 $f
+	5487 7d $f
+	5488 87 $f
+	5489 91 $f
+	548a 9a $f
+	548b aa $f
+	548c b8 $f
+	548d cd $f
+	548e dd $f
+	548f ea $f
+	5490 1d $f
+  $"<< CAMDRIVER::Gamma control seq for OV5640 camera module"
+
+; // GAMMA_CONTROL_OV5640
+
+////////////////////////////
+SDE_CONTROL_OV5640 =
+  $">> CAMDRIVER::Special digital effects control seq for OV5640 camera module"
+	5580 02	$f	//SDE control SPECIAL DIGITAL EFFECTS
+	5583 40 $f
+	5584 10 $f
+	5589 10 $f
+	558a 00 $f
+	558b f8 $f
+  $"<< CAMDRIVER::Special digital effects control seq for OV5640 camera module"
+
+; // SDE_CONTROL_OV5640
+
+////////////////////////////
+LENC_CONTROL_OV5640 =
+  $">> CAMDRIVER::lens correction control seq for OV5640 camera module"
+	5800 23	$f	//LENC control
+	5801 14 $f
+	5802 0f $f
+	5803 0f $f
+	5804 12 $f
+	5805 26 $f
+	5806 0c $f
+	5807 08 $f
+	5808 05 $f
+	5809 05 $f
+	580a 08 $f
+	580b 0d $f
+	580c 08 $f
+	580d 03 $f
+	580e 00 $f
+	580f 00 $f
+	5810 03 $f
+	5811 09 $f
+	5812 07 $f
+	5813 03 $f
+	5814 00 $f
+	5815 01 $f
+	5816 03 $f
+	5817 08 $f
+	5818 0d $f
+	5819 08 $f
+	581a 05 $f
+	581b 06 $f
+	581c 08 $f
+	581d 0e $f
+	581e 29 $f
+	581f 17 $f
+	5820 11 $f
+	5821 11 $f
+	5822 15 $f
+	5823 28 $f
+	5824 46 $f
+	5825 26 $f
+	5826 08 $f
+	5827 26 $f
+	5828 64 $f
+	5829 26 $f
+	582a 24 $f
+	582b 22 $f
+	582c 24 $f
+	582d 24 $f
+	582e 06 $f
+	582f 22 $f
+	5830 40 $f
+	5831 42 $f
+	5832 24 $f
+	5833 26 $f
+	5834 24 $f
+	5835 22 $f
+	5836 22 $f
+	5837 26 $f
+	5838 44 $f
+	5839 24 $f
+	583a 26 $f
+	583b 28 $f
+	583c 42 $f
+	583d ce $f
+  $"<< CAMDRIVER::lens correction control seq for OV5640 camera module"
+
+; // LENC_CONTROL_OV5640
+////////////////////////////
+
+// ==========================================================
+// Power on initialization required for OMNIVISION module
+// ==========================================================
+
+////////////////////////////
+RESET_PW_DOWN_OV5640 =
+  $">> CAMDRIVER::Power Down sequence for OV5640 camera module"
+  	
+  	300e 58 $f		// MIPI CONTR0L0 - MIPI Disable and Power Down
+  	3103 11 $f		// SYSTEM CTRL1 - debug mode
+  	3008 82 $f		// SYSTEM CTROL0 -  software power down
+  	3008 42 $f		// SYSTEM CTROL0 -  software reset
+  	3000 30 $f	    // System Reset00
+  	3001 08 $f	    // System Reset01
+  	3002 1c $f		// System Reset02
+  	3003 00 $f		// System Reset03
+  	3004 cf $f		// Clock Enable00
+  	3005 f7 $f		// Clock Enable01
+  	3006 e3 $f		// Clock Enable02
+  	3007 ff $f		// Clock Enable03
+
+  $"<< CAMDRIVER::Power Down sequence for OV5640 camera module"
+; //RESET_PW_DOWN_OV5640
+
+SET_MIPI_CTRL = 	
+	4800 04 $f
+	4202 00 $f
+	$"<< CAMDRIVER::SET OV5640 MIPI CTRL"
+; //SET_MIPI_CTRL
+
+RESET_MIPI_CTRL = 	
+	4800 24 $f
+	4202 0f $f
+	$"<< CAMDRIVER::RESET OV5640 MIPI CTRL"
+; //RESET_MIPI_CTRL
+
+ENTER_MIPI_STANDBY = 
+	$">> CAMDRIVER::ENTER OV5640 MIPI STANDBY"
+
+	300e 58 $f		// MIPI CONTR0L0 - MIPI hw and software standby (2DL)
+
+	$"<< CAMDRIVER::ENTER OV5640 MIPI STANDBY"
+; //ENTER_MIPI_STANDBY_END
+
+EXIT_MIPI_STANDBY = 
+	$">> CAMDRIVER::EXIT OV5640 MIPI STANDBY"
+
+	300e 45 $f		// MIPI CONTR0L0 - OUT OF MIPI HW and software standby (2DL)
+	
+	$"<< CAMDRIVER::EXIT OV5640 MIPI STANDBY"
+; //EXIT_MIPI_STANDBY_END
+
+STOP_SENSOR_OV5640 =
+	$">> CAMDRIVER::STOP OV5640 camera module"
+
+	3008 42 $f		// SYSTEM CTROL0 -  software power down
+
+	$"<< CAMDRIVER::STOP OV5640 camera module"
+; //STOP_SENSOR_OV5640_END
+
+START_SENSOR_OV5640 =
+	$">> CAMDRIVER::START OV5640 camera module"
+
+	3008 02	$f	//System control , OUT OF RESET and STREAMING
+
+	$"<< CAMDRIVER::START OV5640 camera module"
+; //START_SENSOR_OV5640_END
+
+INIT_SEQ_OV5640 =
+  $">> CAMDRIVER::Initialization seq for OV5640 camera module"
+	
+	#PLL_CONTROL_OV5640
+	#MANUFACTURER_SETTING_OV5640
+	#VCM_CONTROL_OV5640
+	#SYSTEM_CONTROL_OV5640
+
+	3620 52 $f	//Manufacture settings
+	371b 20 $f
+	471c 50 $f
+
+	#AEC_CONTROL_OV5640
+
+	3635 13 $f	//Manufacture settings
+	3636 03 $f
+	3634 40 $f
+	3622 01 $f
+
+	#HZ5060_DETECTOR_CONTROL_REGISTERS_OV5640
+  
+  $"<< CAMDRIVER::Initialization seq for OV5640 camera module"
+
+; // INIT_SEQ_OV5640_END
+
+
+
+// --- Effect MACROS for property a -------------------------
+
+//Default Normal
+
+////////////////////////////
+//@@ Normal 
+EFFECTS_NORMAL=  // Set Normal effects
+
+ $">> CAMDRIVER::Effects configured for NORMAL"
+3212 00 $f
+5580 06 $f
+5583 40 $f
+5584 10 $f
+5003 08 $f
+3212 13 $f
+3212 a0 $f
+ $"<< CAMDRIVER::Effects configured for NORMAL"
+;
+
+
+//@@ B&W  
+EFFECTS_BW=  // Set B&W effects
+
+ $">> CAMDRIVER::Effects configured for B&W"
+3212 00 $f
+5580 1e $f
+5583 80 $f
+5584 80 $f
+5003 08 $f
+3212 13 $f
+3212 a0 $f
+ $"<< CAMDRIVER::Effects configured for B&W"
+;
+
+
+//@@ Sepia 
+EFFECTS_SEPIA=  // Set Sepia effects
+
+ $">> CAMDRIVER::Effects configured for SEPIA"
+3212 00 $f  
+5580 1e $f
+5583 40 $f
+5584 a0 $f
+5003 08 $f
+3212 10 $f  
+3212 a0 $f
+ $"<< CAMDRIVER::Effects configured for SEPIA"
+;
+
+//@@ Bluish
+EFFECTS_BLUISH=  // Set Bluish effects
+
+ $">> CAMDRIVER::Effects configured for BLUISH"
+5001 ab $f
+5580 1a $f
+5583 a0 $f
+5584 40 $f
+ $"<< CAMDRIVER::Effects configured for BLUISH"
+;
+
+//@@ Reddish
+EFFECTS_REDDISH=  // Set Reddish effects
+
+ $">> CAMDRIVER::Effects configured for REDDISH"
+5001 ab $f
+5580 1a $f
+5583 80 $f
+5584 c0 $f
+ $"<< CAMDRIVER::Effects configured for REDDISH"
+;
+
+
+//@@ Greenish
+EFFECTS_GREENISH=  // Set Greenish effects
+
+ $">> CAMDRIVER::Effects configured for GREENISH"
+5001 ab $f
+5580 1a $f
+5583 60 $f
+5584 60 $f
+ $"<< CAMDRIVER::Effects configured for GREENISH"
+;
+
+//@@ Negative
+EFFECTS_NEG=  // Set Negative effects
+
+ $">> CAMDRIVER::Effects configured for NEG"
+3212 00 $f
+5580 40 $f
+5583 40 $f
+5584 10 $f
+5003 08 $f
+3212 13 $f
+3212 a0 $f
+ $"<< CAMDRIVER::Effects configured for NEG"
+;
+
+//@@ Solarize
+EFFECTS_SOLARIZE=  // Set Solarize effects
+
+ $">> CAMDRIVER::Effects configured for SOLARIZE"
+3212 00 $f
+5580 06 $f
+5583 40 $f
+5584 10 $f
+5003 09 $f
+3212 13 $f
+3212 a0 $f
+ $"<< CAMDRIVER::Effects configured for SOLARIZE"
+;
+
+//=========================================================
+// I2C sequence section
+//=========================================================
+seq_init =
+  $">> CAMDRIVER::seq_init"
+
+  // Do the one time initialization for OV5640
+  #INIT_SEQ_OV5640
+
+  #AWB_CONTROL_OV5640
+  #CMX_CONTROL_OV5640
+  #CIP_CONTROL_OV5640
+  #GAMMA_CONTROL_OV5640
+  #SDE_CONTROL_OV5640
+  #LENC_CONTROL_OV5640
+
+  #GET_ID
+
+  $"<< CAMDRIVER::seq_init"
+;
+
+cam_init_result = 56,40;
+
+////////////////////////////
+seq_ping =
+  $">> CAMDRIVER::seq_ping"
+
+    #GET_ID
+
+  $"<< CAMDRIVER::seq_ping"
+;
+
+cam_ping_result = 56,40;
+
+////////////////////////////
+seq_deinit = 
+
+  $">> CAMDRIVER::seq_deinit"
+	
+	#RESET_PW_DOWN_OV5640
+
+  $"<< CAMDRIVER::seq_deinit"
+;
+
+//=========================================================
+// VF Configuration
+//=========================================================
+
+////////////////////////////
+seq_vf_config_0 =
+  $">> CAMDRIVER::seq_vf_config_0 (VGA - 30fps preview)"
+
+	#IMAGE_WINDOWING_REGISTERS_OV5640_VGA_30FPS
+
+  $"<< CAMDRIVER::seq_vf_config_0"
+;
+
+////////////////////////////
+seq_vf_config_1 =
+  $">> CAMDRIVER::seq_vf_config_1 (1280*720 - 30fps preview)"
+
+   	#IMAGE_WINDOWING_REGISTERS_OV5640_720P_30FPS
+
+  $"<< CAMDRIVER::seq_vf_config_1"
+;
+
+////////////////////////////
+seq_vf_config_2 =
+  $">> CAMDRIVER::seq_vf_config_2 (320x240 - 30fps preview)"
+
+	#IMAGE_WINDOWING_REGISTERS_OV5640_QVGA_30FPS
+
+  $"<< CAMDRIVER::seq_vf_config_2"
+;
+
+seq_vf_config_3 =
+  $">> CAMDRIVER::seq_vf_config_3 (1280*720 - 60fps preview)"
+
+	#IMAGE_WINDOWING_REGISTERS_OV5640_720P_60FPS
+
+  $"<< CAMDRIVER::seq_vf_config_3"
+;
+
+seq_vf_config_4 =
+  $">> CAMDRIVER::seq_vf_config_4 (352*288 - 30fps preview)"
+
+	#IMAGE_WINDOWING_REGISTERS_OV5640_CIF_30FPS
+
+  $"<< CAMDRIVER::seq_vf_config_4"
+;
+
+seq_vf_config_5 =
+  $">> CAMDRIVER::seq_vf_config_5 (176*144 - 30fps preview)"
+
+	#IMAGE_WINDOWING_REGISTERS_OV5640_QCIF_30FPS
+
+  $"<< CAMDRIVER::seq_vf_config_5"
+;
+
+seq_vf_config_6 =
+  $">> CAMDRIVER::seq_vf_config_6 (800*480 - 30fps preview)"
+  
+	#IMAGE_WINDOWING_REGISTERS_OV5640_WVGA_30FPS
+	
+  $"<< CAMDRIVER::seq_vf_config_6"
+;
+
+seq_vf_config_7 =
+  $">> CAMDRIVER::seq_vf_config_7 (720*480 - 30fps preview)"
+  
+	#IMAGE_WINDOWING_REGISTERS_OV5640_SDTV_NTSC_30FPS
+	
+  $"<< CAMDRIVER::seq_vf_config_7"
+;
+
+seq_vf_config_8 =
+  $">> CAMDRIVER::seq_vf_config_8 (720*576 - 30fps preview)"
+  
+	#IMAGE_WINDOWING_REGISTERS_OV5640_SDTV_PAL_30FPS
+	
+  $"<< CAMDRIVER::seq_vf_config_8"
+;
+
+seq_vf_config_9 =
+  $">> CAMDRIVER::seq_vf_config_9 (2592*1944 - 15fps preview)"
+  
+	#IMAGE_WINDOWING_REGISTERS_OV5640_5MP_15FPS
+	
+  $"<< CAMDRIVER::seq_vf_config_9"
+;
+
+seq_vf_config_11 =
+  $">> CAMDRIVER::seq_vf_config_11 (1920*1080 - 30fps preview)"
+
+	#IMAGE_WINDOWING_REGISTERS_OV5640_1080P_30FPS
+
+  $"<< CAMDRIVER::seq_vf_config_11"
+;
+
+seq_vf_config_12 =
+  $">> CAMDRIVER::seq_vf_config_12 (1280*980 - 30fps preview)"
+	#IMAGE_WINDOWING_REGISTERS_OV5640_SXGA_30FPS
+  $"<< CAMDRIVER::seq_vf_config_12"
+;
+
+////////////////////////////
+seq_vf_start =
+  $">> CAMDRIVER::seq_vf_start"
+
+  #SET_MIPI_CTRL
+  #EXIT_MIPI_STANDBY
+  #START_SENSOR_OV5640
+
+  $"<< CAMDRIVER::seq_vf_start"
+;
+
+////////////////////////////
+seq_vf_return =
+  $">> CAMDRIVER::seq_vf_return"
+
+  #SET_MIPI_CTRL
+  #EXIT_MIPI_STANDBY
+  #START_SENSOR_OV5640
+
+  $"<< CAMDRIVER::seq_vf_return"
+;
+
+////////////////////////////
+seq_vf_stop =
+  $">> CAMDRIVER::seq_vf_stop"
+
+  #RESET_MIPI_CTRL
+
+  $"<< CAMDRIVER::seq_vf_stop"
+;
+
+//=========================================================
+// SS Configuration
+//=========================================================
+seq_ss_config_a = 
+
+  $">> CAMDRIVER::seq_ss_config_a (take 5MP picture)" 
+	
+  	#IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_5MP
+
+  $"<< CAMDRIVER::seq_ss_config_a" 
+;
+
+seq_ss_config_b = 
+
+  $">> CAMDRIVER::seq_ss_config_b (take 1.4MP picture)" 
+	
+  	#IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_1_4MP
+
+  $"<< CAMDRIVER::seq_ss_config_b" 
+;
+
+seq_ss_config_c = 
+
+  $">> CAMDRIVER::seq_ss_config_c (take 2MP picture)" 
+	
+  	#IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_2MP
+
+  $"<< CAMDRIVER::seq_ss_config_c" 
+;
+
+seq_ss_config_d = 
+
+  $">> CAMDRIVER::seq_ss_config_d (take 3.2MP picture)" 
+	
+  	#IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_3MP
+
+  $"<< CAMDRIVER::seq_ss_config_d" 
+;
+
+seq_ss_config_e = 
+
+  $">> CAMDRIVER::seq_ss_config_e (take 1MP picture)" 
+	
+  	#IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_1MP
+
+  $"<< CAMDRIVER::seq_ss_config_e" 
+;
+
+seq_ss_config_f = 
+
+  $">> CAMDRIVER::seq_ss_config_f (take Jpeg VGA picture)" 
+	
+  	#IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_VGA
+
+  $"<< CAMDRIVER::seq_ss_config_f" 
+;
+
+seq_ss_config_10 = 
+
+  $">> CAMDRIVER::seq_ss_config_10 (take QVGA picture)" 
+	
+  	#IMAGE_WINDOWING_REGISTERS_OV5640_JPEG_QVGA
+
+  $"<< CAMDRIVER::seq_ss_config_10" 
+;
+
+////////////////////////////
+
+seq_ss_start =
+  $">> CAMDRIVER::seq_ss_start"
+
+  #SET_MIPI_CTRL
+
+  $"<< CAMDRIVER::seq_ss_start"
+;
+
+////////////////////////////
+seq_ss_take =
+  $">> CAMDRIVER::seq_ss_take"
+
+  $"<< CAMDRIVER::seq_ss_take"
+;
+
+////////////////////////////
+seq_ss_stop =
+  $">> CAMDRIVER::seq_ss_stop"
+	
+  #RESET_MIPI_CTRL
+
+  $"<< CAMDRIVER::seq_ss_stop"
+;
+
+////////////////////////////
+seq_focus_status =
+
+  $">> CAMDRIVER::seq_focus_status"
+
+	3000 20 $f
+	$d000a
+	3000 00 $f
+
+	3023 01 $f  
+	3022 12 $f          // re-launch focus
+	$d000a
+
+	3023 01 $f  
+	3022 03 $f   //trig single auto focus
+//  3022 04 $f   //continue auto focus
+
+	$s4 01
+	[4 32             // loop
+
+	#GET_REG1(3023)
+	$c0 00
+	$d000a
+	$cl
+	$s4 00
+	$cx
+	]
+
+	$s4 01
+	[4 32             // loop
+
+	#GET_REG1(3029)
+	$c0 10
+	$s4 00
+	$"auto focus success."
+	$cl
+	$d0064
+	$"auto focus failed."
+	$cx
+	]
+
+	$c0 10
+	$"auto focus success."
+	$cl
+	$"auto focus re reset."
+	3000 20 $f
+	$d000a
+	3000 00 $f
+	$cx
+
+  $"<< CAMDRIVER::seq_focus_status"
+
+;//BNG: always return status reached for test prupose, duplicate PING code
+
+cam_focus_result = 10 ;
+
+//=========================================================
+// start of properties
+//=========================================================
+
+// --- Exposure control property -------------------------
+
+seq_set_prop_0_0 = $"=== exposure test value 0, nothing is sent to camera ===";
+seq_set_prop_0_1 = $"=== exposure test value 1, nothing is sent to camera ===";
+seq_set_prop_0_2 = $"=== exposure test value 2, nothing is sent to camera ===";
+
+// --- White balance property -------------------------
+
+/* +ER336738 */
+seq_set_prop_1_1 =
+$"=== WB Auto ==="
+	3212 03 $f // start group 3 
+	3406 00 $f 
+	3400 04 $f 
+	3401 00 $f
+	3402 04 $f 
+	3403 00 $f 
+	3404 04 $f 
+	3405 00 $f
+	3212 13 $f// end group 3 
+	3212 a3 $f// launch group 3 
+;
+
+seq_set_prop_1_2 =
+$"=== WB Daylight ==="
+	3212 03 $f // start group 3 
+	3406 01 $f
+	3400 06 $f
+	3401 1c $f
+	3402 04 $f
+	3403 00 $f
+	3404 04 $f
+	3405 f3 $f
+	3212 13 $f // end group 3 
+	3212 a3 $f // launch group 3 
+
+;
+
+seq_set_prop_1_3 =
+$"=== WB Cloudy ==="
+	3212 03 $f // start group 3
+	3406 01 $f
+	3400 06 $f
+	3401 48 $f
+	3402 04 $f
+	3403 00 $f
+	3404 04 $f
+	3405 d3 $f
+	3212 13 $f // end group 3
+	3212 a3 $f // launch group 3
+;
+
+seq_set_prop_1_6 =
+$"=== WB Fluorescent ==="
+	3212 03 $f // start group 3 
+	3406 01 $f
+	3400 05 $f
+	3401 48 $f
+	3402 04 $f
+	3403 00 $f
+	3404 07 $f
+	3405 cf $f
+	3212 13 $f // end group 3 
+	3212 a3 $f // launch group 3 
+;
+
+seq_set_prop_1_7 =
+$"=== WB Incandescent ==="    
+	3212 03 $f // start group 3 
+	3406 01 $f
+	3400 04 $f  
+	3401 10 $f
+	3402 04 $f
+	3403 00 $f
+	3404 08 $f
+	3405 40 $f
+	3212 13 $f // end group 3 
+	3212 a3 $f // lanuch group 3 
+;
+	
+	
+// ---- Focus Mode property 0x6 -------------
+seq_set_prop_6_0 = $"=== Focus Mode test value OFF, nothing is sent to camera ===";
+seq_set_prop_6_1 = $"=== Focus Mode test value MANUAL, nothing is sent to camera ===";
+//seq_set_prop_6_2 = $"=== Focus Mode test value AUTO, nothing is sent to camera ===";
+seq_set_prop_6_2 = $"=== Focus Mode AUTO,  ==="
+#GET_REG1(8000)
+#GET_REG1(8001)
+#GET_REG1(8002)
+
+#GET_REG1(8000)
+  $c0 02
+     $" focus had init."
+  $cl
+     $" focus init."
+	#focus_hw1
+	#focus_hw2
+	#focus_hw3
+	#focus_hw4
+	#focus_hw5
+	#focus_hw6
+	#focus_hw7
+	#focus_hw8
+	#focus_hw9
+	#focus_hw10
+  $cx
+;
+seq_set_prop_6_3 = $"=== Focus Mode test value AUTOLOCK, nothing is sent to camera ===";
+
+// ---- Focus Macro property 0x7 -------------
+seq_set_prop_7_0 = $"=== Focus Macro test value OFF, nothing is sent to camera ===";
+seq_set_prop_7_1 = $"=== Focus Macro test value ON, nothing is sent to camera ===";
+
+
+// --- Effect property a -------------------------
+//  0 => normal,  1 => black & white,      2 => sepia 
+//  3 => Bluish, 4 => Reddish,   5 => Greenish
+//  6 => Negative
+//------------------------------------------------
+// NOTE: 
+/*------------------------------------------------------------*/
+seq_set_prop_a =   $"=== Effects setting  ===";	        
+seq_set_prop_a_0 = #EFFECTS_NORMAL;		//OV5640 Normal
+seq_set_prop_a_1 = #EFFECTS_BW;			//OV5640 B & W
+seq_set_prop_a_2 = #EFFECTS_NEG;		//OV5640 Sepia
+seq_set_prop_a_3 = #EFFECTS_SOLARIZE;	//OV5640 Solarize
+seq_set_prop_a_4 = #EFFECTS_SEPIA;		//OV5640 Reddish
+seq_set_prop_a_5 = #EFFECTS_GREENISH;	//OV5640 Greenish
+seq_set_prop_a_6 = #EFFECTS_BLUISH;		//OV5640 Bluish
+seq_set_prop_a_7 = #EFFECTS_REDDISH;	//OV5640 Reddish
+seq_set_prop_a_8 = #EFFECTS_NEG;		//OV5640 Negative
+
+// ---- contrast property 0xc -------------
+seq_set_prop_c_4 = $"=== contrast value 4 ==="
+3212 03 $f // start group 3 
+5586 28 $f 
+5585 18 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+
+
+seq_set_prop_c_3 = $"=== contrast value 3 ==="
+3212 03 $f // start group 3 
+5586 24 $f 
+5585 10 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+
+seq_set_prop_c_2 = $"=== contrast value 2 ==="
+3212 03 $f // start group 3 
+5586 20 $f 
+5585 00 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+
+
+seq_set_prop_c_1 = $"=== contrast value 1 ==="
+3212 03 $f // start group 3 
+5586 1c $f 
+5585 1c $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+
+seq_set_prop_c_0 = $"=== contrast value 0 ==="
+3212 03 $f // start group 3 
+5586 18 $f 
+5585 18 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+
+// ---- Brightness property 0xe -------------
+seq_set_prop_e_0 = 
+$"=== Brightness value 0 ==="
+3a0f 20 $f
+3a10 18 $f
+3a11 41 $f
+3a1b 20 $f
+3a1e 18 $f
+3a1f 10 $f
+;
+seq_set_prop_e_1 = 
+$"=== Brightness value 1 ==="
+3a0f 30 $f
+3a10 28 $f
+3a11 61 $f
+3a1b 30 $f
+3a1e 28 $f
+3a1f 10 $f
+;
+seq_set_prop_e_2 = 
+$"=== Brightness value 2 ==="
+3a0f 38 $f
+3a10 30 $f
+3a11 61 $f
+3a1b 38 $f
+3a1e 30 $f
+3a1f 10 $f
+;
+seq_set_prop_e_3 = 
+$"=== Brightness value 3 ==="
+3a0f 40 $f
+3a10 38 $f
+3a11 71 $f
+3a1b 40 $f
+3a1e 38 $f
+3a1f 10 $f
+;
+seq_set_prop_e_4 = 
+$"=== Brightness value 4 ==="
+3a0f 50 $f
+3a10 48 $f
+3a11 90 $f
+3a1b 50 $f
+3a1e 48 $f
+3a1f 10 $f
+;
+// ---- saturation property 0x13 -------------
+seq_set_prop_13_0 = 
+$"  === saturation mode value 0  ==="
+3212 03 $f // start group 3 
+5381 1c $f  
+5382 5a $f  
+5383 06 $f  
+5384 10 $f  
+5385 3d $f  
+5386 4d $f  
+5387 4e $f  
+5388 4d $f  
+5389 01 $f  
+538b 98 $f  
+538a 01 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+seq_set_prop_13_1 = 
+$"  === saturation mode value 1  ==="
+3212 03 $f // start group 3 
+5381 1c $f  
+5382 5a $f  
+5383 06 $f  
+5384 15 $f  
+5385 52 $f  
+5386 66 $f  
+5387 68 $f  
+5388 66 $f  
+5389 02 $f  
+538b 98 $f  
+538a 01 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+seq_set_prop_13_2 = 
+$"  === saturation mode value 2  ==="
+3212 03 $f // start group 3 
+5381 1c $f  
+5382 5a $f  
+5383 06 $f  
+5384 1a $f  
+5385 66 $f  
+5386 80 $f  
+5387 82 $f  
+5388 80 $f  
+5389 02 $f  
+538b 98 $f  
+538a 01 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+seq_set_prop_13_3 = 
+$"  === saturation mode value 3  ==="
+3212 03 $f // start group 3 
+5381 1c $f  
+5382 5a $f  
+5383 06 $f  
+5384 1f $f  
+5385 7a $f  
+5386 9a $f  
+5387 9c $f  
+5388 9a $f  
+5389 02 $f  
+538b 98 $f  
+538a 01 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+seq_set_prop_13_4 = 
+$"  === saturation mode value 4  ==="
+3212 03 $f // start group 3 
+5381 1c $f  
+5382 5a $f  
+5383 06 $f  
+5384 24 $f  
+5385 8f $f  
+5386 b3 $f  
+5387 b6 $f  
+5388 b3 $f  
+5389 03 $f  
+538b 98 $f  
+538a 01 $f 
+3212 13 $f // end group 3 
+3212 a3 $f // launch group 3 
+;
+
+
+
+// ---- iso property 0x17 -------------
+seq_set_prop_17_0 =
+$">> CAMDRIVER::seq_set_prop_17_0 (ISO AUTO)"
+3a19 7c $f
+$"<< CAMDRIVER::seq_set_prop_17_0";
+seq_set_prop_17_1 =
+$">> CAMDRIVER::seq_set_prop_17_1 (ISO 100)"
+3a19 1f $f
+$"<< CAMDRIVER::seq_set_prop_17_1";
+seq_set_prop_17_2 =
+$">> CAMDRIVER::seq_set_prop_17_2 (ISO 200)"
+3a19 2f $f
+$"<< CAMDRIVER::seq_set_prop_17_2";
+seq_set_prop_17_3 =
+$">> CAMDRIVER::seq_set_prop_17_3 (ISO 400)"
+3a19 3f $f
+$"<< CAMDRIVER::seq_set_prop_17_3";
+seq_set_prop_17_4 =
+$">> CAMDRIVER::seq_set_prop_17_4 (ISO 800)"
+3a19 4f $f
+$"<< CAMDRIVER::seq_set_prop_17_4";
+seq_set_prop_17_5 =
+$">> CAMDRIVER::seq_set_prop_17_5 (ISO 1600)"
+3a19 7f $f
+$"<< CAMDRIVER::seq_set_prop_17_5";
+
+// ---- Focus range property 0x19 -------------
+seq_set_prop_19_0 = $"=== Focusrange test value: Auto, nothing sent to camera ===";
+seq_set_prop_19_1 = $"=== Focusrange test value: Hyperfocal, nothing sent to camera ===";
+seq_set_prop_19_2 = $"=== Focusrange test value: Normal, nothing sent to camera ===";
+seq_set_prop_19_3 = $"=== Focusrange test value: Supermacro, nothing sent to camera ===";
+seq_set_prop_19_4 = $"=== Focusrange test value: Macro, nothing sent to camera ===";
+seq_set_prop_19_5 = $"=== Focusrange test value: Infinity, nothing sent to camera ===";
+
+
+seq_vf_zoom_0 =
+$"seq_vf_zoom_1.0"
+;
+
+seq_vf_zoom_1 =
+$"seq_vf_zoom_1.5"
+;
+
+seq_vf_zoom_2 =
+$"seq_vf_zoom_2.0"
+;
+
+seq_vf_zoom_3 =
+$"seq_vf_zoom_2.5"
+;
+
+seq_vf_zoom_4 =
+$"seq_vf_zoom_3.0"
+;
+
+seq_vf_zoom_5 =
+$"seq_vf_zoom_3.5"
+;
+
+seq_vf_zoom_6 =
+$"seq_vf_zoom_4.0"
+;
+

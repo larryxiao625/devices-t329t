@@ -1,0 +1,15 @@
+
+.method public setSimpleDecorView(ZLandroid/graphics/Bitmap;)V
+# 
+# Auto Add by baidu, it's blank 
+# return-void 
+# 
+# You better modify here by yourself, if you found it is wrong for doing nothing 
+# Warning: Can not just copy this method from vendor, it musted used some unexist field or class 
+# 
+    .locals 0 
+
+    .prologue 
+    return-void 
+.end method 
+

@@ -1,0 +1,43 @@
+<!-- /*
+ * Copyright (C) ST-Ericsson SA 2010. All rights reserved.
+ * This code is ST-Ericsson proprietary and confidential.
+ * Any use of the code for whatever purpose is subject to
+ * specific written permission of ST-Ericsson SA.
+ */ -->
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<IQSETTINGS>
+
+  <ID>
+    <OP_MODE>StillPreview</OP_MODE>
+    <VERSION>
+      <STRUCT>4</STRUCT>
+      <ENTRIES>0</ENTRIES>
+      <PARAMS>0</PARAMS>
+      <VALUES>0</VALUES>
+    </VERSION>
+    <SENSOR>
+      <NAME>HTC 5690</NAME>
+      <MANUFACTURER>0x00</MANUFACTURER>
+      <MODEL>0x5690</MODEL>
+    </SENSOR>
+    <FIRMWARE>
+      <MAJOR>7</MAJOR>
+      <MINOR>14</MINOR>
+      <PATCH>0</PATCH>
+    </FIRMWARE>
+    <SW3A>
+      <MAJOR>2</MAJOR>
+      <MINOR>0</MINOR>
+      <BUILD>111108</BUILD>
+    </SW3A>
+  </ID>
+  
+  <CONFIGURATION>
+
+    <!-- Stille previw operating mode not used ***************************** -->
+    
+  </CONFIGURATION>
+  
+</IQSETTINGS>

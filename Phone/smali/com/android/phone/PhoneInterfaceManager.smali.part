@@ -1,0 +1,344 @@
+
+.method public setRadioExt(ZI)Z
+    .locals 1
+    .parameter "turnOn"
+    .parameter "phoneType"
+
+    .prologue
+    .line 4159
+    const/4 v0, 0x1
+
+    return v0
+.end method
+
+.method public getGprsState()I
+    .locals 1
+
+    .prologue
+    .line 1790
+    invoke-direct {p0}, Lcom/android/phone/PhoneInterfaceManager;->enforceReadPermission()V
+
+    .line 1791
+    iget-object v0, p0, Lcom/android/phone/PhoneInterfaceManager;->mPhone:Lcom/android/internal/telephony/Phone;
+
+    check-cast v0, Lcom/android/internal/telephony/HtcIfPhone;
+
+    invoke-interface {v0}, Lcom/android/internal/telephony/HtcIfPhone;->getGprsState()I
+
+    move-result v0
+
+    return v0
+.end method
+
+.method public getPreferredNetworkType()I
+    .locals 2
+
+    .prologue
+    .line 3242
+    invoke-direct {p0}, Lcom/android/phone/PhoneInterfaceManager;->enforceReadPermission()V
+
+    .line 3243
+    const/16 v0, 0x10
+
+    const/4 v1, 0x0
+
+    invoke-direct {p0, v0, v1}, Lcom/android/phone/PhoneInterfaceManager;->sendRequest(ILjava/lang/Object;)Ljava/lang/Object;
+
+    move-result-object v0
+
+    check-cast v0, Ljava/lang/Integer;
+
+    invoke-virtual {v0}, Ljava/lang/Integer;->intValue()I
+
+    move-result v0
+
+    return v0
+.end method
+
+.method public getHtcNetworkType([Ljava/lang/String;)I
+    .locals 2
+    .parameter "stack"
+
+    .prologue
+    .line 3274
+    invoke-virtual {p0}, Lcom/android/phone/PhoneInterfaceManager;->getNetworkType()I
+
+    move-result v1
+
+    .line 3275
+    .local v1, networkType:I
+    const/4 v0, 0x0
+
+    .line 3343
+    .local v0, debugNetworkTypeShown:Z
+    return v1
+.end method
+
+.method public isRadioOnExt(I)Z
+    .locals 1
+    .parameter "phoneType"
+
+    .prologue
+    .line 4150
+    const/4 v0, 0x0
+
+    return v0
+.end method
+
+.method public setPreferredNetworkType(I)V
+    .locals 2
+    .parameter "type"
+
+    .prologue
+    const/4 v1, 0x0
+
+    .line 3254
+    invoke-direct {p0, v1}, Lcom/android/phone/PhoneInterfaceManager;->callingWithPlatformSignature(Z)Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    invoke-direct {p0, v1}, Lcom/android/phone/PhoneInterfaceManager;->callingWithShareSignature(Z)Z
+
+    move-result v0
+
+    if-nez v0, :cond_0
+
+    invoke-direct {p0}, Lcom/android/phone/PhoneInterfaceManager;->lastSignatureChecking()Z
+
+    move-result v0
+
+    if-eqz v0, :cond_2
+
+    .line 3259
+    :cond_0
+    sget-boolean v0, Lcom/android/phone/PhoneInterfaceManager;->DBG:Z
+
+    if-eqz v0, :cond_1
+
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v1, "setPreferredNetworkType (phone app):"
+
+    invoke-virtual {v0, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v0
+
+    invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v0
+
+    invoke-direct {p0, v0}, Lcom/android/phone/PhoneInterfaceManager;->log(Ljava/lang/String;)V
+
+    .line 3260
+    :cond_1
+    iget-object v0, p0, Lcom/android/phone/PhoneInterfaceManager;->mPhone:Lcom/android/internal/telephony/Phone;
+
+    invoke-interface {v0}, Lcom/android/internal/telephony/Phone;->getContext()Landroid/content/Context;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v0
+
+    const-string v1, "preferred_network_mode"
+
+    invoke-static {v0, v1, p1}, Landroid/provider/Settings$Secure;->putInt(Landroid/content/ContentResolver;Ljava/lang/String;I)Z
+
+    .line 3263
+    const/16 v0, 0x12
+
+    new-instance v1, Ljava/lang/Integer;
+
+    invoke-direct {v1, p1}, Ljava/lang/Integer;-><init>(I)V
+
+    invoke-direct {p0, v0, v1}, Lcom/android/phone/PhoneInterfaceManager;->sendRequest(ILjava/lang/Object;)Ljava/lang/Object;
+
+    .line 3265
+    :cond_2
+    return-void
+.end method
+
+.method public getServiceState()I
+    .locals 1
+
+    .prologue
+    .line 2288
+    invoke-direct {p0}, Lcom/android/phone/PhoneInterfaceManager;->enforceReadPermission()V
+
+    .line 2289
+    iget-object v0, p0, Lcom/android/phone/PhoneInterfaceManager;->mPhone:Lcom/android/internal/telephony/Phone;
+
+    invoke-interface {v0}, Lcom/android/internal/telephony/Phone;->getServiceState()Landroid/telephony/ServiceState;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Landroid/telephony/ServiceState;->getState()I
+
+    move-result v0
+
+    return v0
+.end method
+
+.method public setTimeZone(ZI)V
+    .locals 4
+    .parameter "sign"
+    .parameter "offset"
+
+    .prologue
+    .line 1290
+    invoke-direct {p0}, Lcom/android/phone/PhoneInterfaceManager;->enforceModifyPermission()V
+
+    .line 1291
+    const/4 v2, 0x2
+
+    new-array v1, v2, [Ljava/lang/String;
+
+    .line 1292
+    .local v1, commands:[Ljava/lang/String;
+    const/4 v2, 0x0
+
+    const-string v3, "UNIAT"
+
+    aput-object v3, v1, v2
+
+    .line 1293
+    new-instance v0, Ljava/lang/StringBuilder;
+
+    const/16 v2, 0x14
+
+    invoke-direct {v0, v2}, Ljava/lang/StringBuilder;-><init>(I)V
+
+    .line 1294
+    .local v0, builder:Ljava/lang/StringBuilder;
+    const-string v2, "at@settimezone="
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 1295
+    if-eqz p1, :cond_1
+
+    .line 1296
+    const-string v2, "1,"
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 1301
+    :goto_0
+    if-gez p2, :cond_0
+
+    .line 1302
+    invoke-static {p2}, Ljava/lang/Math;->abs(I)I
+
+    move-result p2
+
+    .line 1305
+    :cond_0
+    invoke-virtual {v0, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    .line 1306
+    const-string v2, "\r"
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    .line 1307
+    const/4 v2, 0x1
+
+    invoke-virtual {v0}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v3
+
+    aput-object v3, v1, v2
+
+    .line 1308
+    iget-object v2, p0, Lcom/android/phone/PhoneInterfaceManager;->mPhone:Lcom/android/internal/telephony/Phone;
+
+    const/4 v3, 0x0
+
+    invoke-interface {v2, v1, v3}, Lcom/android/internal/telephony/Phone;->invokeOemRilRequestStrings([Ljava/lang/String;Landroid/os/Message;)V
+
+    .line 1309
+    return-void
+
+    .line 1298
+    :cond_1
+    const-string v2, "0,"
+
+    invoke-virtual {v0, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    goto :goto_0
+.end method
+
+.method public sendAllowedCSIMCommand(Ljava/lang/String;)[Ljava/lang/String;
+# 
+# Auto Add by baidu, it's blank 
+# It should return an object, return null instead 
+# 
+# You better modify here by yourself, if you got NullPointerException after invoked this method 
+# Warning: Can not just copy this method from vendor, it musted used some unexist field or class 
+# 
+    .locals 1 
+
+    .prologue 
+    const/4 v0, 0x0 
+
+    return-object v0 
+.end method 
+
+.method private callingWithShareSignature(Z)Z
+# 
+# Auto Add by baidu, it's blank 
+# It should return a boolean, return false instead 
+# 
+# You better modify here by yourself, if you found it is wrong for just return false 
+# Warning: Can not just copy this method from vendor, it musted used some unexist field or class 
+# 
+    .locals 1 
+
+    .prologue 
+    const/4 v0, 0x0 
+
+    return v0 
+.end method 
+
+
+.method private lastSignatureChecking()Z
+# 
+# Auto Add by baidu, it's blank 
+# It should return a boolean, return false instead 
+# 
+# You better modify here by yourself, if you found it is wrong for just return false 
+# Warning: Can not just copy this method from vendor, it musted used some unexist field or class 
+# 
+    .locals 1 
+
+    .prologue 
+    const/4 v0, 0x0 
+
+    return v0 
+.end method 
+
+
+.method private callingWithPlatformSignature(Z)Z
+# 
+# Auto Add by baidu, it's blank 
+# It should return a boolean, return false instead 
+# 
+# You better modify here by yourself, if you found it is wrong for just return false 
+# Warning: Can not just copy this method from vendor, it musted used some unexist field or class 
+# 
+    .locals 1 
+
+    .prologue 
+    const/4 v0, 0x0 
+
+    return v0 
+.end method 

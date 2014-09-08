@@ -1,0 +1,714 @@
+<!-- /*
+ * Copyright (C) ST-Ericsson SA 2010. All rights reserved.
+ * This code is ST-Ericsson proprietary and confidential.
+ * Any use of the code for whatever purpose is subject to
+ * specific written permission of ST-Ericsson SA.
+ */ -->
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<IQSETTINGS>
+
+  <ID>
+    <OP_MODE>Still</OP_MODE>
+    <VERSION>
+      <STRUCT>4</STRUCT>
+      <ENTRIES>0</ENTRIES>
+      <PARAMS>0</PARAMS>
+      <VALUES>0</VALUES>
+    </VERSION>
+    <SENSOR>
+      <NAME>HTC 5690</NAME>
+      <MANUFACTURER>0x00</MANUFACTURER>
+      <MODEL>0x5690</MODEL>
+    </SENSOR>
+    <FIRMWARE>
+      <MAJOR>7</MAJOR>
+      <MINOR>14</MINOR>
+      <PATCH>0</PATCH>
+    </FIRMWARE>
+    <SW3A>
+      <MAJOR>2</MAJOR>
+      <MINOR>0</MINOR>
+      <BUILD>111108</BUILD>
+    </SW3A>
+  </ID>
+  
+  <CONFIGURATION>
+
+    <!-- Operating mode setup ********************************************** -->
+  
+    <IQSET>
+      <NAME>IQSET_OPMODE_SETUP</NAME>
+
+    </IQSET>
+
+    <!-- Exposure modes **************************************************** -->
+
+    <IQSET>
+	  <!-- Used for auto still capture mode -->
+      <NAME>IQSET_EXPOSURECONTROL_AUTO</NAME>
+      <SW3A_AEC>
+        <PARAM>
+          <NAME>backlight_detection_enable</NAME>
+          <ADDR>0x001002D0</ADDR>
+          <VALUE>0</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>damper_decay_time</NAME>
+          <ADDR>0x00100014</ADDR>
+          <VALUE>250.0</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pcount</NAME>
+          <ADDR>0x00100078</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pexposure</NAME>
+          <ADDR>0x0010007C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750 33.33333 466.66667 933.33333
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_ptime</NAME>
+          <ADDR>0x0010008C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750 33.33333 33.33333 66.66667
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_driver</NAME>
+          <ADDR>0x001001FC</ADDR>
+          <VALUE>0x00010001</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pcount</NAME>
+          <ADDR>0x00100200</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pexposure</NAME>
+          <ADDR>0x00100204</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            128.0 2048.0 8192.0 16384.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pgain</NAME>
+          <ADDR>0x00100214</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            1.0 16.0 1024.0 4096.0
+          </VALUE>
+        </PARAM>
+      </SW3A_AEC>
+	  <ISP_DAMPERS>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A</NAME>
+          <ADDR>0x50000</ADDR>
+          <VALUE>1</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B</NAME>
+          <ADDR>0x50002</ADDR>
+          <VALUE>2</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A_CONTROL_POINTS</NAME>
+          <ADDR>0x50001</ADDR>
+          <SIZE>1x1</SIZE>
+          <VALUE>
+            0.06750
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B_CONTROL_POINTS</NAME>
+          <ADDR>0x50003</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            1.0 2.0 4.0 8.0 16.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_LR</NAME>
+          <ADDR>0x50004</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            24.0 20.0 16.0 12.0 12.0
+         </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_LR</NAME>
+          <ADDR>0x50005</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_HR</NAME>
+          <ADDR>0x50006</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            48.0 40.0 32.0 24.0 24.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_HR</NAME>
+          <ADDR>0x50007</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+	  </ISP_DAMPERS>
+    </IQSET>
+    
+    <IQSET>
+      <NAME>IQSET_EXPOSURECONTROL_NIGHT</NAME>
+	  <!-- Used for low light still capture mode -->
+      <SW3A_AEC>
+              <PARAM>
+          <NAME>backlight_detection_enable</NAME>
+          <ADDR>0x001002D0</ADDR>
+          <VALUE>0</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>damper_decay_time</NAME>
+          <ADDR>0x00100014</ADDR>
+          <VALUE>250.0</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pcount</NAME>
+          <ADDR>0x00100078</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pexposure</NAME>
+          <ADDR>0x0010007C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750 33.33333 466.66667 1866.66667
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_ptime</NAME>
+          <ADDR>0x0010008C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750 33.33333 33.33333 133.33333
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_driver</NAME>
+          <ADDR>0x001001FC</ADDR>
+          <VALUE>0x00010001</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pcount</NAME>
+          <ADDR>0x00100200</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pexposure</NAME>
+          <ADDR>0x00100204</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            128.0 2048.0 8192.0 16384.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pgain</NAME>
+          <ADDR>0x00100214</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            1.0 16.0 1024.0 4096.0
+          </VALUE>
+        </PARAM>
+      </SW3A_AEC>
+	  <ISP_DAMPERS>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A</NAME>
+          <ADDR>0x50000</ADDR>
+          <VALUE>1</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B</NAME>
+          <ADDR>0x50002</ADDR>
+          <VALUE>2</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A_CONTROL_POINTS</NAME>
+          <ADDR>0x50001</ADDR>
+          <SIZE>1x1</SIZE>
+          <VALUE>
+            0.06750
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B_CONTROL_POINTS</NAME>
+          <ADDR>0x50003</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            1.0 2.0 4.0 8.0 16.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_LR</NAME>
+          <ADDR>0x50004</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            24.0 20.0 16.0 12.0 12.0
+         </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_LR</NAME>
+          <ADDR>0x50005</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_HR</NAME>
+          <ADDR>0x50006</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            48.0 40.0 32.0 24.0 24.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_HR</NAME>
+          <ADDR>0x50007</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+	  </ISP_DAMPERS>
+    </IQSET>
+    
+    <IQSET>
+      <NAME>IQSET_EXPOSURECONTROL_SPORTS</NAME>
+	  <!-- Used for continuous shooting still capture mode -->
+	  <SW3A_AEC>
+	      <PARAM>
+          <NAME>backlight_detection_enable</NAME>
+          <ADDR>0x001002D0</ADDR>
+          <VALUE>0</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>damper_decay_time</NAME>
+          <ADDR>0x00100014</ADDR>
+          <VALUE>250.0</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pcount</NAME>
+          <ADDR>0x00100078</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pexposure</NAME>
+          <ADDR>0x0010007C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750 10.00000 140.00000 933.33333
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_ptime</NAME>
+          <ADDR>0x0010008C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750 10.00000 10.00000 66.66667
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_driver</NAME>
+          <ADDR>0x001001FC</ADDR>
+          <VALUE>0x00010001</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pcount</NAME>
+          <ADDR>0x00100200</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pexposure</NAME>
+          <ADDR>0x00100204</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            128.0 2048.0 8192.0 16384.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pgain</NAME>
+          <ADDR>0x00100214</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            1.0 16.0 1024.0 4096.0
+          </VALUE>
+        </PARAM>
+      </SW3A_AEC>
+	  <ISP_DAMPERS>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A</NAME>
+          <ADDR>0x50000</ADDR>
+          <VALUE>1</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B</NAME>
+          <ADDR>0x50002</ADDR>
+          <VALUE>2</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A_CONTROL_POINTS</NAME>
+          <ADDR>0x50001</ADDR>
+          <SIZE>1x1</SIZE>
+          <VALUE>
+            0.06750
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B_CONTROL_POINTS</NAME>
+          <ADDR>0x50003</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            1.0 2.0 4.0 8.0 16.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_LR</NAME>
+          <ADDR>0x50004</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            24.0 20.0 16.0 12.0 12.0
+         </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_LR</NAME>
+          <ADDR>0x50005</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_HR</NAME>
+          <ADDR>0x50006</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            48.0 40.0 32.0 24.0 24.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_HR</NAME>
+          <ADDR>0x50007</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+	  </ISP_DAMPERS>
+    </IQSET>
+    
+    <IQSET>
+      <NAME>IQSET_EXPOSURECONTROL_SMALLAPERTURE</NAME>      
+	  <!-- Used for HDR viewfinder mode -->
+      <SW3A_AEC>
+        <PARAM>
+          <NAME>backlight_detection_enable</NAME>
+          <ADDR>0x001002D0</ADDR>
+          <VALUE>1</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>bd_weights_map</NAME>
+          <ADDR>0x001002D4</ADDR>
+          <SIZE>16x1</SIZE>
+          <VALUE>
+            0x00000000
+            0x00000000
+            0x00000000
+            0x00000000
+            0x00000000
+            0x00014000
+            0x000AA000
+            0x001BE400
+            0x001BE400
+            0x000AA000
+            0x00014000
+            0x00000000
+            0x00000000
+            0x00000000
+            0x00000000
+            0x00000000
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>bd_weights_tbl</NAME>
+          <ADDR>0x00100314</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>0.0 1.0 2.0 3.0</VALUE>
+        </PARAM>
+         <PARAM>
+          <NAME>bd_mapped_unmapped_ratio_zero_compensation</NAME>
+          <ADDR>0x00100324</ADDR>
+          <VALUE>0.75</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>bd_mapped_unmapped_ratio_full_compensation</NAME>
+          <ADDR>0x00100328</ADDR>
+          <VALUE>0.3</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>damper_decay_time</NAME>
+          <ADDR>0x00100014</ADDR>
+          <VALUE>250.0</VALUE>
+        </PARAM>
+         <PARAM>
+          <NAME>tr_pcount</NAME>
+          <ADDR>0x00100078</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pexposure</NAME>
+          <ADDR>0x0010007C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750 33.33333 466.66667 933.33333
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_ptime</NAME>
+          <ADDR>0x0010008C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750 33.33333 33.33333 66.66667
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_driver</NAME>
+          <ADDR>0x001001FC</ADDR>
+          <VALUE>0x00010001</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pcount</NAME>
+          <ADDR>0x00100200</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pexposure</NAME>
+          <ADDR>0x00100204</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            128.0 2048.0 8192.0 16384.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pgain</NAME>
+          <ADDR>0x00100214</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            1.0 16.0 1024.0 4096.0
+          </VALUE>
+        </PARAM>
+      </SW3A_AEC>
+	  <ISP_DAMPERS>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A</NAME>
+          <ADDR>0x50000</ADDR>
+          <VALUE>1</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B</NAME>
+          <ADDR>0x50002</ADDR>
+          <VALUE>2</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A_CONTROL_POINTS</NAME>
+          <ADDR>0x50001</ADDR>
+          <SIZE>1x1</SIZE>
+          <VALUE>
+            0.06750
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B_CONTROL_POINTS</NAME>
+          <ADDR>0x50003</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            1.0 2.0 4.0 8.0 16.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_LR</NAME>
+          <ADDR>0x50004</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            24.0 20.0 16.0 12.0 12.0
+         </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_LR</NAME>
+          <ADDR>0x50005</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_HR</NAME>
+          <ADDR>0x50006</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            48.0 40.0 32.0 24.0 24.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_HR</NAME>
+          <ADDR>0x50007</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+	  </ISP_DAMPERS>
+    </IQSET>
+
+    <IQSET>
+      <NAME>IQSET_EXPOSURECONTROL_LARGEAPERTURE</NAME>
+	  <!-- Not used for still capture mode -->
+    </IQSET>
+
+    <IQSET>
+      <NAME>IQSET_EXPOSURECONTROL_BACKLIGHT</NAME>      
+	  <!-- Used for HDR still capture mode -->
+	  <!-- Tuning TODO -->
+      <SW3A_AEC>
+        <PARAM>
+          <NAME>backlight_detection_enable</NAME>
+          <ADDR>0x001002D0</ADDR>
+          <VALUE>0</VALUE>
+        </PARAM>                     
+        <PARAM>
+          <NAME>damper_decay_time</NAME>
+          <ADDR>0x00100014</ADDR>
+          <VALUE>0.0</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pcount</NAME>
+          <ADDR>0x00100078</ADDR>
+          <VALUE>4</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_pexposure</NAME>
+          <ADDR>0x0010007C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750	33.33333	200.00000	400.00000
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>tr_ptime</NAME>
+          <ADDR>0x0010008C</ADDR>
+          <SIZE>1x4</SIZE>
+          <VALUE>
+            0.06750	33.33333	33.33333	66.66667
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_driver</NAME>
+          <ADDR>0x001001FC</ADDR>
+          <VALUE>0x00010001</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pcount</NAME>
+          <ADDR>0x00100200</ADDR>
+          <VALUE>3</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pexposure</NAME>
+          <ADDR>0x00100204</ADDR>
+          <SIZE>1x3</SIZE>
+          <VALUE>
+            1.0 6.0 6000000.0 
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>fr_pgain</NAME>
+          <ADDR>0x00100214</ADDR>
+          <SIZE>1x3</SIZE>
+          <VALUE>
+            1.0 1.0 1000000.0
+          </VALUE>
+        </PARAM>
+      </SW3A_AEC>
+	  <ISP_DAMPERS>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A</NAME>
+          <ADDR>0x50000</ADDR>
+          <VALUE>1</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B</NAME>
+          <ADDR>0x50002</ADDR>
+          <VALUE>2</VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_A_CONTROL_POINTS</NAME>
+          <ADDR>0x50001</ADDR>
+          <SIZE>1x1</SIZE>
+          <VALUE>
+            0.06750
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_BASE_B_CONTROL_POINTS</NAME>
+          <ADDR>0x50003</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            1.0 2.0 4.0 8.0 16.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_LR</NAME>
+          <ADDR>0x50004</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            24.0 20.0 16.0 12.0 12.0
+         </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_LR</NAME>
+          <ADDR>0x50005</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_GAIN_HR</NAME>
+          <ADDR>0x50006</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            48.0 40.0 32.0 24.0 24.0
+          </VALUE>
+        </PARAM>
+        <PARAM>
+          <NAME>SHARPENING_DAMPER_ADSOC_CORING_HR</NAME>
+          <ADDR>0x50007</ADDR>
+          <SIZE>1x5</SIZE>
+          <VALUE>
+            0.0 4.0 8.0 8.0 0.0
+          </VALUE>
+        </PARAM>
+	  </ISP_DAMPERS>
+    </IQSET>
+  </CONFIGURATION>
+  
+</IQSETTINGS>

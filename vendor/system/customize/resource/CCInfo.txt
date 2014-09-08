@@ -1,0 +1,5 @@
+﻿Project: PROTO_TD_ICS_40A
+SKU: HTCCN CMCC ROM
+ROM Build ID: 450713
+Build ID: 450714; SKU: HTCCN CMCC ROM default; CID: default; MNS: default
+Datetime: 2012/11/05 19:56:48

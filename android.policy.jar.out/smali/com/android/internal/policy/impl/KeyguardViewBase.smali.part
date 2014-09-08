@@ -1,0 +1,3 @@
+
+.method public abstract getIdleScreenLabel()Ljava/lang/String;
+.end method
